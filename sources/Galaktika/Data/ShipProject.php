@@ -4,11 +4,22 @@ namespace Galaktika\Data;
 
 class ShipProject
 {
+    private string $id;
     private int $guns = 0;
     private float $gunMass = 0;
     private float $shieldMass = 0;
     private float $engineMass = 0;
     private float $cargoMass = 0;
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getGuns(): int
     {
