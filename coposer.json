@@ -1,0 +1,21 @@
+{
+  "name": "kukulis/galaktika",
+  "description": "Web game galaktika",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Giedrius Tumelis"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Galaktika\\": "sources/Galaktika/"
+    }
+  },
+
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  }
+}
