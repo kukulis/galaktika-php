@@ -4,6 +4,7 @@ namespace Galaktika\Data;
 
 class ShipGroup
 {
+    private string $id;
     private Ship $ship;
     private int $amount;
 
@@ -26,4 +27,17 @@ class ShipGroup
     {
         $this->amount = $amount;
     }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): ShipGroup
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
 }

@@ -6,6 +6,7 @@ use Galaktika\Events\PlanetSurfaceTurnEvent;
 use Galaktika\PlanetSurface\Listeners\PlanetSurfaceIdAssigner;
 use Galaktika\PlanetSurface\Listeners\PlanetSurfaceIndustryGrower;
 use Galaktika\PlanetSurface\Listeners\PlanetSurfacePopulationGrower;
+use Galaktika\PlanetSurface\Listeners\PlanetSurfaceShipProducer;
 use Galaktika\SimpleIdGenerator;
 
 class DummyEventDispatcherFactory
@@ -26,6 +27,10 @@ class DummyEventDispatcherFactory
         $eventDispatcher->registerListener(
             PlanetSurfaceTurnEvent::class,
             [new PlanetSurfaceIndustryGrower(), 'call']
+        );
+        $eventDispatcher->registerListener(
+            PlanetSurfaceTurnEvent::class,
+            [new PlanetSurfaceShipProducer($idGenerator), 'call']
         );
 
         return $eventDispatcher;

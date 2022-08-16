@@ -4,7 +4,7 @@ namespace Galaktika\PlanetSurface\Listeners;
 
 use Galaktika\Events\PlanetSurfaceTurnEvent;
 
-class PlanetSurfaceIndustryGrower
+class PlanetSurfaceIndustryGrower extends PlanetSurfaceWorkerBase
 {
     const EPSILON_INDUSTRY = 0.01;
 
@@ -12,11 +12,9 @@ class PlanetSurfaceIndustryGrower
     {
 
         $industry = max($event->getPlanetSurface()->getIndustry(), self::EPSILON_INDUSTRY);
-        $population = $event->getPlanetSurface()->getPopulation();
-        $productionPower = min($industry, $population) * 2;
+        $productionPower = $this->getProductionPower($event);
 
         $size = $event->getPlanetSurface()->getPlanet()->getSize();
-
 
         if ($event->getProductionMode() == PlanetSurfaceTurnEvent::MODE_INDUSTRY) {
             $additionalCapital = 0;
@@ -31,7 +29,5 @@ class PlanetSurfaceIndustryGrower
         if ( $event->getProductionMode() == PlanetSurfaceTurnEvent::MODE_CAPITAL) {
             $event->getNewPlanetSurface()->setCapital($event->getPlanetSurface()->getCapital() + $productionPower);
         }
-
-        // the case when mode is a "ship production" is handled by other listener
     }
 }

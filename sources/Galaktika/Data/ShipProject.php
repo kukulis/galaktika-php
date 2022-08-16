@@ -71,5 +71,10 @@ class ShipProject
         $this->cargoMass = $cargoMass;
     }
 
+    public function getWeight(): float
+    {
+        return $this->gunMass * $this->guns + $this->shieldMass + $this->engineMass + $this->cargoMass;
+    }
+
 
 }
