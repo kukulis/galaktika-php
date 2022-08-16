@@ -4,6 +4,8 @@ namespace Galaktika\Data;
 
 class PlanetSurface
 {
+    private string $id;
+
     private Planet $planet;
     private Subject $owner;
     private float $population;
@@ -58,5 +60,15 @@ class PlanetSurface
     public function setCapital(float $capital): void
     {
         $this->capital = $capital;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): void
+    {
+        $this->id = $id;
     }
 }
