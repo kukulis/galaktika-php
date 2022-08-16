@@ -8,9 +8,9 @@ class PlanetSurface
 
     private Planet $planet;
     private Subject $owner;
-    private float $population;
-    private float $industry;
-    private float $capital;
+    private float $population = 0;
+    private float $industry = 0;
+    private float $capital = 0;
 
     public function getPlanet(): Planet
     {

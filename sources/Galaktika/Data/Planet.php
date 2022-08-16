@@ -14,9 +14,11 @@ class Planet
         return $this->id;
     }
 
-    public function setId(string $id): void
+    public function setId(string $id): Planet
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getSize(): float
@@ -24,9 +26,11 @@ class Planet
         return $this->size;
     }
 
-    public function setSize(float $size): void
+    public function setSize(float $size): Planet
     {
         $this->size = $size;
+
+        return $this;
     }
 
     public function getRichness(): float
@@ -34,8 +38,10 @@ class Planet
         return $this->richness;
     }
 
-    public function setRichness(float $richness): void
+    public function setRichness(float $richness): Planet
     {
         $this->richness = $richness;
+
+        return $this;
     }
 }
