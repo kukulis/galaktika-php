@@ -21,7 +21,7 @@ class PlanetSurfaceShipProducer extends PlanetSurfaceWorkerBase
     public function call(PlanetSurfaceTurnEvent $event)
     {
         if ($event->getProductionMode() == 'ship') {
-            $productionPower = $this - $this->getProductionPower($event);
+            $productionPower = $this->getProductionPower($event);
             $capitalBoost = min($productionPower, $event->getPlanetSurface()->getCapital());
 
             $shipProductionPower = $productionPower + $capitalBoost;
@@ -38,7 +38,7 @@ class PlanetSurfaceShipProducer extends PlanetSurfaceWorkerBase
                 ) + $shipProductionPower / $requiredShipProductionPower;
             $producedAmount = floor($amount);
             $remainingPart = $amount - $producedAmount;
-            $shipGroup->setAmount($remainingPart);
+            $shipGroup->setAmount($producedAmount);
 
             $event->getNewPlanetSurface()->setProducedShipPart($remainingPart);
             $event->getNewPlanetSurface()->setCapital($event->getPlanetSurface()->getCapital() - $capitalBoost);
