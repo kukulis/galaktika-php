@@ -2,7 +2,9 @@
 
 namespace Galaktika\Dummy;
 
+use Galaktika\Events\FleetTurnEvent;
 use Galaktika\Events\PlanetSurfaceTurnEvent;
+use Galaktika\Fleet\Listeners\FleetFlyer;
 use Galaktika\PlanetSurface\Listeners\PlanetSurfaceIdAssigner;
 use Galaktika\PlanetSurface\Listeners\PlanetSurfaceIndustryGrower;
 use Galaktika\PlanetSurface\Listeners\PlanetSurfacePopulationGrower;
@@ -31,6 +33,10 @@ class DummyEventDispatcherFactory
         $eventDispatcher->registerListener(
             PlanetSurfaceTurnEvent::class,
             [new PlanetSurfaceShipProducer($idGenerator), 'call']
+        );
+        $eventDispatcher->registerListener(
+            FleetTurnEvent::class,
+            [new FleetFlyer(), 'call']
         );
 
         return $eventDispatcher;

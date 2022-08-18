@@ -5,6 +5,7 @@ namespace Galaktika\Data;
 class ShipProject
 {
     private string $id;
+    private string $name;
     private int $guns = 0;
     private float $gunMass = 0;
     private float $shieldMass = 0;
@@ -76,5 +77,15 @@ class ShipProject
         return $this->gunMass * $this->guns + $this->shieldMass + $this->engineMass + $this->cargoMass;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
+    public function setName(string $name): ShipProject
+    {
+        $this->name = $name;
+
+        return $this;
+    }
 }

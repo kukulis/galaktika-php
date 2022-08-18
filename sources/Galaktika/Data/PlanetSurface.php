@@ -2,6 +2,9 @@
 
 namespace Galaktika\Data;
 
+/**
+ * Planet surface is copied for each turn.
+ */
 class PlanetSurface
 {
     private string $id;

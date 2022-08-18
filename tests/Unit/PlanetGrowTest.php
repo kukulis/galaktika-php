@@ -41,6 +41,7 @@ class PlanetGrowTest extends TestCase
         $shipProject->setCargoMass(1);
         $shipProject->setEngineMass(1);
         $shipProject->setShieldMass(1);
+        $shipProject->setName('pirmas');
         $this->assertEquals(4, $shipProject->getWeight());
 
         $planetSurface = new PlanetSurface();

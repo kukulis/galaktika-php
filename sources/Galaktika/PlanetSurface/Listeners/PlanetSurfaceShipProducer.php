@@ -29,6 +29,7 @@ class PlanetSurfaceShipProducer extends PlanetSurfaceWorkerBase
 
             $ship = $this->calculateShip($event->getPlanetSurface()->getShipProject(), $event->getTechnologies());
             $ship->setId($this->idGenerator->generateId());
+            $ship->setName($event->getPlanetSurface()->getShipProject()->getName());
 
             $shipGroup = new ShipGroup();
 

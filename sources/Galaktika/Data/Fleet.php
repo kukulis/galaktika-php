@@ -9,6 +9,9 @@ class Fleet
      */
     private array $shipGroups;
 
+    private Location $currentLocation;
+    private Location $destinationLocation;
+
     public function getShipGroups(): array
     {
         return $this->shipGroups;

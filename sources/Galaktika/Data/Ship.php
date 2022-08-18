@@ -5,6 +5,7 @@ namespace Galaktika\Data;
 class Ship
 {
     private string $id;
+    private string $name;
     private float $attack;
     private float $defence;
     private float $shields;
@@ -91,6 +92,18 @@ class Ship
     public function setWeight(float $weight): void
     {
         $this->weight = $weight;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): Ship
+    {
+        $this->name = $name;
+
+        return $this;
     }
 }
 
