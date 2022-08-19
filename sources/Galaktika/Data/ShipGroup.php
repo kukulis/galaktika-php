@@ -8,6 +8,11 @@ class ShipGroup
     private Ship $ship;
     private int $amount;
 
+    /** @var float cargo for a single ship */
+    private float $cargoPopulation = 0.0;
+    /** @var float cargo for a single ship */
+    private float $cargoCapital = 0.0;
+
     public function getShip(): Ship
     {
         return $this->ship;
@@ -38,6 +43,40 @@ class ShipGroup
         $this->id = $id;
 
         return $this;
+    }
+
+    public function getCargoPopulation(): float
+    {
+        return $this->cargoPopulation;
+    }
+
+    public function setCargoPopulation(float $cargoPopulation): ShipGroup
+    {
+        $this->cargoPopulation = $cargoPopulation;
+
+        return $this;
+    }
+
+    public function getCargoCapital(): float
+    {
+        return $this->cargoCapital;
+    }
+
+    public function setCargoCapital(float $cargoCapital): ShipGroup
+    {
+        $this->cargoCapital = $cargoCapital;
+
+        return $this;
+    }
+
+    public function getOneShipWeight(): float
+    {
+        return $this->ship->getWeight() + $this->cargoCapital + $this->cargoPopulation;
+    }
+
+    public function getSpeed(): float
+    {
+        return $this->ship->getEngine() / $this->getOneShipWeight();
     }
 
 }

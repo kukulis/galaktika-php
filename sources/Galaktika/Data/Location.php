@@ -4,6 +4,8 @@ namespace Galaktika\Data;
 
 class Location
 {
+    public const EPSILON = 0.000001;
+
     private int $id;
     private ?Planet $planet;
     private float $x;
@@ -47,6 +49,22 @@ class Location
     public function setY(float $y): void
     {
         $this->y = $y;
+    }
+
+    public function equals(Location $l): bool
+    {
+        return
+            abs($l->getX() - $this->getX()) < self::EPSILON &&
+            abs($l->getY() - $this->getY()) < self::EPSILON;
+    }
+
+
+    public function vector(Location $destination): Vector
+    {
+        $x = $destination->getX() - $this->getX();
+        $y = $destination->getY() - $this->getY();
+
+        return new Vector($x, $y);
     }
 
 

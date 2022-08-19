@@ -18,7 +18,8 @@ class FleetTurnMaker
 
     public function makeFleetTurn(Fleet $fleet): FleetTurnEvent
     {
-        $event = new FleetTurnEvent($fleet);
+        $newFleet = clone $fleet;
+        $event = new FleetTurnEvent($fleet, $newFleet);
         $this->eventDispatcher->dispatch($event);
 
         return $event;
