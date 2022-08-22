@@ -26,7 +26,7 @@ class Movement
         return $axisKeyMine == $axisKeyOther;
     }
 
-    public function meets(Movement $movement): bool
+    public function overlaps(Movement $movement): bool
     {
         if (!$this->sameLine($movement)) {
             return false;

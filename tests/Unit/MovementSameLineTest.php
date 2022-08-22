@@ -6,7 +6,7 @@ use Galaktika\Data\Location;
 use Galaktika\Data\Movement;
 use PHPUnit\Framework\TestCase;
 
-class MovementTest extends TestCase
+class MovementSameLineTest extends TestCase
 {
     public function testSameLine() {
 
@@ -21,8 +21,6 @@ class MovementTest extends TestCase
 
         $this->assertTrue ( $movement3->sameLine($movement4));
         $this->assertFalse ( $movement1->sameLine( $movement3 ));
-
-
 
     }
 
