@@ -6,6 +6,7 @@ class Location
 {
     public const EPSILON = 0.000001;
 
+    // DO we really need this id?
     private int $id;
     private ?Planet $planet;
     private float $x;
@@ -67,5 +68,12 @@ class Location
         return new Vector($x, $y);
     }
 
+    public static function build(float $x, float $y): Location
+    {
+        $location = new Location();
+        $location->setX($x);
+        $location->setY($y);
 
+        return $location;
+    }
 }
