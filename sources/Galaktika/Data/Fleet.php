@@ -7,10 +7,12 @@ class Fleet
     /**
      * @var ShipGroup[]
      */
-    private array $shipGroups;
+    private array $shipGroups = [];
 
     private Location $currentLocation;
     private Location $destinationLocation;
+
+    private string $id;
 
     public function getShipGroups(): array
     {
@@ -46,10 +48,28 @@ class Fleet
         return $this;
     }
 
-    public function getMinimalSpeed() : float {
-        $speeds = array_map( fn(ShipGroup $shipGroup) => $shipGroup->getSpeed(), $this->shipGroups);
+    public function getMinimalSpeed(): float
+    {
+        $speeds = array_map(fn(ShipGroup $shipGroup) => $shipGroup->getSpeed(), $this->shipGroups);
 
         return min($speeds);
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): Fleet
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function addGroup(ShipGroup $shipGroup): void
+    {
+        $this->shipGroups[] = $shipGroup;
     }
 
 }

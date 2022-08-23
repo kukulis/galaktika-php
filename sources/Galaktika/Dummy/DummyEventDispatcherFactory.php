@@ -3,8 +3,10 @@
 namespace Galaktika\Dummy;
 
 use Galaktika\Events\FleetTurnEvent;
+use Galaktika\Events\MovementEvent;
 use Galaktika\Events\PlanetSurfaceTurnEvent;
 use Galaktika\Fleet\Listeners\FleetFlyer;
+use Galaktika\Fleet\Listeners\MovementRegisterer;
 use Galaktika\PlanetSurface\Listeners\PlanetSurfaceIdAssigner;
 use Galaktika\PlanetSurface\Listeners\PlanetSurfaceIndustryGrower;
 use Galaktika\PlanetSurface\Listeners\PlanetSurfacePopulationGrower;
@@ -36,7 +38,11 @@ class DummyEventDispatcherFactory
         );
         $eventDispatcher->registerListener(
             FleetTurnEvent::class,
-            [new FleetFlyer(), 'call']
+            [new FleetFlyer($eventDispatcher), 'call']
+        );
+        $eventDispatcher->registerListener(
+            MovementEvent::class,
+            [new MovementRegisterer(DummyMovementRepository::getInstance()), 'call']
         );
 
         return $eventDispatcher;

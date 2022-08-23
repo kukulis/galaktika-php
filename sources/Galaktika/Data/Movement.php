@@ -13,6 +13,12 @@ class Movement
     private ?float $yOnAxisX = null;
     private ?float $xOnAxisY = null;
 
+    /**
+     * @var string
+     * Usually fleet id.
+     */
+    private string $referencedId;
+
 
     public function sameLine(Movement $movement): bool
     {
@@ -168,5 +174,17 @@ class Movement
         $movement->setNewLocation($newLocation);
 
         return $movement;
+    }
+
+    public function getReferencedId(): string
+    {
+        return $this->referencedId;
+    }
+
+    public function setReferencedId(string $referencedId): Movement
+    {
+        $this->referencedId = $referencedId;
+
+        return $this;
     }
 }

@@ -79,4 +79,12 @@ class ShipGroup
         return $this->ship->getEngine() / $this->getOneShipWeight();
     }
 
+    public static function build(Ship $ship, int $amount):ShipGroup {
+        $shipGroup = new ShipGroup();
+        $shipGroup->setShip($ship);
+        $shipGroup ->setAmount($amount);
+
+        return $shipGroup;
+    }
+
 }

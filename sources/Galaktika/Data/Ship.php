@@ -105,5 +105,24 @@ class Ship
 
         return $this;
     }
+
+    public static function build(
+        int $guns,
+        float $attack,
+        float $defence,
+        float $engine,
+        float $cargo,
+        float $weight
+    ): Ship {
+        $ship = new Ship();
+        $ship->setGuns($guns);
+        $ship->setAttack($attack);
+        $ship->setDefence($defence);
+        $ship->setEngine($engine);
+        $ship->setCargo($cargo);
+        $ship->setWeight($weight);
+
+        return $ship;
+    }
 }
 
