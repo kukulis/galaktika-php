@@ -4,11 +4,13 @@ namespace Tests\Unit;
 
 use Galaktika\Action\FleetTurnMaker;
 use Galaktika\Data\Fleet;
+use Galaktika\Data\GameTurn;
 use Galaktika\Data\Location;
 use Galaktika\Data\Ship;
 use Galaktika\Data\ShipGroup;
 use Galaktika\Dummy\DummyEventDispatcherFactory;
 use Galaktika\Dummy\DummyMovementRepository;
+use Galaktika\Repositories\MovementFilter;
 use PHPUnit\Framework\TestCase;
 
 class FleetFlyTest extends TestCase
@@ -25,12 +27,15 @@ class FleetFlyTest extends TestCase
         $dummyEventDispatcherFactory = new DummyEventDispatcherFactory();
         $eventDispatcher = $dummyEventDispatcherFactory->configureEventDispatcher();
 
+
+        $gameTurn = new GameTurn();
         $fleetTurnMaker = new FleetTurnMaker($eventDispatcher);
-        $fleetTurnMaker->makeFleetTurn($fleet);
+        $fleetTurnMaker->makeFleetTurn($fleet, $gameTurn);
 
 
         $movementRepository = DummyMovementRepository::getInstance();
-        $movementsMap = $movementRepository->getMovements();
+
+        $movementsMap = $movementRepository->getMovements(new MovementFilter());
         $movements = array_values ($movementsMap);
 
         $this->assertCount(1, $movements);

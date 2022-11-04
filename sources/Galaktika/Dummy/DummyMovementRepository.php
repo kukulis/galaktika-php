@@ -2,7 +2,10 @@
 
 namespace Galaktika\Dummy;
 
+use Galaktika\Data\GameTurn;
 use Galaktika\Data\Movement;
+use Galaktika\Data\Registry\MovementRegistry;
+use Galaktika\Repositories\MovementFilter;
 use Galaktika\Repositories\MovementsRepository;
 
 class DummyMovementRepository implements MovementsRepository
@@ -22,19 +25,25 @@ class DummyMovementRepository implements MovementsRepository
         return self::$instance;
     }
 
-    /** @var Movement[] */
-    private array $movements = [];
+    /** @var MovementRegistry[] */
+    private array $movementsRegistries = [];
 
-    public function collect(Movement $movement)
+    public function addMovement(Movement $movement, GameTurn $gameTurn)
     {
-        $this->movements[$movement->getAxisKey()] = $movement;
+        $movementRegistry = new MovementRegistry();
+        $movementRegistry->setMovement($movement);
+        $movementRegistry->setGameTurn($gameTurn);
+        $movementRegistry->setAxisKey($movement->getAxisKey());
+
+        $this->movementsRegistries[] = $movementRegistry;
     }
 
     /**
      * @return Movement[]
      */
-    public function getMovements(): array
+    public function getMovements(MovementFilter $movementFilter): array
     {
-        return $this->movements;
+        return array_map(fn($movementRegistry) => $movementRegistry->getMovement(), $this->movementsRegistries);
     }
+
 }

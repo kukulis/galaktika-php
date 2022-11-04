@@ -2,14 +2,17 @@
 
 namespace Galaktika\Repositories;
 
+use Galaktika\Data\GameTurn;
 use Galaktika\Data\Movement;
+use Galaktika\Data\Registry\MovementRegistry;
 
 interface MovementsRepository
 {
-    public function collect(Movement $movement);
+    public function addMovement(Movement $movement, GameTurn $gameTurn);
 
     /**
-     * @return Movement[]
+     * @return MovementRegistry[]
      */
-    public function getMovements(): array;
+    public function getMovements(MovementFilter $movementFilter): array;
+
 }

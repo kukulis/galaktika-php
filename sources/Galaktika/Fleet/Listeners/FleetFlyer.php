@@ -51,7 +51,8 @@ class FleetFlyer
 
         $this->eventDispatcher->dispatch(
             new MovementEvent(
-                Movement::build($currentLocation, $newLocation)->setReferencedId($event->getFleet()->getId())
+                Movement::build($currentLocation, $newLocation)->setReferencedId($event->getFleet()->getId()),
+                $event->getTurn()
             )
         );
     }

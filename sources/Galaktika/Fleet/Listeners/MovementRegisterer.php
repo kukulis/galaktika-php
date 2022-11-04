@@ -18,6 +18,6 @@ class MovementRegisterer
     }
 
     public function call(MovementEvent $movementEvent) {
-        $this->movementsRepository->collect($movementEvent->getMovement());
+        $this->movementsRepository->addMovement($movementEvent->getMovement(), $movementEvent->getTurn());
     }
 }
