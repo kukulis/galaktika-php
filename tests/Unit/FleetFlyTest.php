@@ -8,6 +8,7 @@ use Galaktika\Data\GameTurn;
 use Galaktika\Data\Location;
 use Galaktika\Data\Ship;
 use Galaktika\Data\ShipGroup;
+use Galaktika\Data\Subject;
 use Galaktika\Dummy\DummyEventDispatcherFactory;
 use Galaktika\Dummy\DummyMovementRepository;
 use Galaktika\Repositories\MovementFilter;
@@ -15,10 +16,12 @@ use PHPUnit\Framework\TestCase;
 
 class FleetFlyTest extends TestCase
 {
-    public function testFlyPartWay() {
+    public function testFlyPartWay()
+    {
+        $subject = new Subject();
         $fleet = new Fleet();
-        $fleet->addGroup(ShipGroup::build(Ship::build(1, 1,1,1,1, 1), 1));
-        $initialLocation = Location::build(0,0);
+        $fleet->addGroup(ShipGroup::build(Ship::build(1, 1, 1, 1, 1, 1), 1, $subject));
+        $initialLocation = Location::build(0, 0);
         $fleet->setCurrentLocation($initialLocation);
         $destinationLocation = Location::build(200, 0);
         $fleet->setDestinationLocation($destinationLocation);
@@ -36,21 +39,23 @@ class FleetFlyTest extends TestCase
         $movementRepository = DummyMovementRepository::getInstance();
 
         $movementsMap = $movementRepository->getMovements(new MovementFilter());
-        $movements = array_values ($movementsMap);
+        $movements = array_values($movementsMap);
 
         $this->assertCount(1, $movements);
 
 
         $movements[0]->getLocation()->equals($initialLocation);
         $movements[0]->getNewLocation()->equals($fleet->getCurrentLocation());
-        $this->assertTrue( $movements[0]->getNewLocation()->getX() > $movements[0]->getLocation()->getX());
+        $this->assertTrue($movements[0]->getNewLocation()->getX() > $movements[0]->getLocation()->getX());
     }
 
-    public function _testFlyFullWay() {
+    public function _testFlyFullWay()
+    {
         // TODO
     }
 
-    public function _testStayInPlace() {
+    public function _testStayInPlace()
+    {
         // TODO
     }
 }

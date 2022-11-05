@@ -6,7 +6,6 @@ class Location
 {
     public const EPSILON = 0.000001;
 
-    // DO we really need this id?
     private int $id;
     private ?Planet $planet;
     private float $x;
@@ -75,5 +74,9 @@ class Location
         $location->setY($y);
 
         return $location;
+    }
+
+    public function getKey(): string {
+        return sprintf('%.05f:%.05f', $this->x, $this->y);
     }
 }

@@ -7,6 +7,7 @@ class ShipGroup
     private string $id;
     private Ship $ship;
     private int $amount;
+    private Subject $owner;
 
     /** @var float cargo for a single ship */
     private float $cargoPopulation = 0.0;
@@ -79,10 +80,24 @@ class ShipGroup
         return $this->ship->getEngine() / $this->getOneShipWeight();
     }
 
-    public static function build(Ship $ship, int $amount):ShipGroup {
+    public function getOwner(): Subject
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(Subject $owner): ShipGroup
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    public static function build(Ship $ship, int $amount, Subject $owner): ShipGroup
+    {
         $shipGroup = new ShipGroup();
         $shipGroup->setShip($ship);
-        $shipGroup ->setAmount($amount);
+        $shipGroup->setAmount($amount);
+        $shipGroup->setOwner($owner);
 
         return $shipGroup;
     }

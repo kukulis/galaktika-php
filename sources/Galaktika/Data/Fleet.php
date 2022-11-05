@@ -72,4 +72,11 @@ class Fleet
         $this->shipGroups[] = $shipGroup;
     }
 
+
+    public static function buildWithLocation(Location $location): Fleet {
+        $fleet = new Fleet();
+        $fleet->setCurrentLocation($location);
+
+        return $fleet;
+    }
 }
