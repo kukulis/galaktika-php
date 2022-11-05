@@ -67,9 +67,11 @@ class Fleet
         return $this;
     }
 
-    public function addGroup(ShipGroup $shipGroup): void
+    public function addGroup(ShipGroup $shipGroup): self
     {
         $this->shipGroups[] = $shipGroup;
+
+        return $this;
     }
 
 
@@ -78,5 +80,13 @@ class Fleet
         $fleet->setCurrentLocation($location);
 
         return $fleet;
+    }
+
+    public function getOwner(): ?Subject {
+        if (  count($this->shipGroups) == 0 ) {
+            return null;
+        }
+
+        return $this->shipGroups[0]->getOwner();
     }
 }

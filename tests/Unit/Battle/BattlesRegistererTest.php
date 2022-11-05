@@ -2,6 +2,13 @@
 
 namespace Tests\Unit\Battle;
 
+use Galaktika\Action\BattlesRegisterUtility;
+use Galaktika\Data\Fleet;
+use Galaktika\Data\Location;
+use Galaktika\Data\Ship;
+use Galaktika\Data\ShipGroup;
+use Galaktika\Data\Subject;
+use Galaktika\Dummy\PeaceRelationsRepository;
 use PHPUnit\Framework\TestCase;
 
 class BattlesRegistererTest extends TestCase
@@ -12,6 +19,25 @@ class BattlesRegistererTest extends TestCase
 
         // if we have two subjects, which are in war and at some moment they are in the same location (planet)
         // then battle in that location should be registered
+
+        $subject1 = (new Subject())->setId('subject1')->setName('subject1');
+        $subject2 = (new Subject())->setId('subject2')->setName('subject2');
+
+        $location = Location::build(10, 10);
+        $ship = new Ship();
+
+
+        $fleet1 = Fleet::buildWithLocation($location)->addGroup(ShipGroup::build($ship, 1, $subject1));
+        $fleet2 = Fleet::buildWithLocation($location)->addGroup(ShipGroup::build($ship, 1, $subject2));
+
+        $relationsRepository = new PeaceRelationsRepository();
+        // no peace additions, meaning all are in war
+
+        $battlesRegistererUtility = new BattlesRegisterUtility();
+
+        $battles = $battlesRegistererUtility->registerBattlesForFleets([$fleet1, $fleet2], $relationsRepository);
+
+        $this->assertCount(1, $battles);
     }
 
     public function testNotRegisterBattleInLocation() {
