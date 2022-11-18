@@ -43,6 +43,26 @@ class BattlesRegistererTest extends TestCase
     public function testNotRegisterBattleInLocation() {
         // if two subject fleets which are not in war are in the same location
         // then battle is not registered
+
+        $subject1 = (new Subject())->setId('subject1')->setName('subject1');
+        $subject2 = (new Subject())->setId('subject2')->setName('subject2');
+
+        $location = Location::build(10, 10);
+        $ship = new Ship();
+
+
+        $fleet1 = Fleet::buildWithLocation($location)->addGroup(ShipGroup::build($ship, 1, $subject1));
+        $fleet2 = Fleet::buildWithLocation($location)->addGroup(ShipGroup::build($ship, 1, $subject2));
+
+        $relationsRepository = new PeaceRelationsRepository();
+        $relationsRepository->addPeace($subject1, $subject2);
+        // no peace additions, meaning all are in war
+
+        $battlesRegistererUtility = new BattlesRegisterUtility();
+
+        $battles = $battlesRegistererUtility->registerBattlesForFleets([$fleet1, $fleet2], $relationsRepository);
+
+        $this->assertCount(0, $battles);
     }
 
     public function  testRegisterBattleInLocation3_1() {
