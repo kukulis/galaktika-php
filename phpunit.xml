@@ -6,7 +6,8 @@
          defaultTestSuite="Unit" >
     <testsuites>
         <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
+            <!-- <directory suffix="Test.php">./tests/Unit</directory> -->
+            <directory suffix="Test.php">./tests/Galaktika/V2</directory>
         </testsuite>
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>

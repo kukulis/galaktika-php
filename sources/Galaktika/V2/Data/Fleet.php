@@ -68,4 +68,10 @@ class Fleet
 
         return $this;
     }
+
+    public function addShip(Ship $ship) : Fleet {
+        $this->ships[] = $ship;
+
+        return $this;
+    }
 }
