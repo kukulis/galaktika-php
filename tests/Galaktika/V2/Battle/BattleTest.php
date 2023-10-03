@@ -27,4 +27,6 @@ class BattleTest extends TestCase
         $this->assertCount(1, $battleReport->getShots());
     }
 
+    // more tests
+
 }
