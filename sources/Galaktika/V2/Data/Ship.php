@@ -12,6 +12,7 @@ class Ship
     private float $mass;
     private float $maxCargo;
     private float $load;
+    private Race $owner;
 
     public function getId(): string
     {
@@ -108,4 +109,17 @@ class Ship
 
         return $this;
     }
+
+    public function getOwner(): Race
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(Race $owner): Ship
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
 }
