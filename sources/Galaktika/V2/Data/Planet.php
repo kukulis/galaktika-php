@@ -10,6 +10,7 @@ class Planet
     private Race $owner;
 
     private Location $location;
+    private float $size;
 
     private float $population;
     private float $industry;
@@ -20,6 +21,7 @@ class Planet
 
     /** @var Ship[] */
     private array $ships;
+
 
 
     public function getId(): string
@@ -114,6 +116,18 @@ class Planet
     public function setShips(array $ships): Planet
     {
         $this->ships = $ships;
+
+        return $this;
+    }
+
+    public function getSize(): float
+    {
+        return $this->size;
+    }
+
+    public function setSize(float $size): Planet
+    {
+        $this->size = $size;
 
         return $this;
     }
