@@ -91,4 +91,35 @@ class ShipsHolder
         return $this->bShipsById[$key]->ship;
     }
 
+    public function remove(string $id) : bool {
+
+        if (!array_key_exists($id,  $this->allShipsById)) {
+            return false;
+        }
+        $shipHolderToRemove = $this->allShipsById[$id];
+
+        // will switch with the last element
+        $lastShipHolder = $this->allShipsByIndex[count($this->allShipsByIndex)-1];
+        $lastAShipHolder = $this->aShipsByIndex[count($this->aShipsByIndex)-1];
+        $lastBShipHolder = $this->bShipsByIndex[count($this->bShipsByIndex)-1];
+
+        $lastShipHolder->allIndex = $shipHolderToRemove->allIndex;
+        $this->allShipsByIndex[$shipHolderToRemove->allIndex] = $lastShipHolder;
+        unset($this->allShipsByIndex[count($this->allShipsByIndex)-1]);
+
+        $lastAShipHolder->aIndex = $shipHolderToRemove->aIndex;
+        $this->aShipsByIndex[$shipHolderToRemove->aIndex] = $lastAShipHolder;
+        unset($this->aShipsByIndex[count($this->aShipsByIndex)-1]);
+
+        $lastBShipHolder->bIndex = $shipHolderToRemove->bIndex;
+        $this->bShipsByIndex[$shipHolderToRemove->bIndex] = $lastBShipHolder;
+        unset($this->bShipsByIndex[count($this->bShipsByIndex)-1]);
+
+        unset( $this->allShipsById[$id]);
+        unset( $this->aShipsById[$id]);
+        unset( $this->bShipsById[$id]);
+
+        return true;
+    }
+
 }
