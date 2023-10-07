@@ -10,6 +10,9 @@ class BattleCalculator
     {
         $battleReport = new BattleReport();
 
+        $shipsHolder = new ShipsHolder($fleetA->getShips(), $fleetB->getShips());
+
+
         return $battleReport;
     }
 }
