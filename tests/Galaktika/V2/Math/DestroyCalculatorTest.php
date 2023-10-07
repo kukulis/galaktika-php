@@ -88,6 +88,12 @@ class DestroyCalculatorTest extends TestCase
                 'randomFactor' => 0.1,
                 'expectedDestroyed' => true,
             ],
+            'zero defence' => [
+                'attack' => 1,
+                'defence' => 0,
+                'randomFactor' => 0,
+                'expectedDestroyed' => true,
+            ],
 
         ];
     }
