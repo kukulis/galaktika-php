@@ -6,6 +6,8 @@ use OutOfBoundsException;
 
 class RandomSequence
 {
+    public const ALMOST1 = 0.999999;
+
     private array $randoms;
     private int $current = 0;
 
@@ -26,7 +28,12 @@ class RandomSequence
             );
         }
 
-        return $this->randoms[$this->current++];
+        $rez = $this->randoms[$this->current++];
+        if ( $rez >= 1) {
+            return self::ALMOST1;
+        }
+
+        return $rez;
     }
 
     /**

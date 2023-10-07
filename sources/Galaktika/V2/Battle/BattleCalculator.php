@@ -18,7 +18,7 @@ class BattleCalculator
         $turn = 0;
         while ($turn < self::MAX_TURNS && $shipsHolder->getAShipsCount() > 0 && $shipsHolder->getBShipsCount() > 0) {
             $allShips = $shipsHolder->extractAll();
-            $shootingShips = array_filter($allShips, fn(Ship $ship) => $ship->getGuns() > 0);
+            $shootingShips = array_values(array_filter($allShips, fn(Ship $ship) => $ship->getGuns() > 0));
             $shootersIndexes = SequenceGenerator::generate($randomSequence->nextArray(count($shootingShips)));
             /** @var Ship[] $reorderedShootingShips */
             $reorderedShootingShips = SequenceGenerator::reorder($shootingShips, $shootersIndexes);

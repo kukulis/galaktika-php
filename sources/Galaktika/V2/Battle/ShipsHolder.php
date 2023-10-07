@@ -126,13 +126,17 @@ class ShipsHolder
         $this->allShipsByIndex[$shipHolderToRemove->allIndex] = $lastShipHolder;
         unset($this->allShipsByIndex[count($this->allShipsByIndex) - 1]);
 
-        $lastAShipHolder->aIndex = $shipHolderToRemove->aIndex;
-        $this->aShipsByIndex[$shipHolderToRemove->aIndex] = $lastAShipHolder;
-        unset($this->aShipsByIndex[count($this->aShipsByIndex) - 1]);
+        if ( $shipHolderToRemove->aIndex >= 0 ) {
+            $lastAShipHolder->aIndex = $shipHolderToRemove->aIndex;
+            $this->aShipsByIndex[$shipHolderToRemove->aIndex] = $lastAShipHolder;
+            unset($this->aShipsByIndex[count($this->aShipsByIndex) - 1]);
+        }
 
-        $lastBShipHolder->bIndex = $shipHolderToRemove->bIndex;
-        $this->bShipsByIndex[$shipHolderToRemove->bIndex] = $lastBShipHolder;
-        unset($this->bShipsByIndex[count($this->bShipsByIndex) - 1]);
+        if ( $shipHolderToRemove->bIndex >= 0 ) {
+            $lastBShipHolder->bIndex = $shipHolderToRemove->bIndex;
+            $this->bShipsByIndex[$shipHolderToRemove->bIndex] = $lastBShipHolder;
+            unset($this->bShipsByIndex[count($this->bShipsByIndex) - 1]);
+        }
 
         unset($this->allShipsById[$id]);
         unset($this->aShipsById[$id]);

@@ -5,14 +5,17 @@ namespace Galaktika\V2\Data;
 class Ship
 {
     private string $id;
-    private int $guns;
-    private float $attack;
-    private float $defence;
-    private float $speed;
-    private float $mass;
-    private float $maxCargo;
-    private float $load;
-    private Race $owner;
+    private int $guns=0;
+    private float $attack=0;
+    private float $defence=0;
+    private float $speed=0;
+    private float $mass=0;
+    private float $maxCargo=0;
+    /**
+     * @deprecated load will be separated to a different object
+     */
+    private float $load=0;
+    private ?Race $owner=null;
 
     public function getId(): string
     {

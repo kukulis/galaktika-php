@@ -2,8 +2,12 @@
 
 namespace Galaktika\V2\Math;
 
+use Galaktika\V2\Battle\RandomSequence;
+
 class SequenceGenerator
 {
+
+
     public static function generate(array $randoms): array
     {
         $size = count($randoms);
@@ -15,6 +19,9 @@ class SequenceGenerator
 
         $result = [];
         foreach ($randoms as $random) {
+            if ($random >= 1) {
+                $random = RandomSequence::ALMOST1;
+            }
             $selected = intval($random * $size);
             $result[] = $indexes[$selected];
             $indexes[$selected] = $indexes[$size - 1];

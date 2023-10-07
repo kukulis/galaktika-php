@@ -15,10 +15,10 @@ class BattleTest extends TestCase
         $fleetA = new Fleet();
         $fleetB = new Fleet();
 
-        $fleetA->addShip((new Ship())->setId(uniqid())->setGuns(0));
+        $fleetA->addShip((new Ship())->setId(uniqid())->setGuns(0)->setDefence(0));
         $fleetB->addShip((new Ship())->setId(uniqid())->setGuns(1)->setAttack(1));
 
-        $randomSequence = new RandomSequence([1]);
+        $randomSequence = new RandomSequence([1,1,1,1,1,1,1,1]);
         $battleReport = BattleCalculator::battle($fleetA, $fleetB, $randomSequence);
 
         $this->assertCount(0, $battleReport->getFleetA()->getShips());

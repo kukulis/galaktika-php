@@ -54,4 +54,10 @@ class SequenceGeneratorTest extends TestCase
             ],
         ];
     }
+
+    public function testWithRandom1() {
+        $this->assertEquals([0], SequenceGenerator::generate([1]));
+        $this->assertEquals([1,0], SequenceGenerator::generate([1,1]));
+        $this->assertEquals([2,1,0], SequenceGenerator::generate([1,1,1]));
+    }
 }
