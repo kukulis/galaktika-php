@@ -28,4 +28,17 @@ class RandomSequence
 
         return $this->randoms[$this->current++];
     }
+
+    /**
+     * @return float[]
+     */
+    public function nextArray(int $count): array
+    {
+        $rez = [];
+        for ($i = 0; $i < $count; $i++) {
+            $rez[] = $this->next();
+        }
+
+        return $rez;
+    }
 }

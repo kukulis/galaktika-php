@@ -8,6 +8,8 @@ class BattleReport
 {
     private Fleet $fleetA;
     private Fleet $fleetB;
+
+    /** @var BattleReportLine[] */
     private array $shots;
 
     public function getFleetA(): Fleet
@@ -34,6 +36,9 @@ class BattleReport
         return $this;
     }
 
+    /**
+     * @return BattleReportLine[]
+     */
     public function getShots(): array
     {
         return $this->shots;
@@ -44,5 +49,10 @@ class BattleReport
         $this->shots = $shots;
 
         return $this;
+    }
+
+    public function addShot(BattleReportLine $shot)
+    {
+        $this->shots[] = $shot;
     }
 }

@@ -59,22 +59,31 @@ class ShipsHolder
         return $this;
     }
 
-    public function getAByIndex(int $i): Ship
+    public function getAShipByIndex(int $i): Ship
     {
         return $this->aShipsByIndex[$i]->ship;
     }
 
-    public function getBByIndex(int $i): Ship
+    public function getBShipByIndex(int $i): Ship
     {
         return $this->bShipsByIndex[$i]->ship;
     }
 
-    public function getByIndex(int $i): Ship
+    public function getSideShipByIndex(int $side, int $i) {
+        if ( $side == 0) {
+            return $this->getAShipByIndex($i);
+        }
+        else {
+            return $this->getBShipByIndex($i);
+        }
+    }
+
+    public function getShipByIndex(int $i): Ship
     {
         return $this->allShipsByIndex[$i]->ship;
     }
 
-    public function getByKey(string $key): ?Ship
+    public function getShipByKey(string $key): ?Ship
     {
         if (!array_key_exists($key, $this->allShipsById)) {
             return null;
@@ -83,7 +92,7 @@ class ShipsHolder
         return $this->allShipsById[$key]->ship;
     }
 
-    public function getAByKey(string $key): ?Ship
+    public function getAShipByKey(string $key): ?Ship
     {
         if (!array_key_exists($key, $this->aShipsById)) {
             return null;
@@ -92,7 +101,7 @@ class ShipsHolder
         return $this->aShipsById[$key]->ship;
     }
 
-    public function getBByKey(string $key): ?Ship
+    public function getBShipByKey(string $key): ?Ship
     {
         if (!array_key_exists($key, $this->bShipsById)) {
             return null;
@@ -132,14 +141,24 @@ class ShipsHolder
         return true;
     }
 
-    public function getACount(): int
+    public function getAShipsCount(): int
     {
         return count($this->aShipsByIndex);
     }
 
-    public function getBCount(): int
+    public function getBShipsCount(): int
     {
         return count($this->bShipsByIndex);
+    }
+
+    public function getSideShipsCount(int $side)
+    {
+        if ($side == 0) {
+            return $this->getAShipsCount();
+        }
+        else {
+            return $this->getBShipsCount();
+        }
     }
 
     public function getCount()
@@ -155,5 +174,10 @@ class ShipsHolder
     public function extractB(): array
     {
         return array_map(fn(ShipHolder $h) => $h->ship, $this->bShipsByIndex);
+    }
+
+    public function extractAll(): array
+    {
+        return array_map(fn(ShipHolder $h) => $h->ship, $this->allShipsByIndex);
     }
 }
