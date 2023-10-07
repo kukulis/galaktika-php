@@ -8,7 +8,7 @@ use Galaktika\V2\Data\Fleet;
 use Galaktika\V2\Data\Ship;
 use PHPUnit\Framework\TestCase;
 
-class BattleTest extends TestCase
+class BattleTestSimple extends TestCase
 {
     public function testBattle()
     {
@@ -19,14 +19,14 @@ class BattleTest extends TestCase
         $fleetB->addShip((new Ship())->setId(uniqid())->setGuns(1)->setAttack(1));
 
         $randomSequence = new RandomSequence([1,1,1,1,1,1,1,1]);
-        $battleReport = BattleCalculator::battle($fleetA, $fleetB, $randomSequence);
+
+        $battleCalculator = new BattleCalculator(100);
+        $battleReport = $battleCalculator->battle($fleetA, $fleetB, $randomSequence);
 
         $this->assertCount(0, $battleReport->getFleetA()->getShips());
         $this->assertCount(1, $battleReport->getFleetB()->getShips());
 
         $this->assertCount(1, $battleReport->getShots());
     }
-
-    // more tests
 
 }

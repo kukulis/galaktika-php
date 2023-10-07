@@ -9,14 +9,19 @@ use Galaktika\V2\Math\SequenceGenerator;
 
 class BattleCalculator
 {
-    const MAX_TURNS = 100;
+    private int $maxTurns=100;
 
-    public static function battle(Fleet $fleetA, Fleet $fleetB, RandomSequence $randomSequence): BattleReport
+    public function __construct(int $maxTurns)
+    {
+        $this->maxTurns = $maxTurns;
+    }
+
+    public function battle(Fleet $fleetA, Fleet $fleetB, RandomSequence $randomSequence): BattleReport
     {
         $battleReport = new BattleReport();
         $shipsHolder = new ShipsHolder($fleetA->getShips(), $fleetB->getShips());
         $turn = 0;
-        while ($turn < self::MAX_TURNS && $shipsHolder->getAShipsCount() > 0 && $shipsHolder->getBShipsCount() > 0) {
+        while ($turn < $this->maxTurns && $shipsHolder->getAShipsCount() > 0 && $shipsHolder->getBShipsCount() > 0) {
             $allShips = $shipsHolder->extractAll();
             $shootingShips = array_values(array_filter($allShips, fn(Ship $ship) => $ship->getGuns() > 0));
             $shootersIndexes = SequenceGenerator::generate($randomSequence->nextArray(count($shootingShips)));
