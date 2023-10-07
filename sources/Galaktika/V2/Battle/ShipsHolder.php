@@ -142,7 +142,18 @@ class ShipsHolder
         return count($this->bShipsByIndex);
     }
 
-    public function getCount() {
+    public function getCount()
+    {
         return count($this->allShipsByIndex);
+    }
+
+    public function extractA(): array
+    {
+        return array_map(fn(ShipHolder $h) => $h->ship, $this->aShipsByIndex);
+    }
+
+    public function extractB(): array
+    {
+        return array_map(fn(ShipHolder $h) => $h->ship, $this->bShipsByIndex);
     }
 }
