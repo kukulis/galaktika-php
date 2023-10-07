@@ -132,4 +132,17 @@ class ShipsHolder
         return true;
     }
 
+    public function getACount(): int
+    {
+        return count($this->aShipsByIndex);
+    }
+
+    public function getBCount(): int
+    {
+        return count($this->bShipsByIndex);
+    }
+
+    public function getCount() {
+        return count($this->allShipsByIndex);
+    }
 }

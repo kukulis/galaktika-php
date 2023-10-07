@@ -13,6 +13,7 @@ class BattleCalculator
         $shipsHolder = new ShipsHolder($fleetA->getShips(), $fleetB->getShips());
 
 
+
         return $battleReport;
     }
 }
