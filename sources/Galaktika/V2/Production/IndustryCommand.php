@@ -14,9 +14,14 @@ class IndustryCommand implements PlanetSurfaceCommand
     public function execute(PlanetSurface $planetSurface): PlanetSurface
     {
 
-        $industryFromMaterial = min($planetSurface->getMaterial(), $this->goalAmount - $this->madeAmount, $planetSurface->getUnusedPopulation());
+        $industryFromMaterial = min($planetSurface->getMaterial(),
+            $this->goalAmount - $this->madeAmount,
+            $planetSurface->getUnusedPopulation(),
+            $planetSurface->getPlanet()->getSize()-$planetSurface->getIndustry()
+        );
         $planetSurface->setUsedPopulation( $planetSurface->getUsedPopulation() + $industryFromMaterial );
         $planetSurface->setMaterial($planetSurface->getMaterial() - $industryFromMaterial);
+        $planetSurface->setIndustry($planetSurface->getIndustry()+$industryFromMaterial);
 
         $this->madeAmount += $industryFromMaterial;
 
@@ -24,12 +29,17 @@ class IndustryCommand implements PlanetSurfaceCommand
             return $planetSurface;
         }
 
-        $industryFromIndustry = min ( $this->goalAmount-$this->madeAmount, $planetSurface->getUnusedPopulation(), $planetSurface->getUnusedIndustry());
+        $industryFromIndustry = min (
+            $this->goalAmount-$this->madeAmount,
+            $planetSurface->getUnusedPopulation(),
+            $planetSurface->getUnusedIndustry(),
+            $planetSurface->getPlanet()->getSize()-$planetSurface->getIndustry()
+        );
         $planetSurface->setUsedPopulation( $planetSurface->getUsedPopulation() + $industryFromIndustry );
         $planetSurface->setUsedIndustry( $planetSurface->getUsedIndustry() + $industryFromIndustry );
+        $planetSurface->setIndustry($planetSurface->getIndustry()+$industryFromIndustry);
 
         $this->madeAmount += $industryFromIndustry;
-
 
         return $planetSurface;
     }
@@ -63,12 +73,12 @@ class IndustryCommand implements PlanetSurfaceCommand
         return $this;
     }
 
-    public function getMadeAmount(): float|int
+    public function getMadeAmount(): float
     {
         return $this->madeAmount;
     }
 
-    public function setMadeAmount(float|int $madeAmount): IndustryCommand
+    public function setMadeAmount(float $madeAmount): IndustryCommand
     {
         $this->madeAmount = $madeAmount;
 
