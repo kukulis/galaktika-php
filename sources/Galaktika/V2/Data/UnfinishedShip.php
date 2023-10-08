@@ -4,6 +4,7 @@ namespace Galaktika\V2\Data;
 
 class UnfinishedShip
 {
+    private string $id;
     private Ship $ship;
     private float $materialUsed;
 
@@ -31,5 +32,16 @@ class UnfinishedShip
         return $this;
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): UnfinishedShip
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
 }

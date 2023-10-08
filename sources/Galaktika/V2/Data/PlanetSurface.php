@@ -13,6 +13,8 @@ class PlanetSurface
     private float $industry;
     private float $material;
 
+    private array $unfinishedShips=[];
+
     public function getId(): string
     {
         return $this->id;
@@ -85,4 +87,7 @@ class PlanetSurface
         return $this;
     }
 
+    public function removeUnfinishedShip( UnfinishedShip $unfinishedShip) {
+        unset($this->unfinishedShips[$unfinishedShip->getId()]);
+    }
 }
