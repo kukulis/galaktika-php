@@ -88,13 +88,18 @@ class Technologies
 
     public function getTechnology(string $type): float
     {
-        return match ($type) {
-            self::TYPE_ATTACK => $this->attack,
-            self::TYPE_CARGO => $this->cargo,
-            self::TYPE_DEFENCE => $this->defence,
-            self::TYPE_ENGINES => $this->engines,
-            default => throw new GalaktikaException(sprintf('Wrong technology type %s', $type)),
-        };
+        switch ($type) {
+            case self::TYPE_ATTACK:
+                return $this->attack;
+            case self::TYPE_CARGO:
+                return $this->cargo;
+            case self::TYPE_DEFENCE:
+                return $this->defence;
+            case self::TYPE_ENGINES:
+                return $this->engines;
+            default:
+                throw new GalaktikaException(sprintf('Wrong technology type %s', $type));
+        }
     }
 
 }
