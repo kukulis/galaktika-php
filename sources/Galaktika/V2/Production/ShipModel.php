@@ -118,4 +118,8 @@ class ShipModel
         return $this;
     }
 
+    public function getNonDefenceMass(): float {
+        return $this->guns * $this->attackMass + $this->cargoMass + $this->engineMass;
+    }
+
 }
