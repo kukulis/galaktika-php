@@ -15,14 +15,17 @@ class ResearchCommand implements PlanetSurfaceCommand
     {
         $technologies = $planetSurface->getOwner()->getTechnologies();
 
-        $usedPower = min (
+        $usedPower = min(
             $this->goalAmount,
             $planetSurface->getUnusedIndustry(),
             $planetSurface->getUnusedPopulation()
         );
 
         $technologyGrowth = $usedPower / self:: TECHNOLOGY_COEFFICIENT;
-        $technologies->setTechnology($this->technologyType, $technologyGrowth);
+        $technologies->setTechnology(
+            $this->technologyType,
+            $technologies->getTechnology($this->technologyType) + $technologyGrowth
+        );
 
         return $planetSurface;
     }
