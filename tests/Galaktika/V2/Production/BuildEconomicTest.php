@@ -10,7 +10,14 @@ class BuildEconomicTest extends TestCase
 {
     public function testBuildEconomics()
     {
-        $planetSurface = PlanetEconomicsCalculator::buildEconomics(new PlanetSurface());
+        $planetSurface = new PlanetSurface();
+
+        $planetSurface->setId(uniqid());
+        $planetSurface->setIndustry(100);
+        $planetSurface->setPopulation(100);
+
+
+        $rezPlanetSurface = PlanetEconomicsCalculator::buildEconomics($planetSurface);
 // TODO correct test
         $this->assertTrue(false);
     }
