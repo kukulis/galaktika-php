@@ -2,8 +2,6 @@
 
 namespace Galaktika\V2\Data;
 
-use Galaktika\V2\Production\Project;
-
 class PlanetSurface
 {
     private string $id;
@@ -13,7 +11,11 @@ class PlanetSurface
     private float $industry;
     private float $material;
 
-    private array $unfinishedShips=[];
+    private $usedPopulation = 0;
+    private $usedIndustry = 0;
+
+    /** @var UnfinishedShip[] */
+    private array $unfinishedShips = [];
 
     public function getId(): string
     {
@@ -87,7 +89,55 @@ class PlanetSurface
         return $this;
     }
 
-    public function removeUnfinishedShip( UnfinishedShip $unfinishedShip) {
+    public function removeUnfinishedShip(UnfinishedShip $unfinishedShip)
+    {
         unset($this->unfinishedShips[$unfinishedShip->getId()]);
     }
+
+    public function getUsedPopulation(): int
+    {
+        return $this->usedPopulation;
+    }
+
+    public function setUsedPopulation(int $usedPopulation): PlanetSurface
+    {
+        $this->usedPopulation = $usedPopulation;
+
+        return $this;
+    }
+
+    public function getUsedIndustry(): int
+    {
+        return $this->usedIndustry;
+    }
+
+    public function setUsedIndustry(int $usedIndustry): PlanetSurface
+    {
+        $this->usedIndustry = $usedIndustry;
+
+        return $this;
+    }
+
+    public function getUnfinishedShips(): array
+    {
+        return $this->unfinishedShips;
+    }
+
+    public function setUnfinishedShips(array $unfinishedShips): PlanetSurface
+    {
+        $this->unfinishedShips = $unfinishedShips;
+
+        return $this;
+    }
+
+    public function getUnusedIndustry(): float
+    {
+        return $this->industry - $this->usedIndustry;
+    }
+
+    public function getUnusedPopulation(): float
+    {
+        return $this->population - $this->usedPopulation;
+    }
+
 }
