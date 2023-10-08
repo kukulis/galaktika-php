@@ -4,10 +4,10 @@ namespace Galaktika\V2\Data;
 
 class Technologies
 {
-    private float $engines;
-    private float $defence;
-    private float $attack;
-    private float $cargo;
+    private float $engines = 1;
+    private float $defence = 1;
+    private float $attack = 1;
+    private float $cargo = 1;
 
     public function getEngines(): float
     {

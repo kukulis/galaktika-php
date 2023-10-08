@@ -11,11 +11,10 @@ class Ship
     private float $speed=0;
     private float $mass=0;
     private float $maxCargo=0;
-    /**
-     * @deprecated load will be separated to a different object
-     */
-    private float $load=0;
     private ?Race $owner=null;
+
+    private string $modelName;
+    private string $modelId;
 
     public function getId(): string
     {
@@ -101,18 +100,6 @@ class Ship
         return $this;
     }
 
-    public function getLoad(): float
-    {
-        return $this->load;
-    }
-
-    public function setLoad(float $load): Ship
-    {
-        $this->load = $load;
-
-        return $this;
-    }
-
     public function getOwner(): Race
     {
         return $this->owner;
@@ -121,6 +108,30 @@ class Ship
     public function setOwner(Race $owner): Ship
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getModelName(): string
+    {
+        return $this->modelName;
+    }
+
+    public function setModelName(string $modelName): Ship
+    {
+        $this->modelName = $modelName;
+
+        return $this;
+    }
+
+    public function getModelId(): string
+    {
+        return $this->modelId;
+    }
+
+    public function setModelId(string $modelId): Ship
+    {
+        $this->modelId = $modelId;
 
         return $this;
     }

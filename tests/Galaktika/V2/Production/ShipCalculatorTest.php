@@ -11,10 +11,26 @@ class ShipCalculatorTest extends TestCase
 {
 
     public function testCalculateShip() {
-        $ship = ShipCalculator::calculate(new ShipModel(), new Technologies());
+        $shipModel = new ShipModel();
+        $technologies = new Technologies();
 
-        // TODO correct test
-        $this->assertTrue(false);
+        $shipModel
+            ->setId(uniqid())
+            ->setName('modelX')
+            ->setGuns(1)
+            ->setAttackMass(1)
+            ->setDefenceMass(1)
+            ->setEngineMass(1)
+            ->setCargoMass(1);
+
+        $ship = ShipCalculator::calculate($shipModel, $technologies);
+        $this->assertEquals(4, $ship->getMass());
+        $this->assertEquals(1, $ship->getAttack());
+        $this->assertEquals(1, $ship->getGuns());
+        $this->assertEquals(0.5, $ship->getDefence());
+        $this->assertEquals(1, $ship->getMaxCargo());
+        $this->assertEquals(0.25, $ship->getSpeed());
+
     }
 
 }

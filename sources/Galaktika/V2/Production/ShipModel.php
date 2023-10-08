@@ -9,12 +9,13 @@ class ShipModel
     private string $id;
     private Race $owner;
 
-    private float $mass;
     private float $guns;
     private float $attackMass;
     private float $defenceMass;
     private float $cargoMass;
     private float $engineMass;
+
+    private string $name;
 
     public function getId(): string
     {
@@ -42,14 +43,7 @@ class ShipModel
 
     public function getMass(): float
     {
-        return $this->mass;
-    }
-
-    public function setMass(float $mass): ShipModel
-    {
-        $this->mass = $mass;
-
-        return $this;
+        return $this->attackMass * $this->guns + $this->defenceMass + $this->cargoMass + $this->engineMass;
     }
 
     public function getGuns(): float
@@ -111,4 +105,17 @@ class ShipModel
 
         return $this;
     }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): ShipModel
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
 }
