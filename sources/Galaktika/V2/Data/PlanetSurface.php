@@ -11,11 +11,20 @@ class PlanetSurface
     private float $industry;
     private float $material;
 
-    private $usedPopulation = 0;
-    private $usedIndustry = 0;
+    private float $usedPopulation = 0;
+    private float $usedIndustry = 0;
 
     /** @var UnfinishedShip[] */
     private array $unfinishedShips = [];
+
+    public function removeUnfinishedShip(UnfinishedShip $unfinishedShip)
+    {
+        unset($this->unfinishedShips[$unfinishedShip->getId()]);
+    }
+
+    // ==========================================================
+    // setters and getters
+    // ==========================================================
 
     public function getId(): string
     {
@@ -89,29 +98,24 @@ class PlanetSurface
         return $this;
     }
 
-    public function removeUnfinishedShip(UnfinishedShip $unfinishedShip)
-    {
-        unset($this->unfinishedShips[$unfinishedShip->getId()]);
-    }
-
-    public function getUsedPopulation(): int
+    public function getUsedPopulation(): float
     {
         return $this->usedPopulation;
     }
 
-    public function setUsedPopulation(int $usedPopulation): PlanetSurface
+    public function setUsedPopulation(float $usedPopulation): PlanetSurface
     {
         $this->usedPopulation = $usedPopulation;
 
         return $this;
     }
 
-    public function getUsedIndustry(): int
+    public function getUsedIndustry(): float
     {
         return $this->usedIndustry;
     }
 
-    public function setUsedIndustry(int $usedIndustry): PlanetSurface
+    public function setUsedIndustry(float $usedIndustry): PlanetSurface
     {
         $this->usedIndustry = $usedIndustry;
 
