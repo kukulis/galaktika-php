@@ -1,19 +1,21 @@
 <?php
 
-namespace Tests\Galaktika\V2\Production;
+namespace Galaktika\V2\Production;
 
 use Galaktika\V2\Data\PlanetSurface;
 
-class DecomposeCommand implements PlanetSurfaceCommand
+class ShipCommand implements PlanetSurfaceCommand
 {
     public function execute(PlanetSurface $planetSurface): PlanetSurface
     {
-        // TODO
+        // TODO: Implement execute() method.
         return $planetSurface;
     }
 
     public function getCode(): string
     {
-        return self::COMMAND_DECOMPOSE;
+        return self::COMMAND_SHIP;
     }
+
+
 }

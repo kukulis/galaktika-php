@@ -13,12 +13,6 @@ class PlanetSurface
     private float $industry;
     private float $material;
 
-    /** @var Project[]  */
-    private array $projects;
-
-    /** @var Ship[] */
-    private array $ships;
-
     public function getId(): string
     {
         return $this->id;
@@ -90,32 +84,5 @@ class PlanetSurface
 
         return $this;
     }
-
-    public function getProjects(): array
-    {
-        return $this->projects;
-    }
-
-    public function setProjects(array $projects): PlanetSurface
-    {
-        $this->projects = $projects;
-
-        return $this;
-    }
-
-    public function getShips(): array
-    {
-        return $this->ships;
-    }
-
-    public function setShips(array $ships): PlanetSurface
-    {
-        $this->ships = $ships;
-
-        return $this;
-    }
-
-
-
 
 }
