@@ -2,8 +2,15 @@
 
 namespace Galaktika\V2\Data;
 
+use Galaktika\Exceptions\GalaktikaException;
+
 class Technologies
 {
+    const TYPE_ENGINES = 'ENGINES';
+    const TYPE_DEFENCE = 'DEFENCE';
+    const TYPE_ATTACK = 'ATTACK';
+    const TYPE_CARGO = 'CARGO';
+
     private float $engines = 1;
     private float $defence = 1;
     private float $attack = 1;
@@ -55,6 +62,39 @@ class Technologies
         $this->cargo = $cargo;
 
         return $this;
+    }
+
+    public function setTechnology(string $type, float $value): self
+    {
+        switch ($type) {
+            case self::TYPE_ATTACK:
+                $this->attack = $value;
+                break;
+            case self::TYPE_CARGO:
+                $this->cargo = $value;
+                break;
+            case self::TYPE_DEFENCE:
+                $this->defence = $value;
+                break;
+            case self::TYPE_ENGINES:
+                $this->engines = $value;
+                break;
+            default:
+                throw new GalaktikaException(sprintf('Wrong technology type %s', $type));
+        }
+
+        return $this;
+    }
+
+    public function getTechnology(string $type): float
+    {
+        return match ($type) {
+            self::TYPE_ATTACK => $this->attack,
+            self::TYPE_CARGO => $this->cargo,
+            self::TYPE_DEFENCE => $this->defence,
+            self::TYPE_ENGINES => $this->engines,
+            default => throw new GalaktikaException(sprintf('Wrong technology type %s', $type)),
+        };
     }
 
 }

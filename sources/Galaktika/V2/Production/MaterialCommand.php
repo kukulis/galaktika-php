@@ -6,10 +6,21 @@ use Galaktika\V2\Data\PlanetSurface;
 
 class MaterialCommand implements PlanetSurfaceCommand
 {
+    private string  $id;
+    private float $goalAmount;
+
+    private float $madeAmount=0;
+
     public function execute(PlanetSurface $planetSurface): PlanetSurface
     {
-        // TODO: Implement execute() method.
-        // TODO
+        $this->madeAmount = min(
+            $this->goalAmount,
+            $planetSurface->getUnusedIndustry(),
+            $planetSurface->getUnusedPopulation()
+        );
+
+        $planetSurface->setMaterial($planetSurface->getMaterial()+ $this->madeAmount);
+
         return $planetSurface;
     }
 
@@ -17,4 +28,41 @@ class MaterialCommand implements PlanetSurfaceCommand
     {
         return self::COMMAND_MATERIAL;
     }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): MaterialCommand
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getGoalAmount(): float
+    {
+        return $this->goalAmount;
+    }
+
+    public function setGoalAmount(float $goalAmount): MaterialCommand
+    {
+        $this->goalAmount = $goalAmount;
+
+        return $this;
+    }
+
+    public function getMadeAmount(): float|int
+    {
+        return $this->madeAmount;
+    }
+
+    public function setMadeAmount(float|int $madeAmount): MaterialCommand
+    {
+        $this->madeAmount = $madeAmount;
+
+        return $this;
+    }
+
 }
