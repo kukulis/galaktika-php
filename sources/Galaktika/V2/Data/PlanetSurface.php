@@ -2,6 +2,8 @@
 
 namespace Galaktika\V2\Data;
 
+use Galaktika\V2\Battle\ShipsHolder;
+
 class PlanetSurface
 {
     private string $id;
@@ -16,6 +18,9 @@ class PlanetSurface
 
     /** @var UnfinishedShip[] */
     private array $unfinishedShips = [];
+
+    /** @var Ship[]  */
+    private array $ships;
 
     public function removeUnfinishedShip(UnfinishedShip $unfinishedShip)
     {
@@ -142,6 +147,44 @@ class PlanetSurface
     public function getUnusedPopulation(): float
     {
         return $this->population - $this->usedPopulation;
+    }
+
+    public function findUnfinishedShipByModelId(string $modelId) : ? UnfinishedShip{
+        foreach ( $this->getUnfinishedShips() as $unfinishedShip ) {
+            if ( $unfinishedShip->getShip()->getModelId() == $modelId ) {
+                return $unfinishedShip;
+            }
+        }
+
+        return null;
+    }
+
+    public function getShips(): array
+    {
+        return $this->ships;
+    }
+
+    public function setShips(array $ships): PlanetSurface
+    {
+        $this->ships = $ships;
+
+        return $this;
+    }
+
+    public function addShip(Ship $ship) {
+        $this->ships[] = $ship;
+    }
+
+    public function modifyMaterial(float $change) {
+        $this->material += $change;
+    }
+
+    public function modifyIndustryUsed( float $change) {
+        $this->usedIndustry += $change;
+    }
+
+    public function modifyPopulationUsed(float $change) {
+        $this->usedPopulation += $change;
     }
 
 }
