@@ -9,46 +9,40 @@ class ShipCommand implements PlanetSurfaceCommand
     private ShipModel $modelToBuild;
     private int $targetAmount;
 
+    private int $madeAmount = 0;
+
     public function execute(PlanetSurface $planetSurface): PlanetSurface
     {
         $resultSurface = clone $planetSurface;
         $unfinishedShip = $resultSurface->findUnfinishedShipByModelId($this->modelToBuild->getId());
         $shipMass = $this->modelToBuild->getMass();
 
-
+        $unfinishedResources = 0;
         if ($unfinishedShip != null) {
-            $resourcesToUse = min(
-                $shipMass - $unfinishedShip->getMaterialUsed(),
-                $resultSurface->getMaterial(),
-                $resultSurface->getUnusedPopulation(),
-                $resultSurface->getUnusedIndustry()
-            );
-
-            $resultSurface->modifyMaterial(-$resourcesToUse);
-            $resultSurface->modifyPopulationUsed(-$resourcesToUse);
-            $resultSurface->modifyIndustryUsed(-$resourcesToUse);
-
-
-            if ($resourcesToUse >= $shipMass - $unfinishedShip->getMaterialUsed()) {
-                // ship built
-                $plannedShip = ShipCalculator2::calculate(
-                    $this->modelToBuild,
-                    $planetSurface->getOwner()->getTechnologies()
-                );
-                $planetSurface->addShip($plannedShip);
-                $planetSurface->removeUnfinishedShip($unfinishedShip);
-                $this->targetAmount --;
-            } else {
-                // still unfinished
-                $unfinishedShip->setMaterialUsed($resourcesToUse + $unfinishedShip->getMaterialUsed());
-            }
+            $unfinishedResources = $unfinishedShip->getResourcesUsed();
         }
 
-        // TODO calculate many ships in one formula TODO
+        $availableResources = min(
+            $planetSurface->getMaterial(),
+            $planetSurface->getUnusedIndustry(),
+            $planetSurface->getUnusedPopulation()
+        );
 
+        $virtualResources = $unfinishedResources + $availableResources;
+        $possibleBuildShips = intval($virtualResources / $shipMass);
+        $this->madeAmount = min($possibleBuildShips, $this->targetAmount);
 
-
-
+        if ($possibleBuildShips >= $this->targetAmount) {
+            $usedResources = $shipMass * $this->targetAmount - $unfinishedResources;
+            $resultSurface->removeUnfinishedShip($unfinishedShip);
+        } else {
+            $usedResources = $availableResources;
+            $shipPartResources = $virtualResources - $possibleBuildShips * $shipMass;
+            $unfinishedShip->setResourcesUsed($shipPartResources);
+        }
+        $resultSurface->modifyMaterial(-$usedResources);
+        $resultSurface->modifyIndustryUsed($usedResources);
+        $resultSurface->modifyPopulationUsed($usedResources);
 
         return $resultSurface;
     }
@@ -80,6 +74,11 @@ class ShipCommand implements PlanetSurfaceCommand
         $this->targetAmount = $targetAmount;
 
         return $this;
+    }
+
+    public function getMadeAmount(): int
+    {
+        return $this->madeAmount;
     }
 
 }

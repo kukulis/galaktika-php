@@ -2,8 +2,6 @@
 
 namespace Galaktika\V2\Data;
 
-use Galaktika\V2\Battle\ShipsHolder;
-
 class PlanetSurface
 {
     private string $id;
@@ -19,12 +17,19 @@ class PlanetSurface
     /** @var UnfinishedShip[] */
     private array $unfinishedShips = [];
 
-    /** @var Ship[]  */
+    /** @var Ship[] */
     private array $ships;
 
-    public function removeUnfinishedShip(UnfinishedShip $unfinishedShip)
+    public function removeUnfinishedShip(?UnfinishedShip $unfinishedShip): void
     {
-        unset($this->unfinishedShips[$unfinishedShip->getId()]);
+        if ($unfinishedShip == null) {
+            return;
+        }
+
+        $this->unfinishedShips = array_filter(
+            $this->unfinishedShips,
+            fn(UnfinishedShip $sh) => $sh->getId() != $unfinishedShip->getId()
+        );
     }
 
     // ==========================================================
@@ -149,9 +154,10 @@ class PlanetSurface
         return $this->population - $this->usedPopulation;
     }
 
-    public function findUnfinishedShipByModelId(string $modelId) : ? UnfinishedShip{
-        foreach ( $this->getUnfinishedShips() as $unfinishedShip ) {
-            if ( $unfinishedShip->getShip()->getModelId() == $modelId ) {
+    public function findUnfinishedShipByModelId(string $modelId): ?UnfinishedShip
+    {
+        foreach ($this->getUnfinishedShips() as $unfinishedShip) {
+            if ($unfinishedShip->getShip()->getModelId() == $modelId) {
                 return $unfinishedShip;
             }
         }
@@ -171,19 +177,23 @@ class PlanetSurface
         return $this;
     }
 
-    public function addShip(Ship $ship) {
+    public function addShip(Ship $ship)
+    {
         $this->ships[] = $ship;
     }
 
-    public function modifyMaterial(float $change) {
+    public function modifyMaterial(float $change)
+    {
         $this->material += $change;
     }
 
-    public function modifyIndustryUsed( float $change) {
+    public function modifyIndustryUsed(float $change)
+    {
         $this->usedIndustry += $change;
     }
 
-    public function modifyPopulationUsed(float $change) {
+    public function modifyPopulationUsed(float $change)
+    {
         $this->usedPopulation += $change;
     }
 

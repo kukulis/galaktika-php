@@ -6,7 +6,7 @@ class UnfinishedShip
 {
     private string $id;
     private Ship $ship;
-    private float $materialUsed;
+    private float $resourcesUsed;
 
     public function getShip(): Ship
     {
@@ -20,14 +20,14 @@ class UnfinishedShip
         return $this;
     }
 
-    public function getMaterialUsed(): float
+    public function getResourcesUsed(): float
     {
-        return $this->materialUsed;
+        return $this->resourcesUsed;
     }
 
-    public function setMaterialUsed(float $materialUsed): UnfinishedShip
+    public function setResourcesUsed(float $resourcesUsed): UnfinishedShip
     {
-        $this->materialUsed = $materialUsed;
+        $this->resourcesUsed = $resourcesUsed;
 
         return $this;
     }

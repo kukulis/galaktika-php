@@ -9,11 +9,11 @@ class ShipModel
     private string $id;
     private Race $owner;
 
-    private float $guns;
-    private float $attackMass;
-    private float $defenceMass;
-    private float $cargoMass;
-    private float $engineMass;
+    private float $guns = 0;
+    private float $attackMass = 0;
+    private float $defenceMass = 0;
+    private float $cargoMass = 0;
+    private float $engineMass = 0;
 
     private string $name;
 
@@ -118,7 +118,8 @@ class ShipModel
         return $this;
     }
 
-    public function getNonDefenceMass(): float {
+    public function getNonDefenceMass(): float
+    {
         return $this->guns * $this->attackMass + $this->cargoMass + $this->engineMass;
     }
 
