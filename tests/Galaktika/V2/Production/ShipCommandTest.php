@@ -9,29 +9,56 @@ use PHPUnit\Framework\TestCase;
 
 class ShipCommandTest extends TestCase
 {
-    public function testShipCommand()
-    {
-        $shipCommand = new ShipCommand();
-
-        $shipModel = (new ShipModel())
-            ->setId(uniqid())
-            ->setEngineMass(1);
-
-        $shipCommand->setModelToBuild($shipModel);
-        $shipCommand->setTargetAmount(1);
-
-        $planetSurface = new PlanetSurface();
-        $planetSurface->setMaterial(1);
-        $planetSurface->setIndustry(1);
-        $planetSurface->setPopulation(1);
-
+    /**
+     * @dataProvider provide
+     */
+    public function testShipCommand(
+        ShipCommand $shipCommand,
+        PlanetSurface $planetSurface,
+        PlanetSurface $expectedPlanetSurface,
+        int $expectedMadeAmount
+    ) {
         $rezPlanetSurface = $shipCommand->execute($planetSurface);
 
-        $this->assertEquals(1 , $rezPlanetSurface->getUsedPopulation());
-        $this->assertEquals(1 , $rezPlanetSurface->getUsedIndustry());
-        $this->assertEquals(0 , $rezPlanetSurface->getMaterial());
+        $this->assertEquals($expectedPlanetSurface->getUsedPopulation(), $rezPlanetSurface->getUsedPopulation());
+        $this->assertEquals($expectedPlanetSurface->getUsedIndustry(), $rezPlanetSurface->getUsedIndustry());
+        $this->assertEquals($expectedPlanetSurface->getMaterial(), $rezPlanetSurface->getMaterial());
 
-        $this->assertEquals(1, $shipCommand->getMadeAmount());
+        $this->assertEquals($expectedMadeAmount, $shipCommand->getMadeAmount());
+    }
+
+    public function provide(): array
+    {
+        return [
+            'test1' => [
+                'shipCommand' =>
+                    (new ShipCommand())
+                        ->setModelToBuild(
+                            (new ShipModel())
+                                ->setId(uniqid())
+                                ->setEngineMass(1)
+                        )
+                        ->setTargetAmount(1)
+                ,
+                'planetSurface' =>
+                    (new PlanetSurface())
+                        ->setPopulation(1)
+                        ->setIndustry(1)
+                        ->setMaterial(1)
+                ,
+                'expectedPlanetSurface' =>
+                    (new PlanetSurface())
+                        ->setPopulation(1)
+                        ->setIndustry(1)
+                        ->setMaterial(0)
+                        ->setUsedIndustry(1)
+                        ->setUsedPopulation(1)
+                ,
+                'expectedMadeAmount' => 1,
+            ],
+
+            // TODO more tests
+        ];
     }
 
 }
