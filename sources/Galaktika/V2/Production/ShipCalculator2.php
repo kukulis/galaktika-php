@@ -18,6 +18,10 @@ class ShipCalculator2
         $mass = $shipModel->getMass();
         $nonDefenceMass = $shipModel->getNonDefenceMass();
 
+        if ( $nonDefenceMass == 0) {
+            $nonDefenceMass = 1;
+        }
+
         $ship->setMass($mass);
         $ship->setDefence($shipModel->getDefenceMass() * $techologies->getDefence() / sqrt($nonDefenceMass));
         $ship->setAttack($shipModel->getAttackMass() * $techologies->getAttack());

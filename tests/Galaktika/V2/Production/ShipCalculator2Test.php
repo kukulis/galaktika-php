@@ -212,6 +212,24 @@ class ShipCalculator2Test extends TestCase
                     ->setSpeed(0)
                     ->setMaxCargo(0),
             ],
+            'test body' => [
+                'shipModel' => (new ShipModel())
+                    ->setId(uniqid())
+                    ->setName('bunker')
+                    ->setGuns(0)
+                    ->setAttackMass(0)
+                    ->setDefenceMass(100)
+                    ->setEngineMass(0)
+                    ->setCargoMass(0),
+                'technologies' => new Technologies(),
+                'expectedShip' => (new Ship())
+                    ->setMass(100)
+                    ->setGuns(0)
+                    ->setAttack(0)
+                    ->setDefence(100)
+                    ->setSpeed(0)
+                    ->setMaxCargo(0),
+            ],
         ];
     }
 }
