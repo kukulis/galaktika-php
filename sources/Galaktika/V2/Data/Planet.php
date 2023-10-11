@@ -9,6 +9,8 @@ class Planet
     private Location $location;
     private float $size;
 
+    private Sector $sector;
+
     public function getId(): string
     {
         return $this->id;

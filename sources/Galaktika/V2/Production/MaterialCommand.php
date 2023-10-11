@@ -53,12 +53,12 @@ class MaterialCommand implements PlanetSurfaceCommand
         return $this;
     }
 
-    public function getMadeAmount(): float|int
+    public function getMadeAmount(): float
     {
         return $this->madeAmount;
     }
 
-    public function setMadeAmount(float|int $madeAmount): MaterialCommand
+    public function setMadeAmount(float $madeAmount): MaterialCommand
     {
         $this->madeAmount = $madeAmount;
 
