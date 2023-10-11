@@ -3,6 +3,7 @@
 namespace Galaktika\V2\Production;
 
 use Galaktika\V2\Data\PlanetSurface;
+use Galaktika\V2\Data\UnfinishedShip;
 
 class ShipCommand implements PlanetSurfaceCommand
 {
@@ -38,7 +39,15 @@ class ShipCommand implements PlanetSurfaceCommand
         } else {
             $usedResources = $availableResources;
             $shipPartResources = $virtualResources - $possibleBuildShips * $shipMass;
+
+            // create new unfinished ship
+            $unfinishedShip = new UnfinishedShip();
+            $ship = ShipCalculator2::calculate($this->modelToBuild, $planetSurface->getOwner()->getTechnologies());
+            $unfinishedShip->setShip($ship);
             $unfinishedShip->setResourcesUsed($shipPartResources);
+
+            $resultSurface->removeUnfinishedShipByModelId($this->modelToBuild->getId());
+            $resultSurface->addUnfinishedShip($unfinishedShip);
         }
         $resultSurface->modifyMaterial(-$usedResources);
         $resultSurface->modifyIndustryUsed($usedResources);

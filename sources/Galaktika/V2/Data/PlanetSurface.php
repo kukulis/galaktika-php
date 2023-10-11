@@ -20,17 +20,30 @@ class PlanetSurface
     /** @var Ship[] */
     private array $ships;
 
-    public function removeUnfinishedShip(?UnfinishedShip $unfinishedShip): void
+    public function removeUnfinishedShip(?UnfinishedShip $unfinishedShip): self
     {
         if ($unfinishedShip == null) {
-            return;
+            return $this;
         }
 
         $this->unfinishedShips = array_filter(
             $this->unfinishedShips,
             fn(UnfinishedShip $sh) => $sh->getId() != $unfinishedShip->getId()
         );
+
+        return $this;
     }
+
+    public function removeUnfinishedShipByModelId($modelId): self
+    {
+        $this->unfinishedShips = array_filter(
+            $this->unfinishedShips,
+            fn(UnfinishedShip $sh) => $sh->getShip()->getModelId() != $modelId
+        );
+
+        return $this;
+    }
+
 
     // ==========================================================
     // setters and getters
@@ -195,6 +208,13 @@ class PlanetSurface
     public function modifyPopulationUsed(float $change)
     {
         $this->usedPopulation += $change;
+    }
+
+    public function addUnfinishedShip(UnfinishedShip $unfinishedShip): self
+    {
+        $this->unfinishedShips[] = $unfinishedShip;
+
+        return $this;
     }
 
 }
