@@ -2,6 +2,7 @@
 
 namespace Galaktika\V2\Space;
 
+use InvalidArgumentException;
 use OutOfBoundsException;
 
 class SectorsMap
@@ -42,16 +43,27 @@ class SectorsMap
         return $this;
     }
 
-    public static function buildSectors(float $sectorSize, float $universeSize): array
+    public static function buildSectors(float $universeSize, float $sectorSize): array
     {
-        $sectorCountD1 = $universeSize / $sectorSize;
+        $sectorCountD1 = intval($universeSize / $sectorSize);
+
+        if ($sectorCountD1 * $sectorSize < $universeSize) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Sector size %s must be repeated to whole universe size %s. Now we have remaining %s gap.',
+                    $sectorSize,
+                    $universeSize,
+                    $universeSize - $sectorCountD1 * $sectorSize
+                )
+            );
+        }
 
         $sectors = [];
         for ($x = 0; $x < $sectorCountD1; $x++) {
             for ($y = 0; $y < $sectorCountD1; $y++) {
                 $sector = new Sector();
                 $sector->setSectorX($x * $sectorSize);
-                $sector->setSectorX($y * $sectorSize);
+                $sector->setSectory($y * $sectorSize);
 
                 $sectors[] = $sector;
             }
@@ -85,7 +97,10 @@ class SectorsMap
 
         $allObjects = [];
         foreach ($coordinates as $coordinate) {
-            $allObjects = array_merge($allObjects, $this->getSector($coordinate->getI(), $coordinate->getJ())->getObjects());
+            $allObjects = array_merge(
+                $allObjects,
+                $this->getSector($coordinate->getI(), $coordinate->getJ())->getObjects()
+            );
         }
 
         return $allObjects;
@@ -98,6 +113,9 @@ class SectorsMap
 
     public function getSector(int $i, int $j): Sector
     {
+        $this->validateIndexBounds($i);
+        $this->validateIndexBounds($j);
+
         $index = $i * $this->n + $j;
 
         return $this->sectors[$index];
@@ -107,6 +125,13 @@ class SectorsMap
     {
         if ($coordinate < 0 || $coordinate >= $this->universeSize) {
             throw new OutOfBoundsException('Coordinate %s is out of universe', $coordinate);
+        }
+    }
+
+    public function validateIndexBounds(int $index)
+    {
+        if ($index < 0 || $index >= $this->n) {
+            throw  new OutOfBoundsException(sprintf('Index %i is out of bounds', $index));
         }
     }
 
@@ -141,7 +166,7 @@ class SectorsMap
         }
 
         if ($index < 0) {
-            $multiplier = abs($index) / $this->n + 1;
+            $multiplier = intval(abs($index) / $this->n) + 1;
 
             return $index + $this->n * $multiplier;
         }

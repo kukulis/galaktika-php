@@ -2,50 +2,118 @@
 
 namespace Galaktika\V2\Build;
 
+use Galaktika\Util\Math;
+use Galaktika\V2\Data\MarkedLocation;
+use Galaktika\V2\Data\Planet;
+use Galaktika\V2\Data\PlanetSurface;
+use Galaktika\V2\Data\Race;
 use Galaktika\V2\Data\Universe;
-use Galaktika\V2\Space\Sector;
+use Galaktika\V2\Space\SectorsMap;
 
 class UniverseBuilder
 {
 
-    public static function buildUniverse(array $races, float $minDistance, float $size, int $planetsCount) : Universe {
-        $universe = new Universe();
+    // TODO calculate depending on players radius and simple radius formula
+    private const SECTOR_RADIUS = 1;
+
+    private SectorsMap $sectorsMap;
+    private Universe $universe;
+
+    /** @var Race[] */
+    private array $races;
+
+    private int $planetsCount;
+
+
+    public function buildUniverse(array $races, float $minDistance, float $minPlayersDistance, float $size, int $planetsCount): Universe
+    {
+        $this->races = $races;
+        $this->planetsCount = $planetsCount;
+
+        $this->universe = new Universe();
+        $this->universe->setSize($size);
 
         $sectorSize = $minDistance * 3;
-        $universe->setSectorSize($sectorSize);
+        $this->sectorsMap = new SectorsMap($size, $sectorSize);
 
-        self::makeSectors($universe);
+        $this->createPlayersPlanets($minPlayersDistance);
 
-        return $universe;
+        return $this->universe;
     }
 
-    public static function makeSectors(Universe $universe) : array {
-        $sectorSize = $universe->getSectorSize();
 
-        $sectorCountD1 = $universe->getSectorSize() / $sectorSize;
+    private function createPlayersPlanets(float $distance): void
+    {
 
-        for($x=0; $x < $sectorCountD1; $x++) {
-            for($y=0; $y < $sectorCountD1; $y++) {
-                $sector = new Sector();
-                $sector->setSectorX($x * $sectorSize);
-                $sector->setSectorX($y * $sectorSize);
+        // TODO use local sectors map?
+        $generatedLocationsCount = count($this->races) * 5;
+
+        // randomly generate coordinates
+        /** @var MarkedLocation[] $allLocations */
+        $allLocations = [];
+        for ($k = 0; $k < $generatedLocationsCount; $k++) {
+            // TODO use random generator?
+            $x = lcg_value() * $this->universe->getSize();
+            $y = lcg_value() * $this->universe->getSize();
+
+            $location = new MarkedLocation($x, $y);
+
+            $this->sectorsMap->addObject($x, $y, $location);
+            $allLocations[] = $location;
+        }
+
+        // remove coordinates that are too near to others
+        $givenSquareDistance = $distance * $distance;
+
+        foreach ($allLocations as $location) {
+            if (!$location->isEnabled()) {
+                continue;
+            }
+
+            /** @var MarkedLocation[] $neighbourLocations */
+            $neighbourLocations = $this->sectorsMap->getNearbyObjects($location->getX(), $location->getY(), self::SECTOR_RADIUS);
+
+            foreach ($neighbourLocations as $neighbourLocation) {
+                // may be better to check identificators
+                if ( $neighbourLocation === $location ) {
+                    continue;
+                }
+
+                if (!$neighbourLocation->isEnabled()) {
+                    continue;
+                }
+
+                $squareDistance = Math::square( $neighbourLocation->getX()) + Math::square( $neighbourLocation->getY());
+                if ( $squareDistance < $givenSquareDistance) {
+                    $neighbourLocation->setEnabled(false);
+                }
             }
         }
 
-    }
+        $planets = [];
+        $surfaces = [];
 
-    public static function createPlayersPlanets(Universe $universe) : void {
-        // TODO
+        $ri = 0;
 
-        $sectors = self::makeSectors($universe);
-        $sectorsArray = [];
-        // TODO build sectors array
+        foreach ($allLocations as $location) {
+            if ( ! $location->isEnabled() ) {
+                continue;
+            }
 
-        // randomly generate coordinates
-        // calculate sector
-        // search planets in this and in neighbour sectors.
-        // if too near generate coordinates again
-        // if ok put in to universe and in to sectors arrays
+            $planet = (new Planet()) -> setLocation( $location->getLocation());
+            $planets[] = $planet;
 
+            if ( $ri >= count($this->races)) {
+                continue;
+            }
+            $planetSurface = new PlanetSurface();
+            $planetSurface->setPlanet($planet);
+            $planetSurface->setOwner($this->races[$ri++]);
+
+            $surfaces[] = $planetSurface;
+        }
+
+        $this->universe->setPlanets($planets);
+        $this->universe->setPlanetSurfaces($surfaces);
     }
 }

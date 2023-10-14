@@ -7,7 +7,7 @@ class Sector
     private float $sectorX;
     private float $sectorY;
 
-    private array $objects;
+    private array $objects=[];
 
     /**
      * @return float

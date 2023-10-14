@@ -13,7 +13,7 @@ class Universe
     /** @var Race[] */
     private array $races;
 
-    private float $sectorSize;
+    private float $size;
 
     /**
      * @return string
@@ -82,23 +82,16 @@ class Universe
     /**
      * @return float
      */
-    public function getSectorSize(): float
+    public function getSize(): float
     {
-        return $this->sectorSize;
+        return $this->size;
     }
 
     /**
-     * @param float $sectorSize
+     * @param float $size
      */
-    public function setSectorSize(float $sectorSize): void
+    public function setSize(float $size): void
     {
-        $this->sectorSize = $sectorSize;
-    }
-
-    public function calculateSectorX( $x ) : float {
-        return floor($x / $this->sectorSize );
-    }
-    public function calculateSectorY( $y ) : float {
-        return floor($y / $this->sectorSize );
+        $this->size = $size;
     }
 }
