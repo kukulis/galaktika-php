@@ -1,0 +1,6 @@
+1. Fegistruojasi vartotojai.
+2. Paskelbiamas žaidimas.
+3. Vartotojai registruojasi prie žaidimo.
+4. Baigiama vartotojų registracija.
+5. Sugeneruojamos planetos.
+6. Pradedamas žaidimas.
