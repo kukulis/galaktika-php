@@ -13,9 +13,6 @@ use Galaktika\V2\Space\SectorsMap;
 class UniverseBuilder
 {
 
-    // TODO calculate depending on players radius and simple radius formula
-    private const SECTOR_RADIUS = 1;
-
 //    private SectorsMap $sectorsMap;
     private Universe $universe;
 
@@ -35,31 +32,25 @@ class UniverseBuilder
         $this->size = $size;
     }
 
-    public function buildUniverse(array $races, float $minDistance, float $minPlayersDistance, float $size, int $planetsCount): Universe
+    public function buildUniverse(array $races, float $minPlayersDistance, float $size, int $planetsCount): Universe
     {
         $this->races = $races;
-        $this->planetsCount = $planetsCount;
 
         $this->universe = new Universe();
         $this->universe->setSize($size);
 
-        $sectorSize = $minDistance * 3;
-        $this->sectorsMap = new SectorsMap($size, $sectorSize);
-
-        $this->createPlayersPlanets($minPlayersDistance);
+        $this->createPlayersPlanets($minPlayersDistance, $planetsCount);
 
         return $this->universe;
     }
 
 
-    private function createPlayersPlanets(float $distance): void
+    private function createPlayersPlanets(float $distance, int $planetsCount): void
     {
-        $generatedLocationsCount = count($this->races) * 5;
-
         // randomly generate coordinates
         /** @var MarkedLocation[] $allLocations */
         $allLocations = [];
-        for ($k = 0; $k < $generatedLocationsCount; $k++) {
+        for ($k = 0; $k < $planetsCount; $k++) {
             // TODO use random generator class/interface?
             $x = lcg_value() * $this->universe->getSize();
             $y = lcg_value() * $this->universe->getSize();
@@ -99,7 +90,6 @@ class UniverseBuilder
     }
 
     /**
-     * // TODO cover with test
      * @param MarkedLocation[] $locations
      * @param float $minDistance
      * @return int
@@ -134,14 +124,6 @@ class UniverseBuilder
         }
 
         return $disabledCount;
-    }
-
-    /**
-     * @return SectorsMap
-     */
-    public function getSectorsMap(): SectorsMap
-    {
-        return $this->sectorsMap;
     }
 
 

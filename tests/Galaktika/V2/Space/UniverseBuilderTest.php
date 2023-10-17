@@ -19,13 +19,15 @@ class UniverseBuilderTest extends TestCase
             $races[] = new Race();
         }
 
-        $universe = $universeBuilder->buildUniverse($races, 1, 3, 99, 1000);
+        $universe = $universeBuilder->buildUniverse($races, 3, 99, 1000);
 
 //        $allLocations = $universeBuilder->getSectorsMap()->getAllObjects();
 //        file_put_contents( 'locations.txt', serialize($allLocations) );
 
         $surfaces = $universe->getPlanetSurfaces();
         $this->assertCount($racesCount, $surfaces);
+
+        echo sprintf("planets count %s", count($universe->getPlanets()));
 
 
         foreach ($surfaces as $surface1) {
