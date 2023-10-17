@@ -16,13 +16,12 @@ class UniverseBuilder
     // TODO calculate depending on players radius and simple radius formula
     private const SECTOR_RADIUS = 1;
 
-    private SectorsMap $sectorsMap;
+//    private SectorsMap $sectorsMap;
     private Universe $universe;
 
     /** @var Race[] */
     private array $races;
 
-    private int $planetsCount;
     private float $size;
 
 
@@ -34,7 +33,6 @@ class UniverseBuilder
     public function __construct(float $size )
     {
         $this->size = $size;
-        // TODO validate repeatedness
     }
 
     public function buildUniverse(array $races, float $minDistance, float $minPlayersDistance, float $size, int $planetsCount): Universe
@@ -56,7 +54,6 @@ class UniverseBuilder
 
     private function createPlayersPlanets(float $distance): void
     {
-        // TODO use local sectors map?
         $generatedLocationsCount = count($this->races) * 5;
 
         // randomly generate coordinates
@@ -69,38 +66,10 @@ class UniverseBuilder
 
             $location = new MarkedLocation($x, $y);
 
-            // TODO remove sectors map from here
-            $this->sectorsMap->addObject($x, $y, $location);
             $allLocations[] = $location;
         }
 
-        // remove coordinates that are too near to others
-        $givenSquareDistance = $distance * $distance;
-
-        foreach ($allLocations as $location) {
-            if (!$location->isEnabled()) {
-                continue;
-            }
-
-            /** @var MarkedLocation[] $neighbourLocations */
-            $neighbourLocations = $this->sectorsMap->getNearbyObjects($location->getX(), $location->getY(), self::SECTOR_RADIUS);
-
-            foreach ($neighbourLocations as $neighbourLocation) {
-                // may be better to check identificators
-                if ( $neighbourLocation === $location ) {
-                    continue;
-                }
-
-                if (!$neighbourLocation->isEnabled()) {
-                    continue;
-                }
-
-                $squareDistance = Math::square( $neighbourLocation->getX()) + Math::square( $neighbourLocation->getY());
-                if ( $squareDistance < $givenSquareDistance) {
-                    $neighbourLocation->setEnabled(false);
-                }
-            }
-        }
+        $this->disableByDistance($allLocations, $distance);
 
         $planets = [];
         $surfaces = [];
@@ -145,6 +114,9 @@ class UniverseBuilder
         $squareMinDistance = Math::square($minDistance);
         $disabledCount = 0;
         foreach ($locations as $l ) {
+            if (!$l->isEnabled()) {
+                continue;
+            }
 
             /** @var MarkedLocation[] $nearbyLocations */
             $nearbyLocations = $sectorsMap->getNearbyObjects($l->getX(), $l->getY(), 1);
@@ -163,4 +135,14 @@ class UniverseBuilder
 
         return $disabledCount;
     }
+
+    /**
+     * @return SectorsMap
+     */
+    public function getSectorsMap(): SectorsMap
+    {
+        return $this->sectorsMap;
+    }
+
+
 }

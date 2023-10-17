@@ -173,4 +173,12 @@ class SectorsMap
 
         return $index % $this->n;
     }
+
+    public function getAllObjects() : array {
+        $rez = [];
+        foreach ($this->sectors as $s) {
+            $rez = array_merge($rez, $s->getObjects());
+        }
+        return $rez;
+    }
 }

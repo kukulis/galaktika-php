@@ -21,6 +21,9 @@ class UniverseBuilderTest extends TestCase
 
         $universe = $universeBuilder->buildUniverse($races, 1, 3, 99, 1000);
 
+//        $allLocations = $universeBuilder->getSectorsMap()->getAllObjects();
+//        file_put_contents( 'locations.txt', serialize($allLocations) );
+
         $surfaces = $universe->getPlanetSurfaces();
         $this->assertCount($racesCount, $surfaces);
 
