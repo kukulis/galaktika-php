@@ -11,6 +11,8 @@ class Fleet
 
     private Location $location;
 
+    private ?Location $targetLocation = null;
+
     /**
      * @var float angle from x axis in radians
      */
@@ -41,8 +43,9 @@ class Fleet
         return $this;
     }
 
-    public function calculateSpeed() : float {
-        return min (array_map( fn($ship) =>$ship->getSpeed() ,  $this->ships));
+    public function calculateSpeed(): float
+    {
+        return min(array_map(fn($ship) => $ship->getSpeed(), $this->ships));
     }
 
     public function getLocation(): Location
@@ -69,9 +72,28 @@ class Fleet
         return $this;
     }
 
-    public function addShip(Ship $ship) : Fleet {
+    public function addShip(Ship $ship): Fleet
+    {
         $this->ships[] = $ship;
 
         return $this;
     }
+
+    /**
+     * @return Location|null
+     */
+    public function getTargetLocation(): ?Location
+    {
+        return $this->targetLocation;
+    }
+
+    /**
+     * @param Location|null $targetLocation
+     */
+    public function setTargetLocation(?Location $targetLocation): void
+    {
+        $this->targetLocation = $targetLocation;
+    }
+
+
 }

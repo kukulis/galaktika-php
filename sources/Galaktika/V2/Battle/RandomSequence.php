@@ -2,9 +2,10 @@
 
 namespace Galaktika\V2\Battle;
 
+use Galaktika\V2\Math\IRandomGenerator;
 use OutOfBoundsException;
 
-class RandomSequence
+class RandomSequence implements IRandomGenerator
 {
     public const ALMOST1 = 0.999999;
 

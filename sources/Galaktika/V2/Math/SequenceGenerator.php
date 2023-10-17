@@ -7,7 +7,6 @@ use Galaktika\V2\Battle\RandomSequence;
 class SequenceGenerator
 {
 
-
     public static function generate(array $randoms): array
     {
         $size = count($randoms);
