@@ -2,8 +2,12 @@
 
 namespace Galaktika\V2\Data;
 
-class Location
+use Galaktika\Util\Math;
+
+class Location implements ILocation
 {
+    use DistanceTrait;
+
     private float $x;
     private float $y;
 
@@ -12,7 +16,7 @@ class Location
         return $this->x;
     }
 
-    public function setX(float $x): Location
+    public function setX(float $x): self
     {
         $this->x = $x;
 
@@ -24,10 +28,11 @@ class Location
         return $this->y;
     }
 
-    public function setY(float $y): Location
+    public function setY(float $y): self
     {
         $this->y = $y;
 
         return $this;
     }
+
 }

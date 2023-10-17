@@ -23,7 +23,19 @@ class UniverseBuilder
     private array $races;
 
     private int $planetsCount;
+    private float $size;
 
+
+    /**
+     * @param float $minDistance
+     * @param float $minPlayersDistance
+     * @param float $size
+     */
+    public function __construct(float $size )
+    {
+        $this->size = $size;
+        // TODO validate repeatedness
+    }
 
     public function buildUniverse(array $races, float $minDistance, float $minPlayersDistance, float $size, int $planetsCount): Universe
     {
@@ -44,7 +56,6 @@ class UniverseBuilder
 
     private function createPlayersPlanets(float $distance): void
     {
-
         // TODO use local sectors map?
         $generatedLocationsCount = count($this->races) * 5;
 
@@ -52,12 +63,13 @@ class UniverseBuilder
         /** @var MarkedLocation[] $allLocations */
         $allLocations = [];
         for ($k = 0; $k < $generatedLocationsCount; $k++) {
-            // TODO use random generator?
+            // TODO use random generator class/interface?
             $x = lcg_value() * $this->universe->getSize();
             $y = lcg_value() * $this->universe->getSize();
 
             $location = new MarkedLocation($x, $y);
 
+            // TODO remove sectors map from here
             $this->sectorsMap->addObject($x, $y, $location);
             $allLocations[] = $location;
         }
@@ -115,5 +127,40 @@ class UniverseBuilder
 
         $this->universe->setPlanets($planets);
         $this->universe->setPlanetSurfaces($surfaces);
+    }
+
+    /**
+     * // TODO cover with test
+     * @param MarkedLocation[] $locations
+     * @param float $minDistance
+     * @return int
+     */
+    public function disableByDistance(array $locations, float $minDistance) : int {
+        $sectorsMap = new SectorsMap($this->size, $minDistance);
+
+        foreach ($locations as $l) {
+            $sectorsMap->addObject($l->getX(), $l->getY(), $l);
+        }
+
+        $squareMinDistance = Math::square($minDistance);
+        $disabledCount = 0;
+        foreach ($locations as $l ) {
+
+            /** @var MarkedLocation[] $nearbyLocations */
+            $nearbyLocations = $sectorsMap->getNearbyObjects($l->getX(), $l->getY(), 1);
+
+            foreach ($nearbyLocations as $nearbyLocation) {
+                if ( $nearbyLocation === $l ) {
+                    continue;
+                }
+
+                if ( $l->squareDistance($nearbyLocation) < $squareMinDistance ) {
+                    $nearbyLocation->setEnabled(false);
+                    $disabledCount ++;
+                }
+            }
+        }
+
+        return $disabledCount;
     }
 }

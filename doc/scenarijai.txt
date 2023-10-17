@@ -1,4 +1,4 @@
-1. Fegistruojasi vartotojai.
+1. Registruojasi vartotojai.
 2. Paskelbiamas žaidimas.
 3. Vartotojai registruojasi prie žaidimo.
 4. Baigiama vartotojų registracija.

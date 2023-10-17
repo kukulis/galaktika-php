@@ -2,8 +2,10 @@
 
 namespace Galaktika\V2\Data;
 
-class MarkedLocation
+class MarkedLocation implements ILocation
 {
+    use DistanceTrait;
+
     private float $x;
     private float $y;
 
@@ -54,5 +56,19 @@ class MarkedLocation
     public function getLocation(): Location
     {
         return (new Location())->setX($this->x)->setY($this->y);
+    }
+
+    public function setX(float $x): ILocation
+    {
+        $this->x = $x;
+
+        return $this;
+    }
+
+    public function setY(float $y): ILocation
+    {
+        $this->y = $y;
+
+        return $this;
     }
 }
