@@ -5,13 +5,13 @@ namespace Galaktika\V2\Data;
 class Ship
 {
     private string $id;
-    private int $guns=0;
-    private float $attack=0;
-    private float $defence=0;
-    private float $speed=0;
-    private float $mass=0;
-    private float $maxCargo=0;
-    private ?Race $owner=null;
+    private int $guns = 0;
+    private float $attack = 0;
+    private float $defence = 0;
+    private float $speed = 0;
+    private float $mass = 0;
+    private float $maxCargo = 0;
+    private ?Race $owner = null;
 
     private string $modelName;
     private string $modelId;
@@ -169,5 +169,10 @@ class Ship
     public function setY(float $y): void
     {
         $this->y = $y;
+    }
+
+    public function getLocationKey(): string
+    {
+        return Location::buildKey($this->x, $this->y);
     }
 }

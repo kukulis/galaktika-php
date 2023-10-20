@@ -2,8 +2,6 @@
 
 namespace Galaktika\V2\Data;
 
-use Galaktika\Util\Math;
-
 class Location implements ILocation
 {
     use DistanceTrait;
@@ -35,4 +33,14 @@ class Location implements ILocation
         return $this;
     }
 
+
+    public static function buildKey(float $x, float $y): string
+    {
+        return sprintf('%.05f:%.05f', $x, $y);
+    }
+
+    public function getKey(): string
+    {
+        return self::buildKey($this->x, $this->y);
+    }
 }
