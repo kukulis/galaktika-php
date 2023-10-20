@@ -150,9 +150,11 @@ class Ship
     /**
      * @param float $x
      */
-    public function setX(float $x): void
+    public function setX(float $x): self
     {
         $this->x = $x;
+
+        return $this;
     }
 
     /**
@@ -166,9 +168,11 @@ class Ship
     /**
      * @param float $y
      */
-    public function setY(float $y): void
+    public function setY(float $y): self
     {
         $this->y = $y;
+
+        return $this;
     }
 
     public function getLocationKey(): string

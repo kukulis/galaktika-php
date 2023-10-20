@@ -43,6 +43,9 @@ class DiplomacyMap implements IDiplomacyMap
 
     public function getRelation(Race $race1, Race $race2): int
     {
+        if ( $race1 === $race2) {
+            return self::ALLIES;
+        }
         $key = self::getRelationKey($race1, $race2);
 
         if ( !array_key_exists($key, $this->relations)) {
