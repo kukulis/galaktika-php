@@ -2,6 +2,7 @@
 
 namespace Tests\Galaktika\V2\London;
 
+use Galaktika\SimpleIdGenerator;
 use Galaktika\V2\Data\Game;
 use Galaktika\V2\Data\Location;
 use Galaktika\V2\Data\Planet;
@@ -16,32 +17,28 @@ class TurnTest extends TestCase
      */
     public function testTurn(Game $game, Game $expectedGame)
     {
-        $turnMaker = new TurnMaker();
+        $idGenerator = new SimpleIdGenerator();
+        $turnMaker = new TurnMaker($game, $idGenerator);
 
-        $newGame = $turnMaker->makeTurn($game);
+        $newGame = $turnMaker->makeTurn();
 
         $this->assertEquals($expectedGame->getName(), $newGame->getName());
         $this->assertEquals($expectedGame->getTurn(), $newGame->getTurn());
         $this->assertCount(count($expectedGame->getPlanets()), $newGame->getPlanets());
 
-//        // we will check only first planet for now - this is only about planet surfaces
-//        $expectedPlanet = $expectedGame->getPlanets()[0];
-//        $planet = $newGame->getPlanets()[0];
-//
-//        $this->assertEquals($expectedPlanet->getId(), $planet->getId());
-//        $this->assertEquals($expectedPlanet->getSize(), $planet->getSize());
-//        $this->assertEquals($expectedPlanet->getLocation(), $planet->getLocation());
 
         $this->assertEquals($expectedGame->getPlanets(), $newGame->getPlanets());
-
         $this->assertCount(count($expectedGame->getSurfaces()), $newGame->getSurfaces());
 
         // checking only first surface
         $expectedSurface = $expectedGame->getSurfaces()[0];
         $newSurface = $newGame->getSurfaces()[0];
+        $surface = $game->getSurfaces()[0];
 
         $this->assertEquals($expectedSurface->getPlanet()->getId(), $newSurface->getPlanet()->getId());
         // all productions will be checked in a separate test
+
+        $this->assertNotEquals($surface->getId(), $newSurface->getId());
     }
 
     public function provideGame(): array
@@ -64,6 +61,7 @@ class TurnTest extends TestCase
                     ->setSurfaces([
                         (new PlanetSurface())
                             ->setPlanet((new Planet())->setId(1))
+                            ->setId(111)
                     ])
                 ,
                 'expectedGame' =>
@@ -83,6 +81,7 @@ class TurnTest extends TestCase
                         ->setSurfaces([
                             (new PlanetSurface())
                                 ->setPlanet((new Planet())->setId(1))
+                                ->setId(111)
                         ])
                 ,
             ]
