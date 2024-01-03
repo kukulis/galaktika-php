@@ -13,6 +13,11 @@ class Game
     /** @var Planet[] */
     private array $planets = [];
 
+    /**
+     * @var PlanetSurface[]
+     */
+    private array $surfaces = [];
+
     /** @var Fleet[] */
     private array $fleets = [];
 
@@ -108,5 +113,14 @@ class Game
         return $this;
     }
 
+    public function getSurfaces(): array
+    {
+        return $this->surfaces;
+    }
 
+    public function setSurfaces(array $surfaces): Game
+    {
+        $this->surfaces = $surfaces;
+        return $this;
+    }
 }

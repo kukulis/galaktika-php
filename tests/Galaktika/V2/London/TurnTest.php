@@ -5,6 +5,7 @@ namespace Tests\Galaktika\V2\London;
 use Galaktika\V2\Data\Game;
 use Galaktika\V2\Data\Location;
 use Galaktika\V2\Data\Planet;
+use Galaktika\V2\Data\PlanetSurface;
 use Galaktika\V2\Game\TurnMaker;
 use PHPUnit\Framework\TestCase;
 
@@ -33,7 +34,14 @@ class TurnTest extends TestCase
 
         $this->assertEquals($expectedGame->getPlanets(), $newGame->getPlanets());
 
+        $this->assertCount(count($expectedGame->getSurfaces()), $newGame->getSurfaces());
 
+        // checking only first surface
+        $expectedSurface = $expectedGame->getSurfaces()[0];
+        $newSurface = $newGame->getSurfaces()[0];
+
+        $this->assertEquals($expectedSurface->getPlanet()->getId(), $newSurface->getPlanet()->getId());
+        // all productions will be checked in a separate test
     }
 
     public function provideGame(): array
@@ -47,10 +55,15 @@ class TurnTest extends TestCase
                         (new Planet())
                             ->setId(1)
                             ->setSize(100)
-                            ->setLocation( (new Location())
-                                ->setX(10)
-                                ->setY(20)
+                            ->setLocation(
+                                (new Location())
+                                    ->setX(10)
+                                    ->setY(20)
                             )
+                    ])
+                    ->setSurfaces([
+                        (new PlanetSurface())
+                            ->setPlanet((new Planet())->setId(1))
                     ])
                 ,
                 'expectedGame' =>
@@ -61,10 +74,15 @@ class TurnTest extends TestCase
                             (new Planet())
                                 ->setId(1)
                                 ->setSize(100)
-                                ->setLocation( (new Location())
-                                    ->setX(10)
-                                    ->setY(20)
+                                ->setLocation(
+                                    (new Location())
+                                        ->setX(10)
+                                        ->setY(20)
                                 )
+                        ])
+                        ->setSurfaces([
+                            (new PlanetSurface())
+                                ->setPlanet((new Planet())->setId(1))
                         ])
                 ,
             ]
