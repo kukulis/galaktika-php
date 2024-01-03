@@ -3,6 +3,8 @@
 namespace Tests\Galaktika\V2\London;
 
 use Galaktika\V2\Data\Game;
+use Galaktika\V2\Data\Location;
+use Galaktika\V2\Data\Planet;
 use Galaktika\V2\Game\TurnMaker;
 use PHPUnit\Framework\TestCase;
 
@@ -19,6 +21,19 @@ class TurnTest extends TestCase
 
         $this->assertEquals($expectedGame->getName(), $newGame->getName());
         $this->assertEquals($expectedGame->getTurn(), $newGame->getTurn());
+        $this->assertCount(count($expectedGame->getPlanets()), $newGame->getPlanets());
+
+//        // we will check only first planet for now - this is only about planet surfaces
+//        $expectedPlanet = $expectedGame->getPlanets()[0];
+//        $planet = $newGame->getPlanets()[0];
+//
+//        $this->assertEquals($expectedPlanet->getId(), $planet->getId());
+//        $this->assertEquals($expectedPlanet->getSize(), $planet->getSize());
+//        $this->assertEquals($expectedPlanet->getLocation(), $planet->getLocation());
+
+        $this->assertEquals($expectedGame->getPlanets(), $newGame->getPlanets());
+
+
     }
 
     public function provideGame(): array
@@ -28,11 +43,30 @@ class TurnTest extends TestCase
                 'game' => (new Game())
                     ->setName('game')
                     ->setTurn(1)
+                    ->setPlanets([
+                        (new Planet())
+                            ->setId(1)
+                            ->setSize(100)
+                            ->setLocation( (new Location())
+                                ->setX(10)
+                                ->setY(20)
+                            )
+                    ])
                 ,
                 'expectedGame' =>
                     (new Game())
                         ->setName('game')
                         ->setTurn(2)
+                        ->setPlanets([
+                            (new Planet())
+                                ->setId(1)
+                                ->setSize(100)
+                                ->setLocation( (new Location())
+                                    ->setX(10)
+                                    ->setY(20)
+                                )
+                        ])
+                ,
             ]
         ];
     }

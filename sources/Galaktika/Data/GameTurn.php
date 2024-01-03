@@ -27,5 +27,4 @@ class GameTurn
         $this->turn = $turn;
     }
 
-
 }

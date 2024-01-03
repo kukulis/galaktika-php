@@ -12,7 +12,10 @@ class TurnMaker
 
         $newGame
             ->setName($game->getName())
-            ->setTurn($game->getTurn() + 1);
+            ->setTurn($game->getTurn() + 1)
+            ->setPlanets($game->getPlanets()) // must clone each planet ? or this is only about planet surfaces?
+
+        ;
 
         return $newGame;
     }
