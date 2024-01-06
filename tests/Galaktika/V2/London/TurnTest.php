@@ -8,6 +8,7 @@ use Galaktika\V2\Data\Game;
 use Galaktika\V2\Data\Location;
 use Galaktika\V2\Data\Planet;
 use Galaktika\V2\Data\PlanetSurface;
+use Galaktika\V2\Data\Ship;
 use Galaktika\V2\Game\TurnMaker;
 use PHPUnit\Framework\TestCase;
 
@@ -44,6 +45,15 @@ class TurnTest extends TestCase
         }
 
         $this->assertCount(count($expectedGame->getFleets()), $newGame->getFleets());
+
+        if (count($newGame->getFleets()) > 0) {
+            $newFleet = $newGame->getFleets()[0];
+            $expectedFleet = $expectedGame->getFleets()[0];
+
+            $this->assertEquals($expectedFleet->getLocation(), $newFleet->getLocation());
+
+            $this->assertCount( count($expectedFleet->getShips()),   $newFleet->getShips());
+        }
     }
 
     public function provideGame(): array
@@ -95,7 +105,17 @@ class TurnTest extends TestCase
                     ->setName('game')
                     ->setTurn(1)
                     ->setFleets([
-                            new Fleet()
+                            (new Fleet())
+                                ->setLocation(
+                                    (new Location())
+                                        ->setX(1)
+                                        ->setY(1)
+                                )
+                                ->setDirection(0)
+                                ->addShip(
+                                    (new Ship())->setSpeed(1)
+                                )
+
                         ]
                     )
                 ,
@@ -105,7 +125,11 @@ class TurnTest extends TestCase
                         ->setTurn(2)
                         ->setFleets(
                             [
-                                new Fleet()
+                                (new Fleet())
+                                    ->setLocation(
+                                        (new Location())->setX(2)->setY(1)
+                                    )
+                                    ->addShip(new Ship())
                             ]
                         )
                 ,
