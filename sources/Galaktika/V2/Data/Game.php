@@ -21,11 +21,6 @@ class Game
     /** @var Fleet[] */
     private array $fleets = [];
 
-    // Turn related commands only.
-    // Commands which may be implemented directly will not be executed when making turn.
-    private array $flyCommands=[];
-    private array $buildCommands=[];
-
     public function getName(): string
     {
         return $this->name;
@@ -45,29 +40,6 @@ class Game
     public function setTurn(int $turn): Game
     {
         $this->turn = $turn;
-        return $this;
-    }
-
-    public function getFlyCommands(): array
-    {
-        return $this->flyCommands;
-    }
-
-    public function setFlyCommands(array $flyCommands): Game
-    {
-        $this->flyCommands = $flyCommands;
-        return $this;
-    }
-
-
-    public function getBuildCommands(): array
-    {
-        return $this->buildCommands;
-    }
-
-    public function setBuildCommands(array $buildCommands): Game
-    {
-        $this->buildCommands = $buildCommands;
         return $this;
     }
 

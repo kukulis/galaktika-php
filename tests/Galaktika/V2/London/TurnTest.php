@@ -52,90 +52,94 @@ class TurnTest extends TestCase
 
             $this->assertEquals($expectedFleet->getLocation(), $newFleet->getLocation());
 
-            $this->assertCount( count($expectedFleet->getShips()),   $newFleet->getShips());
+            $this->assertCount(count($expectedFleet->getShips()), $newFleet->getShips());
         }
     }
 
-    public function provideGame(): array
+    public static function provideGame(): array
     {
         return [
-            'test planets' => [
-                'game' => (new Game())
-                    ->setName('game')
-                    ->setTurn(1)
-                    ->setPlanets([
-                        (new Planet())
-                            ->setId(1)
-                            ->setSize(100)
-                            ->setLocation(
-                                (new Location())
-                                    ->setX(10)
-                                    ->setY(20)
-                            )
-                    ])
-                    ->setSurfaces([
-                        (new PlanetSurface())
-                            ->setPlanet((new Planet())->setId(1))
-                            ->setId(111)
-                    ])
-                ,
-                'expectedGame' =>
-                    (new Game())
-                        ->setName('game')
-                        ->setTurn(2)
-                        ->setPlanets([
-                            (new Planet())
-                                ->setId(1)
-                                ->setSize(100)
-                                ->setLocation(
-                                    (new Location())
-                                        ->setX(10)
-                                        ->setY(20)
-                                )
-                        ])
-                        ->setSurfaces([
-                            (new PlanetSurface())
-                                ->setPlanet((new Planet())->setId(1))
-                                ->setId(111)
-                        ])
-                ,
-            ],
-            'test flights' => [
-                'game' => (new Game())
-                    ->setName('game')
-                    ->setTurn(1)
-                    ->setFleets([
-                            (new Fleet())
-                                ->setLocation(
-                                    (new Location())
-                                        ->setX(1)
-                                        ->setY(1)
-                                )
-                                ->setDirection(0)
-                                ->addShip(
-                                    (new Ship())->setSpeed(1)
-                                )
-
-                        ]
-                    )
-                ,
-                'expectedGame' =>
-                    (new Game())
-                        ->setName('game')
-                        ->setTurn(2)
-                        ->setFleets(
-                            [
-                                (new Fleet())
-                                    ->setLocation(
-                                        (new Location())->setX(2)->setY(1)
-                                    )
-                                    ->addShip(new Ship())
-                            ]
-                        )
-                ,
-            ]
+            'test planets' => self::provideTestPlanets(),
+            'test flights' => self::provideTestFlights(),
         ];
     }
 
+    private static function provideTestPlanets(): array
+    {
+        $planet1 = (new Planet())
+            ->setId(1)
+            ->setSize(100)
+            ->setLocation(
+                (new Location())
+                    ->setX(10)
+                    ->setY(20)
+            );
+
+        return [
+            'game' => (new Game())
+                ->setName('game')
+                ->setTurn(1)
+                ->setPlanets([
+                    $planet1
+                ])
+                ->setSurfaces([
+                    (new PlanetSurface())
+                        ->setPlanet($planet1)
+                        ->setId(111)
+                ])
+            ,
+            'expectedGame' =>
+                (new Game())
+                    ->setName('game')
+                    ->setTurn(2)
+                    ->setPlanets([
+                        $planet1
+                    ])
+                    ->setSurfaces([
+                        (new PlanetSurface())
+                            ->setPlanet($planet1)
+                            ->setId(111)
+                    ])
+            ,
+        ];
+    }
+
+    private static function provideTestFlights(): array
+    {
+        return [
+            'game' => (new Game())
+                ->setName('game')
+                ->setTurn(1)
+                ->setFleets([
+                        (new Fleet())
+                            ->setLocation(
+                                (new Location())
+                                    ->setX(1)
+                                    ->setY(1)
+                            )
+                            ->setDirection(0)
+                            ->addShip(
+                                (new Ship())->setSpeed(1)
+                            )
+
+                    ]
+                )
+            ,
+            'expectedGame' =>
+                (new Game())
+                    ->setName('game')
+                    ->setTurn(2)
+                    ->setFleets(
+                        [
+                            (new Fleet())
+                                ->setLocation(
+                                    (new Location())->setX(2)->setY(1)
+                                )
+                                ->addShip(new Ship())
+                        ]
+                    )
+            ,
+        ];
+    }
 
 }
