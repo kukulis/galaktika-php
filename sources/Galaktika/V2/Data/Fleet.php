@@ -7,16 +7,16 @@ class Fleet
     private string $id;
 
     /** @var Ship[] */
-    private array $ships;
+    private array $ships = [];
 
-    private Location $location;
+    private ?Location $location = null;
 
     private ?Location $targetLocation = null;
 
     /**
      * @var float angle from x axis in radians
      */
-    private float $direction;
+    private float $direction = 0;
 
 
     public function getShips(): array
@@ -45,10 +45,13 @@ class Fleet
 
     public function calculateSpeed(): float
     {
+        if (count($this->ships) == 0) {
+            return 0;
+        }
         return min(array_map(fn($ship) => $ship->getSpeed(), $this->ships));
     }
 
-    public function getLocation(): Location
+    public function getLocation(): ?Location
     {
         return $this->location;
     }

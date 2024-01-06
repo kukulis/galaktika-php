@@ -6,8 +6,8 @@ class Location implements ILocation
 {
     use DistanceTrait;
 
-    private float $x;
-    private float $y;
+    private float $x = 0;
+    private float $y = 0;
 
     public function getX(): float
     {

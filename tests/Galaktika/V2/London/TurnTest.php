@@ -3,6 +3,7 @@
 namespace Tests\Galaktika\V2\London;
 
 use Galaktika\SimpleIdGenerator;
+use Galaktika\V2\Data\Fleet;
 use Galaktika\V2\Data\Game;
 use Galaktika\V2\Data\Location;
 use Galaktika\V2\Data\Planet;
@@ -31,20 +32,24 @@ class TurnTest extends TestCase
         $this->assertCount(count($expectedGame->getSurfaces()), $newGame->getSurfaces());
 
         // checking only first surface
-        $expectedSurface = $expectedGame->getSurfaces()[0];
-        $newSurface = $newGame->getSurfaces()[0];
-        $surface = $game->getSurfaces()[0];
+        if (count($expectedGame->getSurfaces()) > 0) {
+            $expectedSurface = $expectedGame->getSurfaces()[0];
+            $newSurface = $newGame->getSurfaces()[0];
+            $surface = $game->getSurfaces()[0];
 
-        $this->assertEquals($expectedSurface->getPlanet()->getId(), $newSurface->getPlanet()->getId());
-        // all productions will be checked in a separate test
+            $this->assertEquals($expectedSurface->getPlanet()->getId(), $newSurface->getPlanet()->getId());
+            // all productions will be checked in a separate test
 
-        $this->assertNotEquals($surface->getId(), $newSurface->getId());
+            $this->assertNotEquals($surface->getId(), $newSurface->getId());
+        }
+
+        $this->assertCount(count($expectedGame->getFleets()), $newGame->getFleets());
     }
 
     public function provideGame(): array
     {
         return [
-            'test1' => [
+            'test planets' => [
                 'game' => (new Game())
                     ->setName('game')
                     ->setTurn(1)
@@ -83,6 +88,26 @@ class TurnTest extends TestCase
                                 ->setPlanet((new Planet())->setId(1))
                                 ->setId(111)
                         ])
+                ,
+            ],
+            'test flights' => [
+                'game' => (new Game())
+                    ->setName('game')
+                    ->setTurn(1)
+                    ->setFleets([
+                            new Fleet()
+                        ]
+                    )
+                ,
+                'expectedGame' =>
+                    (new Game())
+                        ->setName('game')
+                        ->setTurn(2)
+                        ->setFleets(
+                            [
+                                new Fleet()
+                            ]
+                        )
                 ,
             ]
         ];

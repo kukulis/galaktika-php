@@ -14,9 +14,10 @@ class FlyCalculator
 
         $fleetResult = clone $fleet;
 
+        $location = $fleet->getLocation()??new Location();
         $newLocation = new Location();
-        $newLocation->setX($fleet->getLocation()->getX() + $xSpeed );
-        $newLocation->setY($fleet->getLocation()->getY() + $ySpeed );
+        $newLocation->setX($location->getX() + $xSpeed );
+        $newLocation->setY($location->getY() + $ySpeed );
         $fleetResult->setLocation($newLocation);
 
         return $fleetResult;
