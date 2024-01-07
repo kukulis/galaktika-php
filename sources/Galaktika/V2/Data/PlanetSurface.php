@@ -2,6 +2,9 @@
 
 namespace Galaktika\V2\Data;
 
+use Galaktika\V2\Production\IndustryCommand;
+use Galaktika\V2\Production\PlanetSurfaceCommand;
+
 class PlanetSurface
 {
     private string $id;
@@ -19,6 +22,9 @@ class PlanetSurface
 
     /** @var Ship[] */
     private array $ships;
+
+    /** @var PlanetSurfaceCommand[]  */
+    private array $commands=[];
 
     public function removeUnfinishedShip(?UnfinishedShip $unfinishedShip): self
     {
@@ -214,6 +220,17 @@ class PlanetSurface
     {
         $this->unfinishedShips[] = $unfinishedShip;
 
+        return $this;
+    }
+
+    public function getCommands(): array
+    {
+        return $this->commands;
+    }
+
+    public function setCommands(array $commands): PlanetSurface
+    {
+        $this->commands = $commands;
         return $this;
     }
 

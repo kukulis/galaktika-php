@@ -86,6 +86,8 @@ class TurnTest extends TestCase
                     (new PlanetSurface())
                         ->setPlanet($planet1)
                         ->setId(111)
+                        ->setPopulation(100)
+                        ->setIndustry(50)
                 ])
             ,
             'expectedGame' =>
