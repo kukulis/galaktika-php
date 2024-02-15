@@ -4,6 +4,7 @@ namespace Galaktika\V2\Data;
 
 class Fleet
 {
+    private string $bornId;
     private string $id;
 
     /** @var Ship[] */
@@ -98,5 +99,14 @@ class Fleet
         $this->targetLocation = $targetLocation;
     }
 
+    public function getBornId(): string
+    {
+        return $this->bornId;
+    }
 
+    public function setBornId(string $bornId): Fleet
+    {
+        $this->bornId = $bornId;
+        return $this;
+    }
 }

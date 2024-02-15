@@ -72,4 +72,8 @@ class FlyTest extends TestCase
             ],
         ];
     }
+
+    public function testWithDestinationLocation() {
+        // TODO
+    }
 }

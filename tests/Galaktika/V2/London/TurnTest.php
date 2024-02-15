@@ -59,12 +59,12 @@ class TurnTest extends TestCase
     public static function provideGame(): array
     {
         return [
-            'test planets' => self::provideTestPlanets(),
-            'test flights' => self::provideTestFlights(),
+            'test planets' => self::provideGamesForTestPlanets(),
+            'test flights' => self::provideGamesForTestFlights(),
         ];
     }
 
-    private static function provideTestPlanets(): array
+    private static function provideGamesForTestPlanets(): array
     {
         $planet1 = (new Planet())
             ->setId(1)
@@ -106,7 +106,7 @@ class TurnTest extends TestCase
         ];
     }
 
-    private static function provideTestFlights(): array
+    private static function provideGamesForTestFlights(): array
     {
         return [
             'game' => (new Game())

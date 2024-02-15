@@ -44,7 +44,7 @@ class TurnMaker
 
         $this->executeBuilds();
         $this->executeFlights();
-        $this->executeFights();
+        $this->executeBattles();
         $this->executeDestructions();
 
 
@@ -59,12 +59,13 @@ class TurnMaker
     public function executeFlights()
     {
         $fleets = $this->game->getFleets();
-        $newFleets = array_map(fn($fleet)=>FlyCalculator::flyFleet($fleet), $fleets);
+        $newFleets = array_map(fn($fleet) => FlyCalculator::flyFleet($fleet)->setId($this->idGenerator->generateId()),
+            $fleets);
         $this->newGame->setFleets($newFleets);
     }
-
-    public function executeFights()
+    public function executeBattles()
     {
+
     }
 
     public function executeDestructions()
