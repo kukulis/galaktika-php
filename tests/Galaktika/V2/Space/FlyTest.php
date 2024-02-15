@@ -47,7 +47,7 @@ class FlyTest extends TestCase
                 'destY' => 0,
             ],
             'test2' => [
-                'direction' => pi()/2,
+                'direction' => pi() / 2,
                 'speed' => 1,
                 'startX' => 0,
                 'startY' => 0,
@@ -63,7 +63,7 @@ class FlyTest extends TestCase
                 'destY' => 0,
             ],
             'test4' => [
-                'direction' => pi()*3/2,
+                'direction' => pi() * 3 / 2,
                 'speed' => 1,
                 'startX' => 0,
                 'startY' => 0,
@@ -73,7 +73,37 @@ class FlyTest extends TestCase
         ];
     }
 
-    public function testWithDestinationLocation() {
-        // TODO
+    /**
+     * @dataProvider provideTestsWithDestinatedLocations
+     */
+    public function testWithDestinationLocation(
+        Location $startLocation,
+        Location $targetLocation,
+        Location $expectedLocation,
+        float $speed
+    ) {
+        $fleet = new Fleet();
+        $fleet->addShip((new Ship())->setSpeed($speed));
+
+        $fleet->setLocation($startLocation);
+        $fleet->setTargetLocation($targetLocation);
+
+        $fleet->setDirection(FlyCalculator::calculateDirection($startLocation, $targetLocation));
+
+        $newFleet = FlyCalculator::flyFleet($fleet);
+        $this->assertNotEquals($fleet, $newFleet);
+        $this->assertEquals($expectedLocation, $newFleet->getLocation());
+    }
+
+    public static function provideTestsWithDestinatedLocations(): array
+    {
+        return [
+            'test1' => [
+                'startLocation' => (new Location())->setX(0)->setY(0),
+                'targetLocation' => (new Location())->setX(2)->setY(0) ,
+                'expectedLocation' => (new Location())->setX(1)->setY(0),
+                'speed' => 1,
+            ]
+        ];
     }
 }

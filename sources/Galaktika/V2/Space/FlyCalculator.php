@@ -7,19 +7,55 @@ use Galaktika\V2\Data\Location;
 
 class FlyCalculator
 {
-    public static function flyFleet(Fleet $fleet) : Fleet  {
+    public static function flyFleet(Fleet $fleet): Fleet
+    {
         $speed = $fleet->calculateSpeed();
         $xSpeed = cos($fleet->getDirection()) * $speed;
         $ySpeed = sin($fleet->getDirection()) * $speed;
 
         $fleetResult = clone $fleet;
 
-        $location = $fleet->getLocation()??new Location();
+        $location = $fleet->getLocation() ?? new Location(); // XXX dont like this ??
         $newLocation = new Location();
-        $newLocation->setX($location->getX() + $xSpeed );
-        $newLocation->setY($location->getY() + $ySpeed );
+        $newLocation->setX($location->getX() + $xSpeed);
+        $newLocation->setY($location->getY() + $ySpeed);
         $fleetResult->setLocation($newLocation);
 
         return $fleetResult;
+    }
+
+    public static function calculateDirection(Location $source, Location $destination): float
+    {
+        $deltaX = $destination->getX() - $source->getX();
+        $deltaY = $destination->getY() - $source->getY();
+        $distance = $source->getDistance($destination);
+        if ($distance == 0) {
+            // decide if we need to throw exception
+            return 0;
+        }
+
+        $sin = abs($deltaY) / $distance;
+
+        $direction = asin($sin);
+
+        if ($deltaX >= 0 && $deltaY >= 0) {
+            return $direction;
+        }
+
+        if ($deltaX < 0 && $deltaY >= 0) {
+            return pi() - $direction;
+        }
+
+        if ($deltaX >= 0 && $deltaY < 0) {
+            return -$direction;
+        }
+
+        if ($deltaX < 0 && $deltaY < 0) {
+            return pi() + $direction;
+        }
+
+        // should net be reached
+        // decide if we need to throw exception
+        return 0;
     }
 }
