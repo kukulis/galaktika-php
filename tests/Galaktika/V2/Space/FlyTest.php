@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Galaktika\Unit\V2;
+namespace Tests\Galaktika\V2\Space;
 
 use Galaktika\V2\Data\Fleet;
 use Galaktika\V2\Data\Location;
@@ -100,10 +100,58 @@ class FlyTest extends TestCase
         return [
             'test1' => [
                 'startLocation' => (new Location())->setX(0)->setY(0),
-                'targetLocation' => (new Location())->setX(2)->setY(0) ,
+                'targetLocation' => (new Location())->setX(2)->setY(0),
                 'expectedLocation' => (new Location())->setX(1)->setY(0),
                 'speed' => 1,
-            ]
+            ],
+            'test diagonal' => [
+                'startLocation' => (new Location())->setX(0)->setY(0),
+                'targetLocation' => (new Location())->setX(1)->setY(1),
+                'expectedLocation' => (new Location())->setX(sqrt(2) / 2)->setY(sqrt(2) / 2),
+                'speed' => 1,
+            ],
+            'test II quarter no limit' => [
+                'startLocation' => (new Location())->setX(0)->setY(0),
+                'targetLocation' => (new Location())->setX(-4)->setY(3),
+                'expectedLocation' => (new Location())->setX(-0.8)->setY(0.6),
+                'speed' => 1,
+            ],
+            'test III quarter no limit' => [
+                'startLocation' => (new Location())->setX(0)->setY(0),
+                'targetLocation' => (new Location())->setX(-4)->setY(-3),
+                'expectedLocation' => (new Location())->setX(-0.8)->setY(-0.6),
+                'speed' => 1,
+            ],
+            'test IV quarter no limit' => [
+                'startLocation' => (new Location())->setX(0)->setY(0),
+                'targetLocation' => (new Location())->setX(4)->setY(-3),
+                'expectedLocation' => (new Location())->setX(0.8)->setY(-0.6),
+                'speed' => 1,
+            ],
+            'test I quarter limit' => [
+                'startLocation' => (new Location())->setX(0)->setY(0),
+                'targetLocation' => (new Location())->setX(4)->setY(3),
+                'expectedLocation' => (new Location())->setX(4)->setY(3),
+                'speed' => 10,
+            ],
+            'test II quarter limit' => [
+                'startLocation' => (new Location())->setX(0)->setY(0),
+                'targetLocation' => (new Location())->setX(-4)->setY(3),
+                'expectedLocation' => (new Location())->setX(-4)->setY(3),
+                'speed' => 10,
+            ],
+            'test III quarter limit' => [
+                'startLocation' => (new Location())->setX(0)->setY(0),
+                'targetLocation' => (new Location())->setX(-4)->setY(-3),
+                'expectedLocation' => (new Location())->setX(-4)->setY(-3),
+                'speed' => 10,
+            ],
+            'test IV quarter limit' => [
+                'startLocation' => (new Location())->setX(0)->setY(0),
+                'targetLocation' => (new Location())->setX(4)->setY(-3),
+                'expectedLocation' => (new Location())->setX(4)->setY(-3),
+                'speed' => 10,
+            ],
         ];
     }
 }

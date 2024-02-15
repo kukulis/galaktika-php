@@ -10,12 +10,24 @@ class FlyCalculator
     public static function flyFleet(Fleet $fleet): Fleet
     {
         $speed = $fleet->calculateSpeed();
-        $xSpeed = cos($fleet->getDirection()) * $speed;
-        $ySpeed = sin($fleet->getDirection()) * $speed;
 
         $fleetResult = clone $fleet;
 
-        $location = $fleet->getLocation() ?? new Location(); // XXX dont like this ??
+        // may need to check target location
+        if ( $fleet->getTargetLocation() != null ) {
+            $distance = $fleet->getLocation()->getDistance($fleet->getTargetLocation());
+
+            if ($distance < $speed) {
+                $fleetResult->setLocation($fleet->getTargetLocation()); // clone target location ??
+
+                return $fleetResult;
+            }
+        }
+
+        $xSpeed = cos($fleet->getDirection()) * $speed;
+        $ySpeed = sin($fleet->getDirection()) * $speed;
+
+        $location = $fleet->getLocation() ?? new Location(); // XXX dont like this '??'
         $newLocation = new Location();
         $newLocation->setX($location->getX() + $xSpeed);
         $newLocation->setY($location->getY() + $ySpeed);
