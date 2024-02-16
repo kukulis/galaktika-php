@@ -61,10 +61,6 @@ class TurnMaker
         $newSurface = clone($surface);
         $newSurface->setId($this->idGenerator->generateId());
 
-        // (technologies?)
-        // 1 population
-        // for each surface
-
         $newSurface->setPopulation(
             PopulationCalculator::calculatePopulation(
                 $surface->getPopulation(),
@@ -76,10 +72,6 @@ class TurnMaker
         foreach ($surface->getCommands() as $command) {
             $command->execute($newSurface, $surface);
         }
-
-        // TODO
-        // industry, ships, materials ?
-
 
         return $newSurface;
     }

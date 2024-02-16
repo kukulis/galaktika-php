@@ -2,6 +2,7 @@
 
 namespace Tests\Galaktika\V2\Production;
 
+use Galaktika\SequenceIdGenerator;
 use Galaktika\V2\Data\PlanetSurface;
 use Galaktika\V2\Data\Race;
 use Galaktika\V2\Data\Ship;
@@ -54,12 +55,14 @@ class ShipCommandTest extends TestCase
                                 ->setEngineMass(1)
                         )
                         ->setTargetAmount(1)
+                        ->setIdGenerator(new SequenceIdGenerator(['id1', 'id2']))
                 ,
                 'planetSurface' =>
                     (new PlanetSurface())
                         ->setPopulation(1)
                         ->setIndustry(1)
                         ->setMaterial(1)
+                        ->setOwner((new Race())->setTechnologies(new Technologies()))
                 ,
                 'expectedPlanetSurface' =>
                     (new PlanetSurface())
@@ -82,6 +85,7 @@ class ShipCommandTest extends TestCase
                                 ->setEngineMass(2)
                         )
                         ->setTargetAmount(1)
+//                        ->setIdGenerator(new SequenceIdGenerator(['id1', 'id2']))
                 ,
                 'planetSurface' =>
                     (new PlanetSurface())
@@ -116,6 +120,7 @@ class ShipCommandTest extends TestCase
                                 ->setEngineMass(3)
                         )
                         ->setTargetAmount(2)
+                        ->setIdGenerator(new SequenceIdGenerator(['id1', 'id2']))
                 ,
                 'planetSurface' =>
                     (new PlanetSurface())
@@ -125,8 +130,8 @@ class ShipCommandTest extends TestCase
                         ->setOwner((new Race())->setTechnologies(new Technologies()))
                         ->addUnfinishedShip(
                             (new UnfinishedShip())
-                            ->setShip((new Ship())->setModelId('testmodel'))
-                            ->setResourcesUsed(1)
+                                ->setShip((new Ship())->setModelId('testmodel'))
+                                ->setResourcesUsed(1)
                         )
                 ,
                 'expectedPlanetSurface' =>
@@ -159,6 +164,7 @@ class ShipCommandTest extends TestCase
                                 ->setDefenceMass(399)
                         )
                         ->setTargetAmount(1)
+//                        ->setIdGenerator(new SequenceIdGenerator(['id1', 'id2']))
                 ,
                 'planetSurface' =>
                     (new PlanetSurface())
@@ -202,6 +208,7 @@ class ShipCommandTest extends TestCase
                                 ->setDefenceMass(399)
                         )
                         ->setTargetAmount(1)
+                        ->setIdGenerator(new SequenceIdGenerator(['id1', 'id2']))
                 ,
                 'planetSurface' =>
                     (new PlanetSurface())

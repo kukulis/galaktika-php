@@ -2,13 +2,20 @@
 
 namespace Tests\Galaktika\V2\London\Turn;
 
+use Galaktika\SequenceIdGenerator;
 use Galaktika\SimpleIdGenerator;
 use Galaktika\V2\Data\GameSettings;
 use Galaktika\V2\Data\GameTurn;
 use Galaktika\V2\Data\Planet;
 use Galaktika\V2\Data\PlanetSurface;
+use Galaktika\V2\Data\Race;
+use Galaktika\V2\Data\Ship;
+use Galaktika\V2\Data\Technologies;
 use Galaktika\V2\Game\TurnMaker;
+use Galaktika\V2\Production\IndustryCommand;
 use Galaktika\V2\Production\MaterialCommand;
+use Galaktika\V2\Production\ShipCommand;
+use Galaktika\V2\Production\ShipModel;
 use PHPUnit\Framework\TestCase;
 
 class BuildInGameTest extends TestCase
@@ -53,7 +60,7 @@ class BuildInGameTest extends TestCase
     public static function provideTestingGames(): array
     {
         return [
-            'test1' => [
+            'test material' => [
                 'game' => (new GameTurn())
                     ->setSurfaces([
                         (new PlanetSurface())
@@ -85,7 +92,101 @@ class BuildInGameTest extends TestCase
                         ->setShips([])
                 ])
                 ,
-            ]
+            ],
+            'test industry' => [
+                'game' => (new GameTurn())
+                    ->setSurfaces([
+                        (new PlanetSurface())
+                            ->setId('s1')
+                            ->setPlanet(
+                                (new Planet())
+                                    ->setId('planet1')
+                                    ->setSize(100)
+                            )
+                            ->setPopulation(50)
+                            ->setIndustry(50)
+                            ->setMaterial(50)
+                            ->setShips([])
+                            ->setCommands([
+                                new IndustryCommand()
+                            ])
+                    ]),
+                'expectedGame' => (new GameTurn())->setSurfaces([
+                    (new PlanetSurface())
+                        ->setId('s1+')
+                        ->setPlanet(
+                            (new Planet())
+                                ->setId('planet1')
+                                ->setSize(100)
+                        )
+                        ->setPopulation(65)
+                        ->setIndustry(100)
+                        ->setMaterial(0)
+                        ->setShips([])
+                ])
+                ,
+            ],
+            'test ships' => [
+                'game' => (new GameTurn())
+                    ->setSurfaces([
+                        (new PlanetSurface())
+                            ->setId('s1')
+                            ->setPlanet(
+                                (new Planet())
+                                    ->setId('planet1')
+                                    ->setSize(100)
+                            )
+                            ->setPopulation(50)
+                            ->setIndustry(50)
+                            ->setMaterial(50)
+                            ->setShips([])
+                            ->setCommands([
+                                (new ShipCommand())
+                                    ->setModelToBuild(
+                                        (new ShipModel())
+                                            ->setId('test model id')
+                                            ->setName('test ship')
+                                            ->setEngineMass(10)
+                                            ->setGuns(1)
+                                            ->setAttackMass(10)
+                                            ->setDefenceMass(10)
+                                            ->setCargoMass(10)
+                                    )
+                                    ->setIdGenerator(new SequenceIdGenerator(['id1', 'id2', 'id3']))
+                                    ->setTargetAmount(1)
+                            ])
+                            ->setOwner(
+                                (new Race())
+                                    ->setId('race1')
+                                    ->setTechnologies(new Technologies())
+                            )
+                    ]),
+                'expectedGame' => (new GameTurn())->setSurfaces([
+                    (new PlanetSurface())
+                        ->setId('s1+')
+                        ->setPlanet(
+                            (new Planet())
+                                ->setId('planet1')
+                                ->setSize(100)
+                        )
+                        ->setPopulation(65)
+                        ->setIndustry(50)
+                        ->setMaterial(10)
+                        ->setShips([
+                            (new Ship())
+                                ->setGuns(1)
+                                ->setAttack(10)
+                                ->setDefence(1.8257418583506)
+                                ->setSpeed(0.25)
+                                ->setMaxCargo(10)
+                                ->setMass(40)
+                                ->setId('id1')
+                                ->setModelId('test model id')
+                                ->setModelName('test ship')
+                        ])
+                ])
+                ,
+            ],
         ];
     }
 }

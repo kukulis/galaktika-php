@@ -7,7 +7,7 @@ use Galaktika\V2\Data\PlanetSurface;
 class IndustryCommand implements PlanetSurfaceCommand
 {
     private string  $id;
-    private float $goalAmount;
+    private float $goalAmount=99999;
 
     private float $madeAmount=0;
 

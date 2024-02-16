@@ -2,6 +2,7 @@
 
 namespace Galaktika\V2\Production;
 
+use Galaktika\IdGenerator;
 use Galaktika\V2\Data\PlanetSurface;
 use Galaktika\V2\Data\UnfinishedShip;
 
@@ -11,8 +12,9 @@ class ShipCommand implements PlanetSurfaceCommand
     private int $targetAmount;
 
     private int $madeAmount = 0;
+    private IdGenerator $idGenerator;
 
-    public function execute(PlanetSurface $planetSurface , PlanetSurface $oldSurface): void
+    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface): void
     {
         $unfinishedShip = $planetSurface->findUnfinishedShipByModelId($this->modelToBuild->getId());
         $shipMass = $this->modelToBuild->getMass();
@@ -32,6 +34,8 @@ class ShipCommand implements PlanetSurfaceCommand
         $possibleBuildShips = intval($virtualResources / $shipMass);
         $this->madeAmount = min($possibleBuildShips, $this->targetAmount);
 
+        $ship = ShipCalculator2::calculate($this->modelToBuild, $oldSurface->getOwner()->getTechnologies());
+
         if ($possibleBuildShips >= $this->targetAmount) {
             $usedResources = $shipMass * $this->targetAmount - $unfinishedResources;
             $planetSurface->removeUnfinishedShip($unfinishedShip);
@@ -41,7 +45,6 @@ class ShipCommand implements PlanetSurfaceCommand
 
             // create new unfinished ship
             $unfinishedShip = new UnfinishedShip();
-            $ship = ShipCalculator2::calculate($this->modelToBuild, $oldSurface->getOwner()->getTechnologies());
             $unfinishedShip->setShip($ship);
             $unfinishedShip->setResourcesUsed($shipPartResources);
 
@@ -51,6 +54,14 @@ class ShipCommand implements PlanetSurfaceCommand
         $planetSurface->modifyMaterial(-$usedResources);
         $planetSurface->modifyIndustryUsed($usedResources);
         $planetSurface->modifyPopulationUsed($usedResources);
+
+        if ($this->madeAmount > 0) {
+            for ($i = 0; $i < $this->madeAmount; $i++) {
+                $newShip = clone $ship;
+                $newShip->setId($this->idGenerator->generateId());
+                $planetSurface->addShip($newShip);
+            }
+        }
     }
 
     public function getCode(): string
@@ -87,4 +98,9 @@ class ShipCommand implements PlanetSurfaceCommand
         return $this->madeAmount;
     }
 
+    public function setIdGenerator(IdGenerator $idGenerator): ShipCommand
+    {
+        $this->idGenerator = $idGenerator;
+        return $this;
+    }
 }

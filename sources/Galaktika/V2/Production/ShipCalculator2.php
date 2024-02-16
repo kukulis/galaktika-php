@@ -11,7 +11,6 @@ class ShipCalculator2
     {
         $ship = new Ship();
 
-        $ship->setId(uniqid());
         $ship->setModelName($shipModel->getName());
         $ship->setModelId($shipModel->getId());
 
