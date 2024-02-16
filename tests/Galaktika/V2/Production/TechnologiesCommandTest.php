@@ -10,12 +10,13 @@ use PHPUnit\Framework\TestCase;
 
 class TechnologiesCommandTest extends TestCase
 {
-    public function testUpgrade() {
+    public function testUpgrade()
+    {
         $technologies = new Technologies();
         $owner = new Race();
         $owner->setTechnologies($technologies);
-        $planetSurface  = new PlanetSurface();
-        $planetSurface->setOwner( $owner);
+        $planetSurface = new PlanetSurface();
+        $planetSurface->setOwner($owner);
 
         $planetSurface->setPopulation(100);
         $planetSurface->setIndustry(100);
@@ -25,8 +26,9 @@ class TechnologiesCommandTest extends TestCase
         $researchCommand->setGoalAmount(100);
         $researchCommand->setTechnologyType(Technologies::TYPE_ENGINES);
 
-        $rezPlanetSurface = $researchCommand->execute($planetSurface);
+        $rezPlanetSurface = clone $planetSurface;
+        $researchCommand->execute($rezPlanetSurface, $planetSurface);
 
-        $this->assertEquals( 2, $rezPlanetSurface->getOwner()->getTechnologies()->getEngines());
+        $this->assertEquals(2, $rezPlanetSurface->getOwner()->getTechnologies()->getEngines());
     }
 }

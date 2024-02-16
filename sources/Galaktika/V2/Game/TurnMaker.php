@@ -65,8 +65,6 @@ class TurnMaker
         // 1 population
         // for each surface
 
-        // TODO make calculations, using other services
-
         $newSurface->setPopulation(
             PopulationCalculator::calculatePopulation(
                 $surface->getPopulation(),
@@ -75,6 +73,11 @@ class TurnMaker
             )
         );
 
+        foreach ($surface->getCommands() as $command) {
+            $command->execute($newSurface, $surface);
+        }
+
+        // TODO
         // industry, ships, materials ?
 
 

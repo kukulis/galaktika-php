@@ -14,7 +14,8 @@ class IndustryCommandTest extends TestCase
      */
     public function testIndustry(PlanetSurface $surface, IndustryCommand $command, PlanetSurface $expectedSurface)
     {
-        $rezPlanetSurface = $command->execute($surface);
+        $rezPlanetSurface =  clone $surface;
+        $command->execute($rezPlanetSurface, $surface);
 
         $this->assertEquals($expectedSurface->getIndustry(), $rezPlanetSurface->getIndustry());
         $this->assertEquals($expectedSurface->getPopulation(), $rezPlanetSurface->getPopulation());

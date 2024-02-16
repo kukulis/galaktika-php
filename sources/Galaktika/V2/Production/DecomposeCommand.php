@@ -34,13 +34,10 @@ class DecomposeCommand implements PlanetSurfaceCommand
         return $this;
     }
 
-    public function execute(PlanetSurface $planetSurface): PlanetSurface
+    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface): void
     {
-        // TODO think about immutable
-
         $planetSurface->setMaterial( $planetSurface->getMaterial() + $this->unfinishedShip->getResourcesUsed() );
         $planetSurface->removeUnfinishedShip($this->unfinishedShip);
-        return $planetSurface;
     }
 
     public function getCode(): string

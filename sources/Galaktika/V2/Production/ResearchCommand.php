@@ -11,7 +11,7 @@ class ResearchCommand implements PlanetSurfaceCommand
     private float $goalAmount;
     private string $technologyType;
 
-    public function execute(PlanetSurface $planetSurface): PlanetSurface
+    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface): void
     {
         $technologies = $planetSurface->getOwner()->getTechnologies();
 
@@ -26,8 +26,6 @@ class ResearchCommand implements PlanetSurfaceCommand
             $this->technologyType,
             $technologies->getTechnology($this->technologyType) + $technologyGrowth
         );
-
-        return $planetSurface;
     }
 
     public function getCode(): string

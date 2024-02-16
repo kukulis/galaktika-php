@@ -23,7 +23,9 @@ class ShipCommandTest extends TestCase
         int $expectedMadeAmount,
         ?UnfinishedShip $expectedUnfinishedShip
     ) {
-        $rezPlanetSurface = $shipCommand->execute($planetSurface);
+        $rezPlanetSurface = clone $planetSurface;
+
+        $shipCommand->execute($rezPlanetSurface, $planetSurface);
 
         $this->assertEquals($expectedPlanetSurface->getUsedPopulation(), $rezPlanetSurface->getUsedPopulation());
         $this->assertEquals($expectedPlanetSurface->getUsedIndustry(), $rezPlanetSurface->getUsedIndustry());

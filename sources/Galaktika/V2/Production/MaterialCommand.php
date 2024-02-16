@@ -7,11 +7,11 @@ use Galaktika\V2\Data\PlanetSurface;
 class MaterialCommand implements PlanetSurfaceCommand
 {
     private string  $id;
-    private float $goalAmount;
+    private float $goalAmount=99999;
 
     private float $madeAmount=0;
 
-    public function execute(PlanetSurface $planetSurface): PlanetSurface
+    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface): void
     {
         $this->madeAmount = min(
             $this->goalAmount,
@@ -20,8 +20,6 @@ class MaterialCommand implements PlanetSurfaceCommand
         );
 
         $planetSurface->setMaterial($planetSurface->getMaterial()+ $this->madeAmount);
-
-        return $planetSurface;
     }
 
     public function getCode(): string

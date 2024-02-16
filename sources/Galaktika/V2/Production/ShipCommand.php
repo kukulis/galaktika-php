@@ -12,10 +12,9 @@ class ShipCommand implements PlanetSurfaceCommand
 
     private int $madeAmount = 0;
 
-    public function execute(PlanetSurface $planetSurface): PlanetSurface
+    public function execute(PlanetSurface $planetSurface , PlanetSurface $oldSurface): void
     {
-        $resultSurface = clone $planetSurface;
-        $unfinishedShip = $resultSurface->findUnfinishedShipByModelId($this->modelToBuild->getId());
+        $unfinishedShip = $planetSurface->findUnfinishedShipByModelId($this->modelToBuild->getId());
         $shipMass = $this->modelToBuild->getMass();
 
         $unfinishedResources = 0;
@@ -24,9 +23,9 @@ class ShipCommand implements PlanetSurfaceCommand
         }
 
         $availableResources = min(
-            $planetSurface->getMaterial(),
-            $planetSurface->getUnusedIndustry(),
-            $planetSurface->getUnusedPopulation()
+            $oldSurface->getMaterial(),
+            $oldSurface->getUnusedIndustry(),
+            $oldSurface->getUnusedPopulation()
         );
 
         $virtualResources = $unfinishedResources + $availableResources;
@@ -35,25 +34,23 @@ class ShipCommand implements PlanetSurfaceCommand
 
         if ($possibleBuildShips >= $this->targetAmount) {
             $usedResources = $shipMass * $this->targetAmount - $unfinishedResources;
-            $resultSurface->removeUnfinishedShip($unfinishedShip);
+            $planetSurface->removeUnfinishedShip($unfinishedShip);
         } else {
             $usedResources = $availableResources;
             $shipPartResources = $virtualResources - $possibleBuildShips * $shipMass;
 
             // create new unfinished ship
             $unfinishedShip = new UnfinishedShip();
-            $ship = ShipCalculator2::calculate($this->modelToBuild, $planetSurface->getOwner()->getTechnologies());
+            $ship = ShipCalculator2::calculate($this->modelToBuild, $oldSurface->getOwner()->getTechnologies());
             $unfinishedShip->setShip($ship);
             $unfinishedShip->setResourcesUsed($shipPartResources);
 
-            $resultSurface->removeUnfinishedShipByModelId($this->modelToBuild->getId());
-            $resultSurface->addUnfinishedShip($unfinishedShip);
+            $planetSurface->removeUnfinishedShipByModelId($this->modelToBuild->getId());
+            $planetSurface->addUnfinishedShip($unfinishedShip);
         }
-        $resultSurface->modifyMaterial(-$usedResources);
-        $resultSurface->modifyIndustryUsed($usedResources);
-        $resultSurface->modifyPopulationUsed($usedResources);
-
-        return $resultSurface;
+        $planetSurface->modifyMaterial(-$usedResources);
+        $planetSurface->modifyIndustryUsed($usedResources);
+        $planetSurface->modifyPopulationUsed($usedResources);
     }
 
     public function getCode(): string

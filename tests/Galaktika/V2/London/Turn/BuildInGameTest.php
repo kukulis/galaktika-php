@@ -8,6 +8,7 @@ use Galaktika\V2\Data\GameTurn;
 use Galaktika\V2\Data\Planet;
 use Galaktika\V2\Data\PlanetSurface;
 use Galaktika\V2\Game\TurnMaker;
+use Galaktika\V2\Production\MaterialCommand;
 use PHPUnit\Framework\TestCase;
 
 class BuildInGameTest extends TestCase
@@ -34,7 +35,19 @@ class BuildInGameTest extends TestCase
             $expectedGame->getSurfaces()[0]->getPopulation(),
             $newGame->getSurfaces()[0]->getPopulation()
         );
-        // TODO industry, ships, materials
+        $this->assertEquals(
+            $expectedGame->getSurfaces()[0]->getIndustry(),
+            $newGame->getSurfaces()[0]->getIndustry()
+        );
+        $this->assertEquals(
+            $expectedGame->getSurfaces()[0]->getMaterial(),
+            $newGame->getSurfaces()[0]->getMaterial()
+        );
+        // ??
+        $this->assertEquals(
+            $expectedGame->getSurfaces()[0]->getShips(),
+            $newGame->getSurfaces()[0]->getShips()
+        );
     }
 
     public static function provideTestingGames(): array
@@ -51,8 +64,12 @@ class BuildInGameTest extends TestCase
                                     ->setSize(100)
                             )
                             ->setPopulation(50)
-                        // TODO industry, ships, materials
-                        // surface parameters TODO
+                            ->setIndustry(50)
+                            ->setMaterial(50)
+                            ->setShips([])
+                            ->setCommands([
+                                new MaterialCommand()
+                            ])
                     ]),
                 'expectedGame' => (new GameTurn())->setSurfaces([
                     (new PlanetSurface())
@@ -62,8 +79,10 @@ class BuildInGameTest extends TestCase
                                 ->setId('planet1')
                                 ->setSize(100)
                         )
-                        // surface parameters TODO
                         ->setPopulation(65)
+                        ->setIndustry(50)
+                        ->setMaterial(100)
+                        ->setShips([])
                 ])
                 ,
             ]

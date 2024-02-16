@@ -11,7 +11,7 @@ class IndustryCommand implements PlanetSurfaceCommand
 
     private float $madeAmount=0;
 
-    public function execute(PlanetSurface $planetSurface): PlanetSurface
+    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface): void
     {
 
         $industryFromMaterial = min($planetSurface->getMaterial(),
@@ -26,7 +26,7 @@ class IndustryCommand implements PlanetSurfaceCommand
         $this->madeAmount += $industryFromMaterial;
 
         if ( $this->madeAmount == $this->goalAmount) {
-            return $planetSurface;
+            return;
         }
 
         $industryFromIndustry = min (
@@ -40,8 +40,6 @@ class IndustryCommand implements PlanetSurfaceCommand
         $planetSurface->setIndustry($planetSurface->getIndustry()+$industryFromIndustry);
 
         $this->madeAmount += $industryFromIndustry;
-
-        return $planetSurface;
     }
 
     public function getCode(): string
