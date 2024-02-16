@@ -4,7 +4,8 @@ namespace Tests\Galaktika\V2\London;
 
 use Galaktika\SimpleIdGenerator;
 use Galaktika\V2\Data\Fleet;
-use Galaktika\V2\Data\Game;
+use Galaktika\V2\Data\GameSettings;
+use Galaktika\V2\Data\GameTurn;
 use Galaktika\V2\Data\Location;
 use Galaktika\V2\Data\Planet;
 use Galaktika\V2\Data\PlanetSurface;
@@ -17,10 +18,11 @@ class TurnTest extends TestCase
     /**
      * @dataProvider provideGame
      */
-    public function testTurn(Game $game, Game $expectedGame)
+    public function testTurn(GameTurn $game, GameTurn $expectedGame)
     {
         $idGenerator = new SimpleIdGenerator();
-        $turnMaker = new TurnMaker($game, $idGenerator);
+        $gameSetting = new GameSettings();
+        $turnMaker = new TurnMaker($game, $idGenerator, $gameSetting);
 
         $newGame = $turnMaker->makeTurn();
 
@@ -76,7 +78,7 @@ class TurnTest extends TestCase
             );
 
         return [
-            'game' => (new Game())
+            'game' => (new GameTurn())
                 ->setName('game')
                 ->setTurn(1)
                 ->setPlanets([
@@ -91,7 +93,7 @@ class TurnTest extends TestCase
                 ])
             ,
             'expectedGame' =>
-                (new Game())
+                (new GameTurn())
                     ->setName('game')
                     ->setTurn(2)
                     ->setPlanets([
@@ -109,7 +111,7 @@ class TurnTest extends TestCase
     private static function provideGamesForTestFlights(): array
     {
         return [
-            'game' => (new Game())
+            'game' => (new GameTurn())
                 ->setName('game')
                 ->setTurn(1)
                 ->setFleets([
@@ -128,7 +130,7 @@ class TurnTest extends TestCase
                 )
             ,
             'expectedGame' =>
-                (new Game())
+                (new GameTurn())
                     ->setName('game')
                     ->setTurn(2)
                     ->setFleets(

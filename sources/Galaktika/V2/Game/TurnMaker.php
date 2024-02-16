@@ -3,7 +3,10 @@
 namespace Galaktika\V2\Game;
 
 use Galaktika\IdGenerator;
-use Galaktika\V2\Data\Game;
+use Galaktika\V2\Data\GameSettings;
+use Galaktika\V2\Data\GameTurn;
+use Galaktika\V2\Data\PlanetSurface;
+use Galaktika\V2\Production\PopulationCalculator;
 use Galaktika\V2\Space\FlyCalculator;
 
 class TurnMaker
@@ -11,36 +14,31 @@ class TurnMaker
 
     private IdGenerator $idGenerator;
 
-    private Game $game;
-    private Game $newGame;
+    private GameTurn $gameTurn;
+    private GameTurn $newGame;
+
+    private GameSettings $gameSettings;
 
     /**
      * @param IdGenerator $idGenerator
      */
-    public function __construct(Game $game, IdGenerator $idGenerator)
+    public function __construct(GameTurn $gameTurn, IdGenerator $idGenerator, GameSettings $gameSettings)
     {
         $this->idGenerator = $idGenerator;
-        $this->game = $game;
+        $this->gameTurn = $gameTurn;
+        $this->gameSettings = $gameSettings;
     }
 
 
-    public function makeTurn(): Game
+    public function makeTurn(): GameTurn
     {
-        $this->newGame = new Game();
+        $this->newGame = new GameTurn();
 
         $this->newGame
-            ->setName($this->game->getName())
-            ->setTurn($this->game->getTurn() + 1)
-            ->setPlanets($this->game->getPlanets());
+            ->setName($this->gameTurn->getName())
+            ->setTurn($this->gameTurn->getTurn() + 1)
+            ->setPlanets($this->gameTurn->getPlanets());
 
-        $surfaces = $this->game->getSurfaces();
-        $newSurfaces = array_map(fn($s) => (clone($s))->setId($this->idGenerator->generateId()), $surfaces);
-        $this->newGame->setSurfaces($newSurfaces);
-
-//        $fleets = $this->game->getFleets();
-//
-//        $newFleets = array_map()
-//
 
         $this->executeBuilds();
         $this->executeFlights();
@@ -53,19 +51,46 @@ class TurnMaker
 
     public function executeBuilds(): void
     {
+        $surfaces = $this->gameTurn->getSurfaces();
+        $newSurfaces = array_map(fn($s) => $this->executeSurfaceBuild($s), $surfaces);
+        $this->newGame->setSurfaces($newSurfaces);
+    }
+
+    public function executeSurfaceBuild(PlanetSurface $surface): PlanetSurface
+    {
+        $newSurface = clone($surface);
+        $newSurface->setId($this->idGenerator->generateId());
+
+        // (technologies?)
+        // 1 population
+        // for each surface
+
         // TODO make calculations, using other services
+
+        $newSurface->setPopulation(
+            PopulationCalculator::calculatePopulation(
+                $surface->getPopulation(),
+                $this->gameSettings->getPopulationPercentage(),
+                $newSurface->getPlanet()->getSize()
+            )
+        );
+
+        // industry, ships, materials ?
+
+
+        return $newSurface;
     }
 
     public function executeFlights()
     {
-        $fleets = $this->game->getFleets();
+        $fleets = $this->gameTurn->getFleets();
         $newFleets = array_map(fn($fleet) => FlyCalculator::flyFleet($fleet)->setId($this->idGenerator->generateId()),
             $fleets);
         $this->newGame->setFleets($newFleets);
     }
+
     public function executeBattles()
     {
-
     }
 
     public function executeDestructions()

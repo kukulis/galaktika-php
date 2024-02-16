@@ -2,7 +2,10 @@
 
 namespace Galaktika\V2\Data;
 
-class Game
+/**
+ * By the current usage this is not a game, this is GameTurn.
+ */
+class GameTurn
 {
     private string $name='';
     private int $turn=0;
@@ -26,7 +29,7 @@ class Game
         return $this->name;
     }
 
-    public function setName(string $name): Game
+    public function setName(string $name): GameTurn
     {
         $this->name = $name;
         return $this;
@@ -37,7 +40,7 @@ class Game
         return $this->turn;
     }
 
-    public function setTurn(int $turn): Game
+    public function setTurn(int $turn): GameTurn
     {
         $this->turn = $turn;
         return $this;
@@ -51,7 +54,7 @@ class Game
         return $this->players;
     }
 
-    public function setPlayers(array $players): Game
+    public function setPlayers(array $players): GameTurn
     {
         $this->players = $players;
         return $this;
@@ -65,7 +68,7 @@ class Game
         return $this->planets;
     }
 
-    public function setPlanets(array $planets): Game
+    public function setPlanets(array $planets): GameTurn
     {
         $this->planets = $planets;
         return $this;
@@ -79,7 +82,7 @@ class Game
         return $this->fleets;
     }
 
-    public function setFleets(array $fleets): Game
+    public function setFleets(array $fleets): GameTurn
     {
         $this->fleets = $fleets;
         return $this;
@@ -90,7 +93,7 @@ class Game
         return $this->surfaces;
     }
 
-    public function setSurfaces(array $surfaces): Game
+    public function setSurfaces(array $surfaces): GameTurn
     {
         $this->surfaces = $surfaces;
         return $this;

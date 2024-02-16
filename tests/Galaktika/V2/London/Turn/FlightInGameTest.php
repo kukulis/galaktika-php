@@ -4,7 +4,8 @@ namespace Tests\Galaktika\V2\London\Turn;
 
 use Galaktika\SimpleIdGenerator;
 use Galaktika\V2\Data\Fleet;
-use Galaktika\V2\Data\Game;
+use Galaktika\V2\Data\GameSettings;
+use Galaktika\V2\Data\GameTurn;
 use Galaktika\V2\Data\Location;
 use Galaktika\V2\Data\Ship;
 use Galaktika\V2\Game\TurnMaker;
@@ -15,9 +16,10 @@ class FlightInGameTest extends TestCase
     /**
      * @dataProvider provideTestingGames
      */
-    public function testTurn(Game $game, Game $expectedGame) {
+    public function testTurn(GameTurn $game, GameTurn $expectedGame) {
         $idGenerator = new SimpleIdGenerator();
-        $turnMaker = new TurnMaker($game, $idGenerator);
+        $gameSettings = new GameSettings();
+        $turnMaker = new TurnMaker($game, $idGenerator, $gameSettings);
 
         $newGame = $turnMaker->makeTurn();
 
@@ -35,7 +37,7 @@ class FlightInGameTest extends TestCase
     public static function provideTestingGames() : array {
         return [
             'test1' => [
-                'game' => (new Game())->setFleets([
+                'game' => (new GameTurn())->setFleets([
                     (new Fleet())
                         ->setBornId('abc')
                         ->setId('123')
@@ -47,7 +49,7 @@ class FlightInGameTest extends TestCase
                         )
                         ->setDirection(pi()/2)
                 ]),
-                'expectedGame' => (new Game())->setFleets([
+                'expectedGame' => (new GameTurn())->setFleets([
                     (new Fleet())
                         ->setBornId('abc')
                         ->setId('other')
