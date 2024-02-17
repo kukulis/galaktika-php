@@ -6,8 +6,7 @@ class Race
 {
     private string $id;
 
-    // TODO proxy, because has different tech in different turn
-    private Technologies $technologies;
+    private ?TechnologiesTurnProxy $technologiesTurnProxy = null;
 
     public function getId(): string
     {
@@ -23,13 +22,22 @@ class Race
 
     public function getTechnologies(): Technologies
     {
-        return $this->technologies;
+        return $this->getTechnologiesProxy()->get();
     }
 
     public function setTechnologies(Technologies $technologies): Race
     {
-        $this->technologies = $technologies;
+        $this->getTechnologiesProxy()->set($technologies);
 
         return $this;
+    }
+
+    public function getTechnologiesProxy(): TechnologiesTurnProxy
+    {
+        if ($this->technologiesTurnProxy === null) {
+            $this->technologiesTurnProxy = new TechnologiesTurnProxy();
+        }
+
+        return $this->technologiesTurnProxy;
     }
 }

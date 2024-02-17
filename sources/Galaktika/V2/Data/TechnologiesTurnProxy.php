@@ -6,25 +6,13 @@ class TechnologiesTurnProxy
 {
     private array $technologiesInTurn=[];
 
-    private int $currentTurn = 1;
-
-    public function getCurrentTurn(): int
-    {
-        return $this->currentTurn;
-    }
-
-    public function setCurrentTurn(int $currentTurn): TechnologiesTurnProxy
-    {
-        $this->currentTurn = $currentTurn;
-        return $this;
-    }
 
     public function get(): Technologies {
-        return $this->technologiesInTurn[$this->currentTurn];
+        return $this->technologiesInTurn[GlobalTurnProxy::getInstance()->getTurn()];
     }
 
     public function set(Technologies $t) : Technologies{
-        $this->technologiesInTurn[$this->currentTurn] = $t;
+        $this->technologiesInTurn[GlobalTurnProxy::getInstance()->getTurn()] = $t;
 
         return $t;
     }
