@@ -6,7 +6,6 @@ use Galaktika\SimpleIdGenerator;
 use Galaktika\Util\SingletonsContainer;
 use Galaktika\V2\Data\GameSettings;
 use Galaktika\V2\Data\GameTurn;
-use Galaktika\V2\Data\GlobalTurnProxy;
 use Galaktika\V2\Data\Planet;
 use Galaktika\V2\Data\PlanetSurface;
 use Galaktika\V2\Data\Race;
@@ -53,9 +52,13 @@ class BuildWithTechnologiesInGameTest extends TestCase
                             )
                             ->setOwner(
                                 SingletonsContainer::instance()->getSingleton(
-                                    'race1', fn() => (new Race())->setTechnologies(new Technologies())
+                                    'race1', fn() => (new Race())->setTechnologies(
+                                    (new Technologies())->setEngines(1)
+                                )
                                 )
                             )
+                            ->setPopulation(40)
+                            ->setIndustry(100)
                             ->setCommands([
                                 (new ResearchCommand())->setTechnologyType(Technologies::TYPE_DEFENCE)
                             ]),
@@ -66,6 +69,8 @@ class BuildWithTechnologiesInGameTest extends TestCase
                                     ->setId('p2')
                             )
                             ->setOwner(SingletonsContainer::instance()->getSingleton('race1'))
+                            ->setPopulation(100)
+                            ->setIndustry(60)
                             ->setCommands([
                                 (new ResearchCommand())->setTechnologyType(Technologies::TYPE_DEFENCE)
                             ]),
@@ -79,14 +84,21 @@ class BuildWithTechnologiesInGameTest extends TestCase
                                 (new Planet())
                                     ->setId('p1')
                             )
-                            ->setOwner(SingletonsContainer::instance()->getSingleton('race1')),
+                            ->setOwner(
+                                SingletonsContainer::instance()->getSingleton(
+                                    'expRace',
+                                    fn() => (new Race())->setTechnologies(
+                                        (new Technologies())->setDefence(2)
+                                    )
+                                )
+                            ),
                         (new PlanetSurface())
                             ->setId('surf2')
                             ->setPlanet(
                                 (new Planet())
                                     ->setId('p2')
                             )
-                            ->setOwner(SingletonsContainer::instance()->getSingleton('race1')),
+                            ->setOwner(SingletonsContainer::instance()->getSingleton('expRace')),
                     ])
             ]
         ];

@@ -61,6 +61,11 @@ class TurnMaker
         $newSurface = clone($surface);
         $newSurface->setId($this->idGenerator->generateId());
 
+
+        foreach ($surface->getCommands() as $command) {
+            $command->execute($newSurface, $surface);
+        }
+
         $newSurface->setPopulation(
             PopulationCalculator::calculatePopulation(
                 $surface->getPopulation(),
@@ -68,10 +73,6 @@ class TurnMaker
                 $newSurface->getPlanet()->getSize()
             )
         );
-
-        foreach ($surface->getCommands() as $command) {
-            $command->execute($newSurface, $surface);
-        }
 
         return $newSurface;
     }
