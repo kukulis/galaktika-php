@@ -6,7 +6,7 @@ use Galaktika\V2\Data\PlanetSurface;
 
 class ResearchCommand implements PlanetSurfaceCommand
 {
-    public const TECHNOLOGY_COEFFICIENT = 100;
+    public const TECHNOLOGY_COEFFICIENT = 0.01;
 
     private float $goalAmount;
     private string $technologyType;
@@ -21,7 +21,7 @@ class ResearchCommand implements PlanetSurfaceCommand
             $planetSurface->getUnusedPopulation()
         );
 
-        $technologyGrowth = $usedPower / self:: TECHNOLOGY_COEFFICIENT;
+        $technologyGrowth = $usedPower * self:: TECHNOLOGY_COEFFICIENT;
         $technologies->setTechnology(
             $this->technologyType,
             $technologies->getTechnology($this->technologyType) + $technologyGrowth

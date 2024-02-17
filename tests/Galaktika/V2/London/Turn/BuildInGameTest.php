@@ -14,6 +14,7 @@ use Galaktika\V2\Data\Technologies;
 use Galaktika\V2\Game\TurnMaker;
 use Galaktika\V2\Production\IndustryCommand;
 use Galaktika\V2\Production\MaterialCommand;
+use Galaktika\V2\Production\ResearchCommand;
 use Galaktika\V2\Production\ShipCommand;
 use Galaktika\V2\Production\ShipModel;
 use PHPUnit\Framework\TestCase;
@@ -184,8 +185,46 @@ class BuildInGameTest extends TestCase
                                 ->setModelId('test model id')
                                 ->setModelName('test ship')
                         ])
-                ])
-                ,
+                ]),
+            ],
+
+            'test technologies' => [ // TODO move to a separate test for assertions
+                'game' => (new GameTurn())
+                    ->setSurfaces([
+                        (new PlanetSurface())
+                            ->setId('s1')
+                            ->setPlanet(
+                                (new Planet())
+                                    ->setId('planet1')
+                                    ->setSize(100)
+                            )
+                            ->setPopulation(50)
+                            ->setIndustry(50)
+                            ->setMaterial(50)
+                            ->setShips([])
+                            ->setCommands([
+                                (new ResearchCommand())
+                                    ->setTechnologyType(Technologies::TYPE_ENGINES)
+                                    ->setGoalAmount(10)
+                            ])
+                            ->setOwner(
+                                (new Race())
+                                    ->setId('race1')
+                                    ->setTechnologies(new Technologies())
+                            )
+                    ]),
+                'expectedGame' => (new GameTurn())->setSurfaces([
+                    (new PlanetSurface())
+                        ->setId('s1+')
+                        ->setPlanet(
+                            (new Planet())
+                                ->setId('planet1')
+                                ->setSize(100)
+                        )
+                        ->setPopulation(65)
+                        ->setIndustry(50)
+                        ->setMaterial(50)
+                ]),
             ],
         ];
     }

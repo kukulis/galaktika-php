@@ -56,6 +56,11 @@ class Location implements ILocation
         return $destination->getY() - $this->y;
     }
 
+    /**
+     * @param Location $destination
+     * @return float
+     * @deprecated use 'distance' function from the trait
+     */
     public function getDistance(Location $destination): float
     {
         return Math::getDistance($this->getX(), $this->getY(), $destination->getX(), $destination->getY());
