@@ -3,16 +3,21 @@
 namespace Galaktika\V2\Game;
 
 use Galaktika\IdGenerator;
+use Galaktika\V2\Battle\BattleCalculator;
+use Galaktika\V2\Data\Fleet;
 use Galaktika\V2\Data\GameSettings;
 use Galaktika\V2\Data\GameTurn;
-use Galaktika\V2\Data\GlobalTurnProxy;
+use Galaktika\V2\Data\IDiplomacyMap;
 use Galaktika\V2\Data\PlanetSurface;
 use Galaktika\V2\Data\Race;
+use Galaktika\V2\Math\IRandomGenerator;
 use Galaktika\V2\Production\PopulationCalculator;
+use Galaktika\V2\Space\ConflictFinder;
 use Galaktika\V2\Space\FlyCalculator;
 
 class TurnMaker
 {
+    const MAX_TURNS = 100;
 
     private IdGenerator $idGenerator;
 
@@ -20,6 +25,12 @@ class TurnMaker
     private GameTurn $newGame;
 
     private GameSettings $gameSettings;
+
+    private IDiplomacyMap $diplomacyMap;
+
+    private IRandomGenerator $randomGenerator;
+
+    private array $battleReports;
 
     /**
      * @param IdGenerator $idGenerator
@@ -38,7 +49,7 @@ class TurnMaker
 
         $this->owners = [];
 
-        $currentTurn  = $this->gameTurn->getTurn();
+        $currentTurn = $this->gameTurn->getTurn();
         $newTurn = $currentTurn + 1;
 
         $this->newGame
@@ -47,20 +58,18 @@ class TurnMaker
             ->setPlanets($this->gameTurn->getPlanets());
 
 
-        // this is made inside research command .. but technologies still needed
-
-        // TODO put these to a separate function
+        // TODO put this block to a separate function
         /** @var Race[] $owners */
         $owners = [];
         // technologies clones
         foreach ($this->gameTurn->getSurfaces() as $surface) {
-            if ( $surface->getOwner() == null ) {
+            if ($surface->getOwner() == null) {
                 continue;
             }
 
             $owner = $surface->getOwner();
 
-            if ( array_key_exists($owner->getId(), $owners)) {
+            if (array_key_exists($owner->getId(), $owners)) {
                 continue;
             }
             $owners[$owner->getId()] = $owner;
@@ -117,11 +126,50 @@ class TurnMaker
         $this->newGame->setFleets($newFleets);
     }
 
+    // TODO cover with tests
     public function executeBattles()
     {
+        // collect all ships
+        $allShips = array_reduce(
+            $this->gameTurn->getFleets(),
+            fn($ships, Fleet $fleet) => array_merge($ships, $fleet->getShips()),
+            []
+        );
+
+        // find battles
+        $conflicts = ConflictFinder::findConflicts($allShips, $this->diplomacyMap);
+        // execute battles
+
+        $this->battleReports = [];
+        foreach ($conflicts as $conflict) {
+            $tmpFleetA = (new Fleet())->setShips($conflict->getSideShips(0));
+            $tmpFleetB = (new Fleet())->setShips($conflict->getSideShips(1));
+
+            $battleCalculator = new BattleCalculator(self::MAX_TURNS);
+            $battleReport =  $battleCalculator->battle($tmpFleetA, $tmpFleetB, $this->randomGenerator);
+
+            $this->battleReports[] = $battleReport;
+        }
     }
 
     public function executeDestructions()
     {
+    }
+
+    public function setDiplomacyMap(IDiplomacyMap $diplomacyMap): TurnMaker
+    {
+        $this->diplomacyMap = $diplomacyMap;
+        return $this;
+    }
+
+    public function setRandomGenerator(IRandomGenerator $randomGenerator): TurnMaker
+    {
+        $this->randomGenerator = $randomGenerator;
+        return $this;
+    }
+
+    public function getBattleReports(): array
+    {
+        return $this->battleReports;
     }
 }
