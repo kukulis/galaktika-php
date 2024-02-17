@@ -8,7 +8,7 @@ class ResearchCommand implements PlanetSurfaceCommand
 {
     public const TECHNOLOGY_COEFFICIENT = 0.01;
 
-    private float $goalAmount;
+    private float $goalAmount=99999;
     private string $technologyType;
 
     public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface): void

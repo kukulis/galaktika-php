@@ -9,9 +9,9 @@ class PlanetSurface
     private string $id;
     private Planet $planet;
     private Race $owner;
-    private float $population;
-    private float $industry;
-    private float $material;
+    private float $population = 0;
+    private float $industry = 0;
+    private float $material = 0;
 
     private float $usedPopulation = 0;
     private float $usedIndustry = 0;

@@ -7,12 +7,20 @@ class TechnologiesTurnProxy
     private array $technologiesInTurn=[];
 
 
-    public function get(): Technologies {
-        return $this->technologiesInTurn[GlobalTurnProxy::getInstance()->getTurn()];
+    public function get(int $turn=0): Technologies {
+        if ( $turn == 0 ) {
+            $turn = GlobalTurnProxy::getInstance()->getTurn();
+        }
+
+        return $this->technologiesInTurn[$turn];
     }
 
-    public function set(Technologies $t) : Technologies{
-        $this->technologiesInTurn[GlobalTurnProxy::getInstance()->getTurn()] = $t;
+    public function set(Technologies $t, int $turn=0) : Technologies{
+
+        if( $turn == 0) {
+            $turn = GlobalTurnProxy::getInstance()->getTurn();
+        }
+        $this->technologiesInTurn[$turn] = $t;
 
         return $t;
     }

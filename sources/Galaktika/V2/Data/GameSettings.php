@@ -6,6 +6,8 @@ class GameSettings
 {
     private float $populationPercentage = 1.3;
 
+    // races?
+
     public function getPopulationPercentage(): float
     {
         return $this->populationPercentage;

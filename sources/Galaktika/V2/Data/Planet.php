@@ -7,7 +7,7 @@ class Planet
     private string $id;
 
     private Location $location;
-    private float $size;
+    private float $size = 100;
 
     public function getId(): string
     {
