@@ -26,7 +26,7 @@ class ShipCommandTest extends TestCase
     ) {
         $rezPlanetSurface = clone $planetSurface;
 
-        $shipCommand->execute($rezPlanetSurface, $planetSurface);
+        $shipCommand->execute($rezPlanetSurface, $planetSurface, 2);
 
         $this->assertEquals($expectedPlanetSurface->getUsedPopulation(), $rezPlanetSurface->getUsedPopulation());
         $this->assertEquals($expectedPlanetSurface->getUsedIndustry(), $rezPlanetSurface->getUsedIndustry());

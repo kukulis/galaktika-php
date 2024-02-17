@@ -11,7 +11,7 @@ class IndustryCommand implements PlanetSurfaceCommand
 
     private float $madeAmount=0;
 
-    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface): void
+    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface, int $turn): void
     {
 
         $industryFromMaterial = min($planetSurface->getMaterial(),

@@ -27,8 +27,8 @@ class TechnologiesCommandTest extends TestCase
         $researchCommand->setTechnologyType(Technologies::TYPE_ENGINES);
 
         $rezPlanetSurface = clone $planetSurface;
-        $researchCommand->execute($rezPlanetSurface, $planetSurface);
+        $researchCommand->execute($rezPlanetSurface, $planetSurface, 2);
 
-        $this->assertEquals(2, $rezPlanetSurface->getOwner()->getTechnologies()->getEngines());
+        $this->assertEquals(2, $rezPlanetSurface->getOwner()->getTechnologies(2)->getEngines());
     }
 }

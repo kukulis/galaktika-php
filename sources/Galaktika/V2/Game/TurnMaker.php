@@ -5,7 +5,9 @@ namespace Galaktika\V2\Game;
 use Galaktika\IdGenerator;
 use Galaktika\V2\Data\GameSettings;
 use Galaktika\V2\Data\GameTurn;
+use Galaktika\V2\Data\GlobalTurnProxy;
 use Galaktika\V2\Data\PlanetSurface;
+use Galaktika\V2\Data\Race;
 use Galaktika\V2\Production\PopulationCalculator;
 use Galaktika\V2\Space\FlyCalculator;
 
@@ -34,10 +36,36 @@ class TurnMaker
     {
         $this->newGame = new GameTurn();
 
+        $this->owners = [];
+
+        $currentTurn  = $this->gameTurn->getTurn();
+        $newTurn = $currentTurn + 1;
+
         $this->newGame
             ->setName($this->gameTurn->getName())
-            ->setTurn($this->gameTurn->getTurn() + 1)
+            ->setTurn($newTurn)
             ->setPlanets($this->gameTurn->getPlanets());
+
+        /** @var Race[] $owners */
+        $owners = [];
+        // technologies clones
+        foreach ($this->gameTurn->getSurfaces() as $surface) {
+            if ( $surface->getOwner() == null ) {
+                continue;
+            }
+
+            $owner = $surface->getOwner();
+
+            if ( array_key_exists($owner->getId(), $owners)) {
+                continue;
+            }
+            $owners[$owner->getId()] = $owner;
+
+            $technologies = $owner->getTechnologies($currentTurn);
+
+            // this is why this cycle is made for
+            $owner->setTechnologies(clone $technologies, $newTurn);
+        }
 
 
         $this->executeBuilds();
@@ -61,9 +89,8 @@ class TurnMaker
         $newSurface = clone($surface);
         $newSurface->setId($this->idGenerator->generateId());
 
-
         foreach ($surface->getCommands() as $command) {
-            $command->execute($newSurface, $surface);
+            $command->execute($newSurface, $surface, $this->newGame->getTurn());
         }
 
         $newSurface->setPopulation(

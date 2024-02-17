@@ -12,7 +12,7 @@ interface PlanetSurfaceCommand
     public const COMMAND_RESEARCH = 'RESEARCH';
     public const COMMAND_SHIP = 'SHIP';
 
-    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface): void;
+    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface, int $turn): void;
 
     public function getCode(): string;
 }

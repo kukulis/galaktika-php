@@ -34,7 +34,7 @@ class DecomposeCommand implements PlanetSurfaceCommand
         return $this;
     }
 
-    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface): void
+    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface, int $turn): void
     {
         $planetSurface->setMaterial( $planetSurface->getMaterial() + $this->unfinishedShip->getResourcesUsed() );
         $planetSurface->removeUnfinishedShip($this->unfinishedShip);

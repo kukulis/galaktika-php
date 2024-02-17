@@ -8,7 +8,7 @@ class PlanetSurface
 {
     private string $id;
     private Planet $planet;
-    private Race $owner;
+    private ?Race $owner=null;
     private float $population = 0;
     private float $industry = 0;
     private float $material = 0;
@@ -78,7 +78,7 @@ class PlanetSurface
         return $this;
     }
 
-    public function getOwner(): Race
+    public function getOwner(): ?Race
     {
         return $this->owner;
     }

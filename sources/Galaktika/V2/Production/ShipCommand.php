@@ -14,7 +14,7 @@ class ShipCommand implements PlanetSurfaceCommand
     private int $madeAmount = 0;
     private IdGenerator $idGenerator;
 
-    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface): void
+    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface, int $turn): void
     {
         $unfinishedShip = $planetSurface->findUnfinishedShipByModelId($this->modelToBuild->getId());
         $shipMass = $this->modelToBuild->getMass();
@@ -34,7 +34,7 @@ class ShipCommand implements PlanetSurfaceCommand
         $possibleBuildShips = intval($virtualResources / $shipMass);
         $this->madeAmount = min($possibleBuildShips, $this->targetAmount);
 
-        $ship = ShipCalculator2::calculate($this->modelToBuild, $oldSurface->getOwner()->getTechnologies());
+        $ship = ShipCalculator2::calculate($this->modelToBuild, $oldSurface->getOwner()->getTechnologies($turn-1));
 
         if ($possibleBuildShips >= $this->targetAmount) {
             $usedResources = $shipMass * $this->targetAmount - $unfinishedResources;

@@ -29,8 +29,15 @@ class BuildWithTechnologiesInGameTest extends TestCase
 
         $newGameTurn = $turnMaker->makeTurn();
 
+        $this->assertEquals($expectedGameTurn->getTurn(), $newGameTurn->getTurn());
+
         $newTechnologies = $newGameTurn->getSurfaces()[0]->getOwner()->getTechnologies($newGameTurn->getTurn());
-        $expectedTechnologies = $expectedGameTurn->getSurfaces()[0]->getOwner()->getTechnologies($gameTurn->getTurn());
+        $expectedTechnologies = $expectedGameTurn->getSurfaces()[0]->getOwner()->getTechnologies(
+            $expectedGameTurn->getTurn()
+        );
+        $oldTechnologies = $gameTurn->getSurfaces()[0]->getOwner()->getTechnologies($gameTurn->getTurn());
+
+        $this->assertNotTrue($oldTechnologies === $newTechnologies);
 
         $this->assertEquals($expectedTechnologies, $newTechnologies);
 
@@ -43,6 +50,7 @@ class BuildWithTechnologiesInGameTest extends TestCase
         return [
             'test two planets' => [
                 'gameTurn' => (new GameTurn())
+                    ->setTurn(1)
                     ->setSurfaces([
                         (new PlanetSurface())
                             ->setId('surf1')
@@ -52,9 +60,10 @@ class BuildWithTechnologiesInGameTest extends TestCase
                             )
                             ->setOwner(
                                 SingletonsContainer::instance()->getSingleton(
-                                    'race1', fn() => (new Race())->setTechnologies(
-                                    (new Technologies())->setEngines(1)
-                                )
+                                    'race1', fn() => (new Race())->setId('race1')
+                                    ->setTechnologies(
+                                        (new Technologies())->setEngines(1)
+                                    )
                                 )
                             )
                             ->setPopulation(40)
@@ -77,6 +86,7 @@ class BuildWithTechnologiesInGameTest extends TestCase
                     ])
                 ,
                 'expectedGameTurn' => (new GameTurn())
+                    ->setTurn(2)
                     ->setSurfaces([
                         (new PlanetSurface())
                             ->setId('surf1')
@@ -88,7 +98,8 @@ class BuildWithTechnologiesInGameTest extends TestCase
                                 SingletonsContainer::instance()->getSingleton(
                                     'expRace',
                                     fn() => (new Race())->setTechnologies(
-                                        (new Technologies())->setDefence(2)
+                                        (new Technologies())->setDefence(2),
+                                        2
                                     )
                                 )
                             ),

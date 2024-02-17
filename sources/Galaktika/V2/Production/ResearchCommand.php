@@ -2,18 +2,38 @@
 
 namespace Galaktika\V2\Production;
 
+use Galaktika\Exceptions\GalaktikaException;
 use Galaktika\V2\Data\PlanetSurface;
 
 class ResearchCommand implements PlanetSurfaceCommand
 {
     public const TECHNOLOGY_COEFFICIENT = 0.01;
 
-    private float $goalAmount=99999;
+    private float $goalAmount = 99999;
     private string $technologyType;
 
-    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface): void
+    public function execute(PlanetSurface $planetSurface, PlanetSurface $oldSurface, int $turn): void
     {
-        $technologies = $planetSurface->getOwner()->getTechnologies();
+        $technologies = $planetSurface->getOwner()->getTechnologies($turn);
+
+        if ($technologies == null) {
+            // try to get technologies from the previous turn
+            $prevTechnologies = $planetSurface->getOwner()->getTechnologies($turn - 1);
+
+            if ($prevTechnologies == null) {
+                throw new GalaktikaException(
+                    sprintf(
+                        'Cant get technologies for race %s from turn %s neither %s',
+                        $planetSurface->getOwner()->getId(),
+                        $turn - 1,
+                        $turn
+                    )
+                );
+            }
+
+            $technologies = clone $prevTechnologies;
+            $planetSurface->getOwner()->setTechnologies($technologies, $turn);
+        }
 
         $usedPower = min(
             $this->goalAmount,
@@ -22,6 +42,7 @@ class ResearchCommand implements PlanetSurfaceCommand
         );
 
         $technologyGrowth = $usedPower * self:: TECHNOLOGY_COEFFICIENT;
+
         $technologies->setTechnology(
             $this->technologyType,
             $technologies->getTechnology($this->technologyType) + $technologyGrowth

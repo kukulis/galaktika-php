@@ -20,7 +20,7 @@ class Race
         return $this;
     }
 
-    public function getTechnologies(int $turn = 0): Technologies
+    public function getTechnologies(int $turn = 0): ?Technologies
     {
         return $this->getTechnologiesProxy()->get($turn);
     }
