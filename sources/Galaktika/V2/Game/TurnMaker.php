@@ -46,6 +46,10 @@ class TurnMaker
             ->setTurn($newTurn)
             ->setPlanets($this->gameTurn->getPlanets());
 
+
+        // this is made inside research command .. but technologies still needed
+
+        // TODO put these to a separate function
         /** @var Race[] $owners */
         $owners = [];
         // technologies clones
@@ -66,6 +70,7 @@ class TurnMaker
             // this is why this cycle is made for
             $owner->setTechnologies(clone $technologies, $newTurn);
         }
+        // --
 
 
         $this->executeBuilds();
