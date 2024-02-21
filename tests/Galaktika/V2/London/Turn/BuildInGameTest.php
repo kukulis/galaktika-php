@@ -4,6 +4,7 @@ namespace Tests\Galaktika\V2\London\Turn;
 
 use Galaktika\SequenceIdGenerator;
 use Galaktika\SimpleIdGenerator;
+use Galaktika\V2\Data\DiplomacyMap;
 use Galaktika\V2\Data\GameSettings;
 use Galaktika\V2\Data\GameTurn;
 use Galaktika\V2\Data\Planet;
@@ -28,7 +29,9 @@ class BuildInGameTest extends TestCase
     {
         $idGenerator = new SimpleIdGenerator();
         $gameSettings = new GameSettings();
+        $diplomacyMap = new DiplomacyMap();
         $turnMaker = new TurnMaker($game, $idGenerator, $gameSettings);
+        $turnMaker->setDiplomacyMap($diplomacyMap);
 
         $newGame = $turnMaker->makeTurn();
         $this->assertCount(count($expectedGame->getSurfaces()), $newGame->getSurfaces());

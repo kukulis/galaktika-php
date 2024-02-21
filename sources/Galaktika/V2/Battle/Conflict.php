@@ -9,7 +9,7 @@ class Conflict
     /**
      * @var Ship[][]
      */
-    private array $sides=[];
+    private array $sides=[[],[]];
 
     private float $x;
     private float $y;

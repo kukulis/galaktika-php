@@ -3,10 +3,12 @@
 namespace Tests\Galaktika\V2\London\Turn;
 
 use Galaktika\SimpleIdGenerator;
+use Galaktika\V2\Data\DiplomacyMap;
 use Galaktika\V2\Data\Fleet;
 use Galaktika\V2\Data\GameSettings;
 use Galaktika\V2\Data\GameTurn;
 use Galaktika\V2\Data\Location;
+use Galaktika\V2\Data\Race;
 use Galaktika\V2\Data\Ship;
 use Galaktika\V2\Game\TurnMaker;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +22,7 @@ class FlightInGameTest extends TestCase
         $idGenerator = new SimpleIdGenerator();
         $gameSettings = new GameSettings();
         $turnMaker = new TurnMaker($game, $idGenerator, $gameSettings);
+        $turnMaker->setDiplomacyMap(new DiplomacyMap());
 
         $newGame = $turnMaker->makeTurn();
 
@@ -42,7 +45,7 @@ class FlightInGameTest extends TestCase
                         ->setBornId('abc')
                         ->setId('123')
                         ->setShips([
-                            (new Ship())->setSpeed(10)
+                            (new Ship())->setSpeed(10)->setX(0)->setY(0)->setOwner(new Race())
                         ])
                         ->setLocation(
                             (new Location())->setX(5)->setY(5)
@@ -54,7 +57,7 @@ class FlightInGameTest extends TestCase
                         ->setBornId('abc')
                         ->setId('other')
                         ->setShips([
-                            (new Ship())->setSpeed(10)
+                            (new Ship())->setSpeed(10)->setX(0)->setY(0)->setOwner(new Race())
                         ])
                         ->setLocation(
                             (new Location())->setX(5)->setY(15)

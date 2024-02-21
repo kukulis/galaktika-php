@@ -4,6 +4,7 @@ namespace Tests\Galaktika\V2\London\Turn;
 
 use Galaktika\SimpleIdGenerator;
 use Galaktika\Util\SingletonsContainer;
+use Galaktika\V2\Data\DiplomacyMap;
 use Galaktika\V2\Data\GameSettings;
 use Galaktika\V2\Data\GameTurn;
 use Galaktika\V2\Data\Planet;
@@ -24,7 +25,9 @@ class BuildWithTechnologiesInGameTest extends TestCase
     {
         $idGenerator = new SimpleIdGenerator();
         $gameSettings = new GameSettings();
+        $diplomacyMap = new DiplomacyMap();
         $turnMaker = new TurnMaker($gameTurn, $idGenerator, $gameSettings);
+        $turnMaker->setDiplomacyMap($diplomacyMap);
 
 
         $newGameTurn = $turnMaker->makeTurn();

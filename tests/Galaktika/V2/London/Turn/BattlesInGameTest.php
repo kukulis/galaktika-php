@@ -2,7 +2,12 @@
 
 namespace Tests\Galaktika\V2\London\Turn;
 
-class BattlesInGameTest
+use PHPUnit\Framework\TestCase;
+
+class BattlesInGameTest extends TestCase
 {
-// TODO
+    public function testBattlesInTurn() {
+        // TODO
+        $this->assertTrue(true);
+    }
 }
