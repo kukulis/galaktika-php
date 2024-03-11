@@ -8,7 +8,7 @@ use Galaktika\V2\Data\Fleet;
 use Galaktika\V2\Data\Ship;
 use PHPUnit\Framework\TestCase;
 
-class BattleTestSimple extends TestCase
+class BattleSimpleTest extends TestCase
 {
     public function testBattle()
     {

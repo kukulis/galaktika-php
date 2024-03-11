@@ -31,4 +31,7 @@ class SingletonsContainer
         return $singleton;
     }
 
+    public function cleanContainer() {
+        $this->singletons = [];
+    }
 }

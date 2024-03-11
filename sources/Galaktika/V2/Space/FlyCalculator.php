@@ -11,11 +11,12 @@ class FlyCalculator
     {
         $speed = $fleet->calculateSpeed();
 
+        // TODO add new ids
         $fleetResult = clone $fleet;
 
         // may need to check target location
         if ( $fleet->getTargetLocation() != null ) {
-            $distance = $fleet->getLocation()->getDistance($fleet->getTargetLocation());
+            $distance = $fleet->getLocation()->distance($fleet->getTargetLocation());
 
             if ($distance < $speed) {
                 $fleetResult->setLocation($fleet->getTargetLocation()); // clone target location ??

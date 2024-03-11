@@ -7,8 +7,6 @@ use OutOfBoundsException;
 
 class RandomSequence implements IRandomGenerator
 {
-    public const ALMOST1 = 0.999999;
-
     private array $randoms;
     private int $current = 0;
 

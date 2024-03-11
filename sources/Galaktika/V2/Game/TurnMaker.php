@@ -4,6 +4,7 @@ namespace Galaktika\V2\Game;
 
 use Galaktika\IdGenerator;
 use Galaktika\V2\Battle\BattleCalculator;
+use Galaktika\V2\Battle\BattleReport;
 use Galaktika\V2\Data\Fleet;
 use Galaktika\V2\Data\GameSettings;
 use Galaktika\V2\Data\GameTurn;
@@ -30,6 +31,7 @@ class TurnMaker
 
     private IRandomGenerator $randomGenerator;
 
+    /** @var BattleReport[]  */
     private array $battleReports;
 
     /**
@@ -61,6 +63,8 @@ class TurnMaker
         $this->cloneTechnologies($currentTurn, $newTurn);
 
         $this->executeBuilds();
+
+        // fleets cloned there
         $this->executeFlights();
         $this->executeBattles();
 
@@ -171,6 +175,9 @@ class TurnMaker
         return $this;
     }
 
+    /**
+     * @return BattleReport[]
+     */
     public function getBattleReports(): array
     {
         return $this->battleReports;
