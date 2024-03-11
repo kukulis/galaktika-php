@@ -20,6 +20,13 @@ use PHPUnit\Framework\TestCase;
 
 class BattlesInGameTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        SingletonsContainer::instance()->cleanContainer();
+    }
+
     /**
      * @dataProvider provideTestingGames
      *

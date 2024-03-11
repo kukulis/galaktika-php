@@ -69,11 +69,11 @@ class ShipsHolder
         return $this->bShipsByIndex[$i]->ship;
     }
 
-    public function getSideShipByIndex(int $side, int $i) {
-        if ( $side == 0) {
+    public function getSideShipByIndex(int $side, int $i)
+    {
+        if ($side == 0) {
             return $this->getAShipByIndex($i);
-        }
-        else {
+        } else {
             return $this->getBShipByIndex($i);
         }
     }
@@ -126,13 +126,13 @@ class ShipsHolder
         $this->allShipsByIndex[$shipHolderToRemove->allIndex] = $lastShipHolder;
         unset($this->allShipsByIndex[count($this->allShipsByIndex) - 1]);
 
-        if ( $shipHolderToRemove->aIndex >= 0 ) {
+        if ($shipHolderToRemove->aIndex >= 0) {
             $lastAShipHolder->aIndex = $shipHolderToRemove->aIndex;
             $this->aShipsByIndex[$shipHolderToRemove->aIndex] = $lastAShipHolder;
             unset($this->aShipsByIndex[count($this->aShipsByIndex) - 1]);
         }
 
-        if ( $shipHolderToRemove->bIndex >= 0 ) {
+        if ($shipHolderToRemove->bIndex >= 0) {
             $lastBShipHolder->bIndex = $shipHolderToRemove->bIndex;
             $this->bShipsByIndex[$shipHolderToRemove->bIndex] = $lastBShipHolder;
             unset($this->bShipsByIndex[count($this->bShipsByIndex) - 1]);
@@ -155,19 +155,33 @@ class ShipsHolder
         return count($this->bShipsByIndex);
     }
 
-    public function getSideShipsCount(int $side)
+    public function getAShipsIdsCount(): int
+    {
+        return count($this->aShipsById);
+    }
+
+    public function getBShipsIdsCount(): int
+    {
+        return count($this->bShipsById);
+    }
+
+    public function getSideShipsCount(int $side): int
     {
         if ($side == 0) {
             return $this->getAShipsCount();
-        }
-        else {
+        } else {
             return $this->getBShipsCount();
         }
     }
 
-    public function getCount()
+    public function getCount(): int
     {
         return count($this->allShipsByIndex);
+    }
+
+    public function getIdCount(): int
+    {
+        return count($this->allShipsById);
     }
 
     public function extractA(): array
