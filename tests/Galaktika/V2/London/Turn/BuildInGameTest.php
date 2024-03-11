@@ -191,7 +191,7 @@ class BuildInGameTest extends TestCase
                 ]),
             ],
 
-            'test technologies' => [ // TODO move to a separate test for assertions
+            'test technologies' => [
                 'game' => (new GameTurn())
                     ->setSurfaces([
                         (new PlanetSurface())

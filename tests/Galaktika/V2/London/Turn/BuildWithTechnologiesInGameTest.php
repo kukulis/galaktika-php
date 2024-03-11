@@ -29,7 +29,6 @@ class BuildWithTechnologiesInGameTest extends TestCase
         $turnMaker = new TurnMaker($gameTurn, $idGenerator, $gameSettings);
         $turnMaker->setDiplomacyMap($diplomacyMap);
 
-
         $newGameTurn = $turnMaker->makeTurn();
 
         $this->assertEquals($expectedGameTurn->getTurn(), $newGameTurn->getTurn());
@@ -51,70 +50,76 @@ class BuildWithTechnologiesInGameTest extends TestCase
     public static function provideGamesForTest(): array
     {
         return [
-            'test two planets' => [
-                'gameTurn' => (new GameTurn())
-                    ->setTurn(1)
-                    ->setSurfaces([
-                        (new PlanetSurface())
-                            ->setId('surf1')
-                            ->setPlanet(
-                                (new Planet())
-                                    ->setId('p1')
-                            )
-                            ->setOwner(
-                                SingletonsContainer::instance()->getSingleton(
-                                    'race1', fn() => (new Race())->setId('race1')
-                                    ->setTechnologies(
-                                        (new Technologies())->setEngines(1)
-                                    )
+            'test two planets' => self::provideTwoPlanetsTestData(),
+        ];
+    }
+
+    private static function provideTwoPlanetsTestData() : array {
+        SingletonsContainer::instance()->cleanContainer();
+
+        return [
+            'gameTurn' => (new GameTurn())
+                ->setTurn(1)
+                ->setSurfaces([
+                    (new PlanetSurface())
+                        ->setId('surf1')
+                        ->setPlanet(
+                            (new Planet())
+                                ->setId('p1')
+                        )
+                        ->setOwner(
+                            SingletonsContainer::instance()->getSingleton(
+                                'race1', fn() => (new Race())->setId('race1')
+                                ->setTechnologies(
+                                    (new Technologies())->setEngines(1)
                                 )
                             )
-                            ->setPopulation(40)
-                            ->setIndustry(100)
-                            ->setCommands([
-                                (new ResearchCommand())->setTechnologyType(Technologies::TYPE_DEFENCE)
-                            ]),
-                        (new PlanetSurface())
-                            ->setId('surf2')
-                            ->setPlanet(
-                                (new Planet())
-                                    ->setId('p2')
-                            )
-                            ->setOwner(SingletonsContainer::instance()->getSingleton('race1'))
-                            ->setPopulation(100)
-                            ->setIndustry(60)
-                            ->setCommands([
-                                (new ResearchCommand())->setTechnologyType(Technologies::TYPE_DEFENCE)
-                            ]),
-                    ])
-                ,
-                'expectedGameTurn' => (new GameTurn())
-                    ->setTurn(2)
-                    ->setSurfaces([
-                        (new PlanetSurface())
-                            ->setId('surf1')
-                            ->setPlanet(
-                                (new Planet())
-                                    ->setId('p1')
-                            )
-                            ->setOwner(
-                                SingletonsContainer::instance()->getSingleton(
-                                    'expRace',
-                                    fn() => (new Race())->setTechnologies(
-                                        (new Technologies())->setDefence(2),
-                                        2
-                                    )
+                        )
+                        ->setPopulation(40)
+                        ->setIndustry(100)
+                        ->setCommands([
+                            (new ResearchCommand())->setTechnologyType(Technologies::TYPE_DEFENCE)
+                        ]),
+                    (new PlanetSurface())
+                        ->setId('surf2')
+                        ->setPlanet(
+                            (new Planet())
+                                ->setId('p2')
+                        )
+                        ->setOwner(SingletonsContainer::instance()->getSingleton('race1'))
+                        ->setPopulation(100)
+                        ->setIndustry(60)
+                        ->setCommands([
+                            (new ResearchCommand())->setTechnologyType(Technologies::TYPE_DEFENCE)
+                        ]),
+                ])
+            ,
+            'expectedGameTurn' => (new GameTurn())
+                ->setTurn(2)
+                ->setSurfaces([
+                    (new PlanetSurface())
+                        ->setId('surf1')
+                        ->setPlanet(
+                            (new Planet())
+                                ->setId('p1')
+                        )
+                        ->setOwner(
+                            SingletonsContainer::instance()->getSingleton(
+                                'expRace',
+                                fn() => (new Race())->setTechnologies(
+                                    (new Technologies())->setDefence(2),
+                                    2
                                 )
-                            ),
-                        (new PlanetSurface())
-                            ->setId('surf2')
-                            ->setPlanet(
-                                (new Planet())
-                                    ->setId('p2')
                             )
-                            ->setOwner(SingletonsContainer::instance()->getSingleton('expRace')),
-                    ])
-            ]
+                        ),
+                    (new PlanetSurface())
+                        ->setId('surf2')
+                        ->setPlanet(
+                            (new Planet())
+                                ->setId('p2')
+                        )
+                        ->setOwner(SingletonsContainer::instance()->getSingleton('expRace')),
+                ])
         ];
     }
 }

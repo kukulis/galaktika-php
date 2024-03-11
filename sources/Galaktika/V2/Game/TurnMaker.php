@@ -2,6 +2,7 @@
 
 namespace Galaktika\V2\Game;
 
+use Galaktika\Exceptions\GalaktikaException;
 use Galaktika\IdGenerator;
 use Galaktika\V2\Battle\BattleCalculator;
 use Galaktika\V2\Battle\BattleReport;
@@ -31,7 +32,7 @@ class TurnMaker
 
     private IRandomGenerator $randomGenerator;
 
-    /** @var BattleReport[]  */
+    /** @var BattleReport[] */
     private array $battleReports;
 
     /**
@@ -93,6 +94,12 @@ class TurnMaker
             $owners[$owner->getId()] = $owner;
 
             $technologies = $owner->getTechnologies($currentTurn);
+
+            if ($technologies == null) {
+                throw new GalaktikaException(
+                    sprintf('Technologies not set for owner [%s], turn [%s]', $owner->getId(), $currentTurn)
+                );
+            }
 
             // this is why this cycle is made for
             $owner->setTechnologies(clone $technologies, $newTurn);
@@ -183,10 +190,11 @@ class TurnMaker
         return $this->battleReports;
     }
 
-    protected function flushDestroyedShips() {
+    protected function flushDestroyedShips()
+    {
         $newGameFleets = $this->newGame->getFleets();
-        array_walk( $newGameFleets, fn(Fleet $fleet)=>$fleet->flushDestroyedShips());
-        $newGameFleets = array_filter( $newGameFleets, fn(Fleet $f)=>count($f->getShips()) > 0);
+        array_walk($newGameFleets, fn(Fleet $fleet) => $fleet->flushDestroyedShips());
+        $newGameFleets = array_filter($newGameFleets, fn(Fleet $f) => count($f->getShips()) > 0);
         $this->newGame->setFleets($newGameFleets);
     }
 }
