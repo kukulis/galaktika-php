@@ -7,7 +7,6 @@ use Galaktika\Util\SingletonsContainer;
 use Galaktika\V2\Battle\BattleReport;
 use Galaktika\V2\Battle\BattleReportLine;
 use Galaktika\V2\Battle\CyclicSequence;
-use Galaktika\V2\Battle\OneValueSequence;
 use Galaktika\V2\Data\DiplomacyMap;
 use Galaktika\V2\Data\Fleet;
 use Galaktika\V2\Data\GameSettings;
@@ -20,12 +19,6 @@ use PHPUnit\Framework\TestCase;
 
 class BattlesInGameTest extends TestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        SingletonsContainer::instance()->cleanContainer();
-    }
 
     /**
      * @dataProvider provideTestingGames
@@ -39,19 +32,6 @@ class BattlesInGameTest extends TestCase
         $diplomacyMap = new DiplomacyMap();
         $turnMaker = new TurnMaker($game, $idGenerator, $gameSettings);
         $turnMaker->setDiplomacyMap($diplomacyMap);
-//        $randomGenerator = new RandomSequence([
-//            1,
-//            1,
-//            1,
-//            1,
-//            1,
-//            1,
-//            1,
-//            1,
-//            1
-//        ]);
-
-//        $randomGenerator = new OneValueSequence(0);
 
         $randomGenerator = new CyclicSequence([
             0,
@@ -75,195 +55,214 @@ class BattlesInGameTest extends TestCase
 
         $this->assertEquals($expectedBornIds, $bornIds);
 
-        $this->assertEquals( $expectedBattleReports[0]->getFleetA(),  $reports[0]->getFleetA());
-        $this->assertEquals( $expectedBattleReports[0]->getFleetB(),  $reports[0]->getFleetB());
+        $this->assertEquals($expectedBattleReports[0]->getFleetA(), $reports[0]->getFleetA());
+        $this->assertEquals($expectedBattleReports[0]->getFleetB(), $reports[0]->getFleetB());
     }
 
     public static function provideTestingGames(): array
     {
         return [
-//            'test battle 1x1' => [
-//                'game' => (new GameTurn())
-//                    ->setFleets([
-//                        SingletonsContainer::instance()->getSingleton('fleet1', fn() => (new Fleet())
-//                            ->setLocation(
-//                                (new Location())
-//                                    ->setX(10)
-//                                    ->setY(10)
-//                            )
-//                            ->setBornId('origId1')
-//                            ->addShip(
-//                                SingletonsContainer::instance()->getSingleton('ship11', fn() => (new Ship())
-//                                    ->setId('ship11')
-//                                    ->setX(10)
-//                                    ->setY(10)
-//                                    ->setGuns(1)
-//                                    ->setAttack(1)
-//                                    ->setDefence(1)
-//                                    ->setOwner((new Race())->setId('race1'))
-//                                )
-//                            )
-//                        ),
-//                        SingletonsContainer::instance()->getSingleton('fleet2', fn() => (new Fleet())
-//                            ->setLocation(
-//                                (new Location())
-//                                    ->setX(10)
-//                                    ->setY(10)
-//                            )
-//                            ->setBornId('origId2')
-//                            ->addShip(
-//                                SingletonsContainer::instance()->getSingleton('ship21', fn() => (new Ship())
-//                                    ->setId('ship21')
-//                                    ->setX(10)
-//                                    ->setY(10)
-//                                    ->setAttack(0)
-//                                    ->setDefence(1)
-//                                    ->setOwner((new Race())->setId('race2'))
-//                                )
-//                            )
-//                        )
-//                    ])
-//                ,
-//                'expectedGame' => (new GameTurn())
-//                    ->setFleets([
-//                        SingletonsContainer::instance()->getSingleton('fleet1')
-//                    ])
-//                ,
-//
-//                'expectedBattleReports' => [
-//                    (new BattleReport())
-//                        ->setBeforeFleetA(
-//                            (new Fleet())
-//                                ->addShip(SingletonsContainer::instance()->getSingleton('ship11'))
-//                        )
-//                        ->setFleetA(
-//                            (new Fleet())
-//                                ->addShip(SingletonsContainer::instance()->getSingleton('ship11'))
-//                        )
-//                        ->setBeforeFleetB(
-//                            (new Fleet())
-//                                ->addShip(SingletonsContainer::instance()->getSingleton('ship21'))
-//                        )
-//                        ->setFleetB((new Fleet()))
-//                        ->addShot(
-//                            (new BattleReportLine())
-//                                ->setShooter(SingletonsContainer::instance()->getSingleton('ship11'))
-//                                ->setTarget(SingletonsContainer::instance()->getSingleton('ship21'))
-//                                ->setDestroyed(true)
-//                        )
-//                    ,
-//                ]
-//            ],
-            'test battle 2x2' => [
-                'game' => (new GameTurn())
-                    ->setFleets([
-                        SingletonsContainer::instance()->getSingleton('fleet1', fn() => (new Fleet())
-                            ->setLocation(
-                                (new Location())
-                                    ->setX(10)
-                                    ->setY(10)
-                            )
-                            ->setBornId('origId1')
-                            ->addShip(
-                                SingletonsContainer::instance()->getSingleton('ship11', fn() => (new Ship())
-                                    ->setId('ship11')
-                                    ->setX(10)
-                                    ->setY(10)
-                                    ->setGuns(1)
-                                    ->setAttack(1)
-                                    ->setDefence(1)
-                                    ->setOwner(
-                                        SingletonsContainer::instance()->getSingleton('race1', fn() => (new Race(
-                                        ))->setId('race1'))
-                                    )
-                                )
-                            )
-                            ->addShip(
-                                SingletonsContainer::instance()->getSingleton('ship12', fn() => (new Ship())
-                                    ->setId('ship12')
-                                    ->setX(10)
-                                    ->setY(10)
-                                    ->setGuns(1)
-                                    ->setAttack(1)
-                                    ->setDefence(4)
-                                    ->setOwner(SingletonsContainer::instance()->getSingleton('race1'))
-                                )
-                            )
-                        ),
-                        SingletonsContainer::instance()->getSingleton('fleet2', fn() => (new Fleet())
-                            ->setLocation(
-                                (new Location())
-                                    ->setX(10)
-                                    ->setY(10)
-                            )
-                            ->setBornId('origId2')
-                            ->addShip(
-                                SingletonsContainer::instance()->getSingleton('ship21', fn() => (new Ship())
-                                    ->setId('ship21')
-                                    ->setX(10)
-                                    ->setY(10)
-                                    ->setAttack(1)
-                                    ->setGuns(1)
-                                    ->setDefence(1)
-                                    ->setOwner(
-                                        SingletonsContainer::instance()->getSingleton('race2', fn() => (new Race(
-                                        ))->setId('race2'))
-                                    )
-                                )
-                            )
-                            ->addShip(
-                                SingletonsContainer::instance()->getSingleton('ship22', fn() => (new Ship())
-                                    ->setId('ship21')
-                                    ->setX(10)
-                                    ->setY(10)
-                                    ->setAttack(1)
-                                    ->setGuns(1)
-                                    ->setDefence(4)
-                                    ->setOwner(
-                                        SingletonsContainer::instance()->getSingleton('race2')
-                                    )
-                                )
-                            )
+            'test battle 1x1' => self::prepareDataFor1x1(),
+            'test battle 2x2' => self::prepareDataFor2x2(),
+        ];
+    }
 
-                        )
-                    ])
-                ,
-                'expectedGame' => (new GameTurn())
-                    ->setFleets([
-                        SingletonsContainer::instance()->getSingleton('fleet1'),
-                        SingletonsContainer::instance()->getSingleton('fleet2'),
-                    ])
-                ,
+    private static function prepareDataFor1x1(): array
+    {
+        SingletonsContainer::instance()->cleanContainer();
 
-                'expectedBattleReports' => [
-                    (new BattleReport())
-                        ->setBeforeFleetA(
-                            (new Fleet())
-                                ->addShip(SingletonsContainer::instance()->getSingleton('ship11'))
-                                ->addShip(SingletonsContainer::instance()->getSingleton('ship12'))
+        return [
+            'game' => (new GameTurn())
+                ->setFleets([
+                    SingletonsContainer::instance()->getSingleton('fleet1', fn() => (new Fleet())
+                        ->setLocation(
+                            (new Location())
+                                ->setX(10)
+                                ->setY(10)
                         )
-                        ->setFleetA(
-                            (new Fleet())
-                                ->addShip(SingletonsContainer::instance()->getSingleton('ship12'))
+                        ->setBornId('origId1')
+                        ->addShip(
+                            SingletonsContainer::instance()->getSingleton('ship11', fn() => (new Ship())
+                                ->setId('ship11')
+                                ->setX(10)
+                                ->setY(10)
+                                ->setGuns(1)
+                                ->setAttack(1)
+                                ->setDefence(1)
+                                ->setOwner((new Race())->setId('race1'))
+                            )
                         )
-                        ->setBeforeFleetB(
-                            (new Fleet())
-                                ->addShip(SingletonsContainer::instance()->getSingleton('ship21'))
-                                ->addShip(SingletonsContainer::instance()->getSingleton('ship22'))
+                    ),
+                    SingletonsContainer::instance()->getSingleton('fleet2', fn() => (new Fleet())
+                        ->setLocation(
+                            (new Location())
+                                ->setX(10)
+                                ->setY(10)
                         )
-                        ->setFleetB(
-                            (new Fleet())
-                                ->addShip(SingletonsContainer::instance()->getSingleton('ship22'))
+                        ->setBornId('origId2')
+                        ->addShip(
+                            SingletonsContainer::instance()->getSingleton('ship21', fn() => (new Ship())
+                                ->setId('ship21')
+                                ->setX(10)
+                                ->setY(10)
+                                ->setAttack(0)
+                                ->setDefence(1)
+                                ->setOwner((new Race())->setId('race2'))
+                            )
                         )
-                        ->addShot(
-                            (new BattleReportLine())
-                                ->setShooter(SingletonsContainer::instance()->getSingleton('ship11'))
-                                ->setTarget(SingletonsContainer::instance()->getSingleton('ship21'))
-                                ->setDestroyed(true)
+                    )
+                ])
+            ,
+            'expectedGame' => (new GameTurn())
+                ->setFleets([
+                    SingletonsContainer::instance()->getSingleton('fleet1')
+                ])
+            ,
+
+            'expectedBattleReports' => [
+                (new BattleReport())
+                    ->setBeforeFleetA(
+                        (new Fleet())
+                            ->addShip(SingletonsContainer::instance()->getSingleton('ship11'))
+                    )
+                    ->setFleetA(
+                        (new Fleet())
+                            ->addShip(SingletonsContainer::instance()->getSingleton('ship11'))
+                    )
+                    ->setBeforeFleetB(
+                        (new Fleet())
+                            ->addShip(SingletonsContainer::instance()->getSingleton('ship21'))
+                    )
+                    ->setFleetB((new Fleet()))
+                    ->addShot(
+                        (new BattleReportLine())
+                            ->setShooter(SingletonsContainer::instance()->getSingleton('ship11'))
+                            ->setTarget(SingletonsContainer::instance()->getSingleton('ship21'))
+                            ->setDestroyed(true)
+                    )
+                ,
+            ]
+        ];
+    }
+
+
+    private static function prepareDataFor2x2(): array
+    {
+        SingletonsContainer::instance()->cleanContainer();
+
+        return [
+            'game' => (new GameTurn())
+                ->setFleets([
+                    SingletonsContainer::instance()->getSingleton('fleet1', fn() => (new Fleet())
+                        ->setLocation(
+                            (new Location())
+                                ->setX(10)
+                                ->setY(10)
                         )
-                    ,
-                ]
-            ],
+                        ->setBornId('origId1')
+                        ->addShip(
+                            SingletonsContainer::instance()->getSingleton('ship11', fn() => (new Ship())
+                                ->setId('ship11')
+                                ->setX(10)
+                                ->setY(10)
+                                ->setGuns(1)
+                                ->setAttack(1)
+                                ->setDefence(1)
+                                ->setOwner(
+                                    SingletonsContainer::instance()->getSingleton(
+                                        'race1',
+                                        fn() => (new Race())->setId('race1')
+                                    )
+                                )
+                            )
+                        )
+                        ->addShip(
+                            SingletonsContainer::instance()->getSingleton('ship12', fn() => (new Ship())
+                                ->setId('ship12')
+                                ->setX(10)
+                                ->setY(10)
+                                ->setGuns(1)
+                                ->setAttack(1)
+                                ->setDefence(4)
+                                ->setOwner(SingletonsContainer::instance()->getSingleton('race1'))
+                            )
+                        )
+                    ),
+                    SingletonsContainer::instance()->getSingleton('fleet2', fn() => (new Fleet())
+                        ->setLocation(
+                            (new Location())
+                                ->setX(10)
+                                ->setY(10)
+                        )
+                        ->setBornId('origId2')
+                        ->addShip(
+                            SingletonsContainer::instance()->getSingleton('ship21', fn() => (new Ship())
+                                ->setId('ship21')
+                                ->setX(10)
+                                ->setY(10)
+                                ->setAttack(1)
+                                ->setGuns(1)
+                                ->setDefence(1)
+                                ->setOwner(
+                                    SingletonsContainer::instance()->getSingleton(
+                                        'race2',
+                                        fn() => (new Race())->setId('race2')
+                                    )
+                                )
+                            )
+                        )
+                        ->addShip(
+                            SingletonsContainer::instance()->getSingleton('ship22', fn() => (new Ship())
+                                ->setId('ship22')
+                                ->setX(10)
+                                ->setY(10)
+                                ->setAttack(1)
+                                ->setGuns(1)
+                                ->setDefence(4)
+                                ->setOwner(
+                                    SingletonsContainer::instance()->getSingleton('race2')
+                                )
+                            )
+                        )
+
+                    )
+                ])
+            ,
+            'expectedGame' => (new GameTurn())
+                ->setFleets([
+                    SingletonsContainer::instance()->getSingleton('fleet1'),
+                    SingletonsContainer::instance()->getSingleton('fleet2'),
+                ])
+            ,
+
+            'expectedBattleReports' => [
+                (new BattleReport())
+                    ->setBeforeFleetA(
+                        (new Fleet())
+                            ->addShip(SingletonsContainer::instance()->getSingleton('ship11'))
+                            ->addShip(SingletonsContainer::instance()->getSingleton('ship12'))
+                    )
+                    ->setFleetA(
+                        (new Fleet())
+                            ->addShip(SingletonsContainer::instance()->getSingleton('ship12'))
+                    )
+                    ->setBeforeFleetB(
+                        (new Fleet())
+                            ->addShip(SingletonsContainer::instance()->getSingleton('ship21'))
+                            ->addShip(SingletonsContainer::instance()->getSingleton('ship22'))
+                    )
+                    ->setFleetB(
+                        (new Fleet())
+                            ->addShip(SingletonsContainer::instance()->getSingleton('ship22'))
+                    )
+                    ->addShot(
+                        (new BattleReportLine())
+                            ->setShooter(SingletonsContainer::instance()->getSingleton('ship11'))
+                            ->setTarget(SingletonsContainer::instance()->getSingleton('ship21'))
+                            ->setDestroyed(true)
+                    )
+                ,
+            ]
         ];
     }
 }
