@@ -6,6 +6,9 @@ use Galaktika\V2\Data\Fleet;
 
 class BattleReport
 {
+    private Fleet $beforeFleetA;
+    private Fleet $beforeFleetB;
+
     private Fleet $fleetA;
     private Fleet $fleetB;
 
@@ -44,15 +47,42 @@ class BattleReport
         return $this->shots;
     }
 
-    public function setShots(array $shots): BattleReport
+    /**
+     * @param BattleReportLine[]  $shots
+     */
+    public function setShots(array $shots): self
     {
         $this->shots = $shots;
 
         return $this;
     }
 
-    public function addShot(BattleReportLine $shot)
+    public function addShot(BattleReportLine $shot): self
     {
         $this->shots[] = $shot;
+
+        return $this;
+    }
+
+    public function getBeforeFleetA(): Fleet
+    {
+        return $this->beforeFleetA;
+    }
+
+    public function setBeforeFleetA(Fleet $beforeFleetA): BattleReport
+    {
+        $this->beforeFleetA = $beforeFleetA;
+        return $this;
+    }
+
+    public function getBeforeFleetB(): Fleet
+    {
+        return $this->beforeFleetB;
+    }
+
+    public function setBeforeFleetB(Fleet $beforeFleetB): BattleReport
+    {
+        $this->beforeFleetB = $beforeFleetB;
+        return $this;
     }
 }

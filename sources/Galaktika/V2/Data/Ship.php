@@ -19,6 +19,8 @@ class Ship
     private float $x;
     private float $y;
 
+    private bool $destroyed = false;
+
     public function getId(): string
     {
         return $this->id;
@@ -178,5 +180,16 @@ class Ship
     public function getLocationKey(): string
     {
         return Location::buildKey($this->x, $this->y);
+    }
+
+    public function isDestroyed(): bool
+    {
+        return $this->destroyed;
+    }
+
+    public function setDestroyed(bool $destroyed): Ship
+    {
+        $this->destroyed = $destroyed;
+        return $this;
     }
 }

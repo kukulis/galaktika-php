@@ -58,7 +58,21 @@ class TurnMaker
             ->setPlanets($this->gameTurn->getPlanets());
 
 
-        // TODO put this block to a separate function
+        $this->cloneTechnologies($currentTurn, $newTurn);
+
+        $this->executeBuilds();
+        $this->executeFlights();
+        $this->executeBattles();
+
+        $this->flushDestroyedShips();
+
+        $this->executeDestructions();
+
+        return $this->newGame;
+    }
+
+    private function cloneTechnologies(int $currentTurn, int $newTurn)
+    {
         /** @var Race[] $owners */
         $owners = [];
         // technologies clones
@@ -79,16 +93,6 @@ class TurnMaker
             // this is why this cycle is made for
             $owner->setTechnologies(clone $technologies, $newTurn);
         }
-        // --
-
-
-        $this->executeBuilds();
-        $this->executeFlights();
-        $this->executeBattles();
-        $this->executeDestructions();
-
-
-        return $this->newGame;
     }
 
     public function executeBuilds(): void
@@ -126,7 +130,6 @@ class TurnMaker
         $this->newGame->setFleets($newFleets);
     }
 
-    // TODO cover with tests
     public function executeBattles()
     {
         // collect all ships
@@ -146,7 +149,7 @@ class TurnMaker
             $tmpFleetB = (new Fleet())->setShips($conflict->getSideShips(1));
 
             $battleCalculator = new BattleCalculator(self::MAX_TURNS);
-            $battleReport =  $battleCalculator->battle($tmpFleetA, $tmpFleetB, $this->randomGenerator);
+            $battleReport = $battleCalculator->battle($tmpFleetA, $tmpFleetB, $this->randomGenerator);
 
             $this->battleReports[] = $battleReport;
         }
@@ -171,5 +174,12 @@ class TurnMaker
     public function getBattleReports(): array
     {
         return $this->battleReports;
+    }
+
+    protected function flushDestroyedShips() {
+        $newGameFleets = $this->newGame->getFleets();
+        array_walk( $newGameFleets, fn(Fleet $fleet)=>$fleet->flushDestroyedShips());
+        $newGameFleets = array_filter( $newGameFleets, fn(Fleet $f)=>count($f->getShips()) > 0);
+        $this->newGame->setFleets($newGameFleets);
     }
 }

@@ -57,6 +57,8 @@ class BattleCalculator
                     $battleReport->addShot(BattleReportLine::create($shooter, $target, $destoryed));
 
                     if ($destoryed) {
+                        // mark target as shot
+                        $target->setDestroyed(true);
                         $shipsHolder->remove($target->getId());
                     }
                 }
@@ -70,6 +72,8 @@ class BattleCalculator
         $rezFleetA->setShips($shipsHolder->extractA());
         $rezFleetB->setShips($shipsHolder->extractB());
 
+        $battleReport->setBeforeFleetA($fleetA);
+        $battleReport->setBeforeFleetB($fleetB);
         $battleReport->setFleetA($rezFleetA);
         $battleReport->setFleetB($rezFleetB);
 

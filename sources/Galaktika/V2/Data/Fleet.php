@@ -109,4 +109,8 @@ class Fleet
         $this->bornId = $bornId;
         return $this;
     }
+
+    public function flushDestroyedShips() {
+        $this->ships = array_filter($this->ships, fn(Ship $ship)=>!$ship->isDestroyed());
+    }
 }
