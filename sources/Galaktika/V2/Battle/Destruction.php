@@ -45,8 +45,12 @@ class Destruction
             0
         );
 
-        // TODO different formula later, covered with tests
+        $this->applyDamage($this->planetSurface, $damage);
+    }
+
+    public function applyDamage( PlanetSurface $surface, float $damage ) {
         $this->planetSurface->setPopulation($this->planetSurface->getPopulation() - $damage / 2 );
         $this->planetSurface->setIndustry($this->planetSurface->getIndustry() - $damage / 2 );
+        // TODO different formula later, covered with tests
     }
 }

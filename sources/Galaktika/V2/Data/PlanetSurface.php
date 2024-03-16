@@ -237,4 +237,5 @@ class PlanetSurface
     {
         return $this->getPlanet()->getLocation()->getKey();
     }
+
 }
