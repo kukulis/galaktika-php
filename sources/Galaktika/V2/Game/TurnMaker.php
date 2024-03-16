@@ -168,6 +168,8 @@ class TurnMaker
 
     public function executeDestructions()
     {
+        // pair fleets with foreign surfaces TODO
+
     }
 
     public function setDiplomacyMap(IDiplomacyMap $diplomacyMap): TurnMaker
