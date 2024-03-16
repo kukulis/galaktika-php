@@ -74,6 +74,9 @@ class TurnMaker
 
         $this->executeDestructions();
 
+        // TODO cargo / decargo
+        // TODO planet surfaces ownerships
+
         return $this->newGameTurn;
     }
 
