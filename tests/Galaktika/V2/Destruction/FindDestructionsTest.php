@@ -5,7 +5,6 @@ namespace Tests\Galaktika\V2\Destruction;
 use Galaktika\Util\SingletonsContainer;
 use Galaktika\V2\Battle\Destruction;
 use Galaktika\V2\Data\DiplomacyMap;
-use Galaktika\V2\Data\Fleet;
 use Galaktika\V2\Data\Location;
 use Galaktika\V2\Data\Planet;
 use Galaktika\V2\Data\PlanetSurface;
@@ -13,7 +12,6 @@ use Galaktika\V2\Data\Race;
 use Galaktika\V2\Data\Ship;
 use Galaktika\V2\Space\DestructionFinder;
 use PHPUnit\Framework\TestCase;
-
 
 class FindDestructionsTest extends TestCase
 {
@@ -65,7 +63,7 @@ class FindDestructionsTest extends TestCase
                 'diplomacyMap' => (new DiplomacyMap()),
                 'expectedDestructions' => [
                     (new Destruction())->setPlanetSurface(SingletonsContainer::instance()->getSingleton('surface1'))
-                        ->setFleet((new Fleet())->addShip(SingletonsContainer::instance()->getSingleton('ship1')))
+                        ->setShips([SingletonsContainer::instance()->getSingleton('ship1')])
                 ]
             ]
         ];

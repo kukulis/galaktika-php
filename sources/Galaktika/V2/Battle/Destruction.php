@@ -4,31 +4,36 @@ namespace Galaktika\V2\Battle;
 
 use Galaktika\V2\Data\Fleet;
 use Galaktika\V2\Data\PlanetSurface;
+use Galaktika\V2\Data\Ship;
 
 class Destruction
 {
-    private Fleet $fleet;
+    /**
+     * @var Ship[]
+     */
+    private array $ships;
     private PlanetSurface $planetSurface;
 
-    public function getFleet(): Fleet
-    {
-        return $this->fleet;
-    }
 
     public function getPlanetSurface(): PlanetSurface
     {
         return $this->planetSurface;
     }
 
-    public function setFleet(Fleet $fleet): Destruction
-    {
-        $this->fleet = $fleet;
-        return $this;
-    }
-
     public function setPlanetSurface(PlanetSurface $planetSurface): Destruction
     {
         $this->planetSurface = $planetSurface;
+        return $this;
+    }
+
+    public function getShips(): array
+    {
+        return $this->ships;
+    }
+
+    public function setShips(array $ships): Destruction
+    {
+        $this->ships = $ships;
         return $this;
     }
 }

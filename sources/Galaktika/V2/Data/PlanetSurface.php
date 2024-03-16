@@ -8,7 +8,7 @@ class PlanetSurface
 {
     private string $id;
     private Planet $planet;
-    private ?Race $owner=null;
+    private ?Race $owner = null;
     private float $population = 0;
     private float $industry = 0;
     private float $material = 0;
@@ -233,4 +233,8 @@ class PlanetSurface
         return $this;
     }
 
+    public function getLocationKey(): string
+    {
+        return $this->getPlanet()->getLocation()->getKey();
+    }
 }
