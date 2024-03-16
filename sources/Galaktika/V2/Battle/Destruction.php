@@ -10,16 +10,6 @@ class Destruction
     private Fleet $fleet;
     private PlanetSurface $planetSurface;
 
-    /**
-     * @param Fleet $fleet
-     * @param PlanetSurface $planetSurface
-     */
-    public function __construct(Fleet $fleet, PlanetSurface $planetSurface)
-    {
-        $this->fleet = $fleet;
-        $this->planetSurface = $planetSurface;
-    }
-
     public function getFleet(): Fleet
     {
         return $this->fleet;
@@ -28,5 +18,17 @@ class Destruction
     public function getPlanetSurface(): PlanetSurface
     {
         return $this->planetSurface;
+    }
+
+    public function setFleet(Fleet $fleet): Destruction
+    {
+        $this->fleet = $fleet;
+        return $this;
+    }
+
+    public function setPlanetSurface(PlanetSurface $planetSurface): Destruction
+    {
+        $this->planetSurface = $planetSurface;
+        return $this;
     }
 }
