@@ -7,6 +7,7 @@ use Galaktika\SimpleIdGenerator;
 use Galaktika\V2\Data\DiplomacyMap;
 use Galaktika\V2\Data\GameSettings;
 use Galaktika\V2\Data\GameTurn;
+use Galaktika\V2\Data\Location;
 use Galaktika\V2\Data\Planet;
 use Galaktika\V2\Data\PlanetSurface;
 use Galaktika\V2\Data\Race;
@@ -73,6 +74,7 @@ class BuildInGameTest extends TestCase
                                 (new Planet())
                                     ->setId('planet1')
                                     ->setSize(100)
+                                    ->setLocation((new Location()))
                             )
                             ->setPopulation(50)
                             ->setIndustry(50)
@@ -106,6 +108,7 @@ class BuildInGameTest extends TestCase
                                 (new Planet())
                                     ->setId('planet1')
                                     ->setSize(100)
+                                    ->setLocation((new Location()))
                             )
                             ->setPopulation(50)
                             ->setIndustry(50)
@@ -122,6 +125,7 @@ class BuildInGameTest extends TestCase
                             (new Planet())
                                 ->setId('planet1')
                                 ->setSize(100)
+                                ->setLocation((new Location()))
                         )
                         ->setPopulation(65)
                         ->setIndustry(100)
@@ -139,6 +143,7 @@ class BuildInGameTest extends TestCase
                                 (new Planet())
                                     ->setId('planet1')
                                     ->setSize(100)
+                                    ->setLocation((new Location()))
                             )
                             ->setPopulation(50)
                             ->setIndustry(50)
@@ -172,6 +177,7 @@ class BuildInGameTest extends TestCase
                             (new Planet())
                                 ->setId('planet1')
                                 ->setSize(100)
+                                ->setLocation((new Location()))
                         )
                         ->setPopulation(65)
                         ->setIndustry(50)
@@ -200,6 +206,7 @@ class BuildInGameTest extends TestCase
                                 (new Planet())
                                     ->setId('planet1')
                                     ->setSize(100)
+                                    ->setLocation((new Location()))
                             )
                             ->setPopulation(50)
                             ->setIndustry(50)

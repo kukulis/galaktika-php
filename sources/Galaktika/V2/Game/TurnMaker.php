@@ -15,6 +15,7 @@ use Galaktika\V2\Data\Race;
 use Galaktika\V2\Math\IRandomGenerator;
 use Galaktika\V2\Production\PopulationCalculator;
 use Galaktika\V2\Space\ConflictFinder;
+use Galaktika\V2\Space\DestructionFinder;
 use Galaktika\V2\Space\FlyCalculator;
 
 class TurnMaker
@@ -24,7 +25,7 @@ class TurnMaker
     private IdGenerator $idGenerator;
 
     private GameTurn $gameTurn;
-    private GameTurn $newGame;
+    private GameTurn $newGameTurn;
 
     private GameSettings $gameSettings;
 
@@ -48,14 +49,14 @@ class TurnMaker
 
     public function makeTurn(): GameTurn
     {
-        $this->newGame = new GameTurn();
+        $this->newGameTurn = new GameTurn();
 
         $this->owners = [];
 
         $currentTurn = $this->gameTurn->getTurn();
         $newTurn = $currentTurn + 1;
 
-        $this->newGame
+        $this->newGameTurn
             ->setName($this->gameTurn->getName())
             ->setTurn($newTurn)
             ->setPlanets($this->gameTurn->getPlanets());
@@ -73,7 +74,7 @@ class TurnMaker
 
         $this->executeDestructions();
 
-        return $this->newGame;
+        return $this->newGameTurn;
     }
 
     private function cloneTechnologies(int $currentTurn, int $newTurn)
@@ -110,7 +111,7 @@ class TurnMaker
     {
         $surfaces = $this->gameTurn->getSurfaces();
         $newSurfaces = array_map(fn($s) => $this->executeSurfaceBuild($s), $surfaces);
-        $this->newGame->setSurfaces($newSurfaces);
+        $this->newGameTurn->setSurfaces($newSurfaces);
     }
 
     public function executeSurfaceBuild(PlanetSurface $surface): PlanetSurface
@@ -119,7 +120,7 @@ class TurnMaker
         $newSurface->setId($this->idGenerator->generateId());
 
         foreach ($surface->getCommands() as $command) {
-            $command->execute($newSurface, $surface, $this->newGame->getTurn());
+            $command->execute($newSurface, $surface, $this->newGameTurn->getTurn());
         }
 
         $newSurface->setPopulation(
@@ -138,7 +139,7 @@ class TurnMaker
         $fleets = $this->gameTurn->getFleets();
         $newFleets = array_map(fn($fleet) => FlyCalculator::flyFleet($fleet)->setId($this->idGenerator->generateId()),
             $fleets);
-        $this->newGame->setFleets($newFleets);
+        $this->newGameTurn->setFleets($newFleets);
     }
 
     public function executeBattles()
@@ -168,8 +169,18 @@ class TurnMaker
 
     public function executeDestructions()
     {
-        // pair fleets with foreign surfaces TODO
+        // collect all ships
+        $allShips = array_reduce(
+            $this->newGameTurn->getFleets(),
+            fn($ships, Fleet $fleet) => array_merge($ships, $fleet->getShips()),
+            []
+        );
 
+        $destructions = DestructionFinder::findDesctructions($allShips, $this->newGameTurn->getSurfaces(), $this->diplomacyMap);
+
+        foreach ($destructions as $destruction) {
+            $destruction->execute();
+        }
     }
 
     public function setDiplomacyMap(IDiplomacyMap $diplomacyMap): TurnMaker
@@ -194,9 +205,9 @@ class TurnMaker
 
     protected function flushDestroyedShips()
     {
-        $newGameFleets = $this->newGame->getFleets();
+        $newGameFleets = $this->newGameTurn->getFleets();
         array_walk($newGameFleets, fn(Fleet $fleet) => $fleet->flushDestroyedShips());
         $newGameFleets = array_filter($newGameFleets, fn(Fleet $f) => count($f->getShips()) > 0);
-        $this->newGame->setFleets($newGameFleets);
+        $this->newGameTurn->setFleets($newGameFleets);
     }
 }

@@ -7,6 +7,7 @@ use Galaktika\Util\SingletonsContainer;
 use Galaktika\V2\Data\DiplomacyMap;
 use Galaktika\V2\Data\GameSettings;
 use Galaktika\V2\Data\GameTurn;
+use Galaktika\V2\Data\Location;
 use Galaktika\V2\Data\Planet;
 use Galaktika\V2\Data\PlanetSurface;
 use Galaktika\V2\Data\Race;
@@ -54,7 +55,8 @@ class BuildWithTechnologiesInGameTest extends TestCase
         ];
     }
 
-    private static function provideTwoPlanetsTestData() : array {
+    private static function provideTwoPlanetsTestData(): array
+    {
         SingletonsContainer::instance()->cleanContainer();
 
         return [
@@ -66,6 +68,8 @@ class BuildWithTechnologiesInGameTest extends TestCase
                         ->setPlanet(
                             (new Planet())
                                 ->setId('p1')
+                                ->setLocation(new Location())
+
                         )
                         ->setOwner(
                             SingletonsContainer::instance()->getSingleton(
@@ -85,6 +89,7 @@ class BuildWithTechnologiesInGameTest extends TestCase
                         ->setPlanet(
                             (new Planet())
                                 ->setId('p2')
+                                ->setLocation(new Location())
                         )
                         ->setOwner(SingletonsContainer::instance()->getSingleton('race1'))
                         ->setPopulation(100)

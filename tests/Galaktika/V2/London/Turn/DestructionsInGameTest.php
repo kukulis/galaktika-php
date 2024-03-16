@@ -21,7 +21,7 @@ class DestructionsInGameTest extends TestCase
     /**
      * @dataProvider provideTestingGames
      */
-    public function testBattlesInTurn(GameTurn $game, GameTurn $expectedGame)
+    public function testDestructionsInTurn(GameTurn $game, GameTurn $expectedGame)
     {
         $idGenerator = new SimpleIdGenerator();
         $gameSettings = new GameSettings();
