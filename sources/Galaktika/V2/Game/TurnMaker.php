@@ -74,9 +74,6 @@ class TurnMaker
 
         $this->executeDestructions();
 
-        // TODO cargo / decargo
-        // TODO planet surfaces ownerships
-
         return $this->newGameTurn;
     }
 
@@ -213,4 +210,5 @@ class TurnMaker
         $newGameFleets = array_filter($newGameFleets, fn(Fleet $f) => count($f->getShips()) > 0);
         $this->newGameTurn->setFleets($newGameFleets);
     }
+
 }

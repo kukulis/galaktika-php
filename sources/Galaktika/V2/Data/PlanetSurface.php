@@ -238,4 +238,8 @@ class PlanetSurface
         return $this->getPlanet()->getLocation()->getKey();
     }
 
+    public function getFreeSpaceForPopulation(): float
+    {
+        return $this->planet->getSize() - $this->population;
+    }
 }
