@@ -7,8 +7,8 @@ namespace Galaktika\V2\Data;
  */
 class GameTurn
 {
-    private string $name='';
-    private int $turn=0;
+    private string $name = '';
+    private int $turn = 0;
 
     /** @var Race[] */
     private array $players = [];
@@ -23,6 +23,11 @@ class GameTurn
 
     /** @var Fleet[] */
     private array $fleets = [];
+
+    /**
+     * @var ShipCargo[]
+     */
+    private array $shipCargos = [];
 
     public function getName(): string
     {
@@ -96,6 +101,17 @@ class GameTurn
     public function setSurfaces(array $surfaces): GameTurn
     {
         $this->surfaces = $surfaces;
+        return $this;
+    }
+
+    public function getShipCargos(): array
+    {
+        return $this->shipCargos;
+    }
+
+    public function setShipCargos(array $shipCargos): GameTurn
+    {
+        $this->shipCargos = $shipCargos;
         return $this;
     }
 }

@@ -12,6 +12,7 @@ use Galaktika\V2\Data\GameTurn;
 use Galaktika\V2\Data\IDiplomacyMap;
 use Galaktika\V2\Data\PlanetSurface;
 use Galaktika\V2\Data\Race;
+use Galaktika\V2\Data\ShipCargo;
 use Galaktika\V2\Math\IRandomGenerator;
 use Galaktika\V2\Production\PopulationCalculator;
 use Galaktika\V2\Space\ConflictFinder;
@@ -73,6 +74,8 @@ class TurnMaker
         $this->flushDestroyedShips();
 
         $this->executeDestructions();
+
+        $this->copyCargos();
 
         return $this->newGameTurn;
     }
@@ -176,7 +179,11 @@ class TurnMaker
             []
         );
 
-        $destructions = DestructionFinder::findDesctructions($allShips, $this->newGameTurn->getSurfaces(), $this->diplomacyMap);
+        $destructions = DestructionFinder::findDesctructions(
+            $allShips,
+            $this->newGameTurn->getSurfaces(),
+            $this->diplomacyMap
+        );
 
         foreach ($destructions as $destruction) {
             $destruction->execute();
@@ -211,4 +218,11 @@ class TurnMaker
         $this->newGameTurn->setFleets($newGameFleets);
     }
 
+    public function copyCargos()
+    {
+        $newCargos = array_map(fn(ShipCargo $shipCargo) => (clone $shipCargo)->setId($this->idGenerator->generateId())
+            , $this->gameTurn->getShipCargos());
+
+        $this->newGameTurn->setShipCargos($newCargos);
+    }
 }
