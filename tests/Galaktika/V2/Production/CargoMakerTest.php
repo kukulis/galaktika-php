@@ -49,7 +49,35 @@ class CargoMakerTest extends TestCase
                 'expectedCargo' => (new ShipCargo())
                     ->setShip((new Ship())->setId('ship1')->setMaxCargo(10))
                     ->setPopulation(10),
-            ]
+            ],
+            'test2' => [
+                'surface' => (new PlanetSurface())
+                    ->setPlanet((new Planet())->setSize(100))
+                    ->setPopulation(100),
+                'amount' => 10,
+                'shipCargo' => (new ShipCargo())
+                    ->setShip((new Ship())->setId('ship1')->setMaxCargo(10))
+                    ->setPopulation(6),
+                'expectedLoadAmount' => 4,
+                'expectedPopulation' => 96,
+                'expectedCargo' => (new ShipCargo())
+                    ->setShip((new Ship())->setId('ship1')->setMaxCargo(10))
+                    ->setPopulation(10),
+            ],
+            'test3' => [
+                'surface' => (new PlanetSurface())
+                    ->setPlanet((new Planet())->setSize(100))
+                    ->setPopulation(5),
+                'amount' => 10,
+                'shipCargo' => (new ShipCargo())
+                    ->setShip((new Ship())->setId('ship1')->setMaxCargo(10))
+                    ->setPopulation(0),
+                'expectedLoadAmount' => 5,
+                'expectedPopulation' => 0,
+                'expectedCargo' => (new ShipCargo())
+                    ->setShip((new Ship())->setId('ship1')->setMaxCargo(10))
+                    ->setPopulation(5),
+            ],
         ];
     }
 
