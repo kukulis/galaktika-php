@@ -122,4 +122,49 @@ class CargoMakerTest extends TestCase
             ]
         ];
     }
+
+    /**
+     * @dataProvider provideMaterialsLoadData
+     */
+    public function testLoadMaterials(
+        PlanetSurface $surface,
+        float $amount,
+        ShipCargo $shipCargo,
+        float $expectedLoadAmount,
+        float $expectedMaterials,
+        ShipCargo $expectedCargo
+    ) {
+        $cargoMaker = new CargoMaker();
+        $loadAmount = $cargoMaker->loadMaterials($surface, $amount, $shipCargo);
+        $this->assertEquals($expectedLoadAmount, $loadAmount);
+
+        $this->assertEquals($expectedMaterials, $surface->getMaterial());
+        $this->assertEquals($expectedCargo->getPopulation(), $shipCargo->getPopulation());
+        $this->assertEquals($expectedCargo->getMaterial(), $shipCargo->getMaterial());
+        $this->assertEquals($expectedCargo->getFreeSpace(), $shipCargo->getFreeSpace());
+        $this->assertEquals($expectedCargo->getShip()->getId(), $shipCargo->getShip()->getId());
+    }
+
+    public static function provideMaterialsLoadData(): array
+    {
+        return [
+            'test load materials 1' => [
+                'surface' => (new PlanetSurface())
+                    ->setPlanet((new Planet())->setSize(100))
+                    ->setMaterial(50)
+                    ->setPopulation(100),
+                'amount' => 10,
+                'shipCargo' => (new ShipCargo())
+                    ->setShip((new Ship())->setId('ship1')->setMaxCargo(10))
+                    ->setPopulation(0)
+                    ->setMaterial(0),
+                'expectedLoadAmount' => 10,
+                'expectedMaterials' => 40,
+                'expectedCargo' => (new ShipCargo())
+                    ->setShip((new Ship())->setId('ship1')->setMaxCargo(10))
+                    ->setMaterial(10)
+                    ->setPopulation(0),
+            ]
+        ];
+    }
 }
