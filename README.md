@@ -13,7 +13,7 @@ current 20-xdebug.ini content (working):
 zend_extension=xdebug.so
 xdebug.mode=debug
 xdebug.remote_enable=true
-xdebug.client_host=127.0.0.
+xdebug.client_host=127.0.0.1
 
 ## overlaping tests issue
 
