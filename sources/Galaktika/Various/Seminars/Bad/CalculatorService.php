@@ -7,10 +7,6 @@ class CalculatorService
     private float $vatPercent;
     private APIService  $apiService;
 
-    /**
-     * @param float $vatPercent
-     * @param APIService $apiService
-     */
     public function __construct(float $vatPercent, APIService $apiService)
     {
         $this->vatPercent = $vatPercent;
@@ -19,7 +15,6 @@ class CalculatorService
 
 
     /**
-     * @param string $requestData
      * @return Product[]
      */
     public function getProducts(string $requestData) : array {

@@ -30,7 +30,6 @@ class APIService
 
 
     /**
-     * @param string $filter
      * @return Product[]
      */
     public function getProducts(string $filter) : array {
