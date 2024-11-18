@@ -16,8 +16,12 @@ class Controller
         $this->calculator = $calculator;
     }
 
-    public function badGetProducts(RequestInterface $request) {
+    /**
+     * @param RequestInterface $request
+     * @return Product[]
+     */
+    public function badGetProducts(RequestInterface $request) : array {
         $params = $request->getBody();
-        $this->calculator->getProducts($params);
+        return $this->calculator->getProducts($params);
     }
 }

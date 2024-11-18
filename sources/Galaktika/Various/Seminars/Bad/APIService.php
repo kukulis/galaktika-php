@@ -10,6 +10,12 @@ class APIService
 
     private Client $client;
 
+    public function __construct(DBService $dbService, Client $client)
+    {
+        $this->dbService = $dbService;
+        $this->client = $client;
+    }
+
     public function getApiData(string $filter) : array
     {
         $response = $this->client->request('GET', 'api_endpoint/products', [
@@ -31,20 +37,20 @@ class APIService
 
         $data = $this->getApiData($filter);
 
-        $ids = [];
+        $skus = [];
         foreach ($data as $product) {
-            $ids[] = $product['id'];
+            $skus[] = $product['sku'];
         }
-        $products = $this->dbService->getProducts($ids);
+        $products = $this->dbService->getProducts($skus);
 
         /** @var Product[] $productsMap */
         $productsMap = [];
         foreach ($products as $product) {
-            $productsMap[$product['id']] = $product;
+            $productsMap[$product->sku] = $product;
         }
 
-        foreach ($data as $product) {
-            $productsMap[$product['id']]->quantity = $product['amount'];
+        foreach ($data as $apiProduct) {
+            $productsMap[$apiProduct['sku']]->quantity = $apiProduct['amount'];
         }
 
         return $products;
