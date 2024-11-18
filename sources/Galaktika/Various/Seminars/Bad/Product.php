@@ -1,6 +1,6 @@
 <?php
 
-namespace Galaktika\Various\Seminars;
+namespace Galaktika\Various\Seminars\Bad;
 
 class Product
 {
