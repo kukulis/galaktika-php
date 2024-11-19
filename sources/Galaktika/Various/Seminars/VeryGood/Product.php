@@ -16,10 +16,6 @@ class Product
 
     public function setQuantity(int $quantity): Product
     {
-        if ( $quantity < 0 ) {
-            return $this;
-        }
-
         $this->quantity = $quantity;
         return $this;
     }
@@ -29,7 +25,6 @@ class Product
         $this->price = $price;
         return $this;
     }
-
 
     /**
      * Instead of this better to use some DAO lib like JMSSerializer, or cuyz/valinor.

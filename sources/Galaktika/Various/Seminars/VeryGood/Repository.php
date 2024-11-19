@@ -16,9 +16,10 @@ class Repository
     /**
      * @return Product[]
      */
-    public function getProducts($skus) : array{
+    public function getProducts($skus): array
+    {
         $quotedSkus = [];
-        foreach($skus as $sku){
+        foreach ($skus as $sku) {
             $quotedSkus[] = $this->pdo->quote($sku);
         }
         $skusStr = implode(',', $quotedSkus);

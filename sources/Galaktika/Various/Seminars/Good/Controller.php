@@ -10,11 +10,6 @@ class Controller
     private Repository $repository;
     private VATCalculator $vatCalculator;
 
-    /**
-     * @param ApiClient $apiClient
-     * @param Repository $repository
-     * @param VATCalculator $vatCalculator
-     */
     public function __construct(ApiClient $apiClient, Repository $repository, VATCalculator $vatCalculator)
     {
         $this->apiClient = $apiClient;
