@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Various\Seminars;
 
-use Galaktika\Various\Seminars\Bad\APIService;
-use Galaktika\Various\Seminars\Bad\CalculatorService;
-use Galaktika\Various\Seminars\Bad\Controller;
-use Galaktika\Various\Seminars\Bad\Repository;
-use Galaktika\Various\Seminars\Bad\Product;
+use Galaktika\Various\Seminars\Good\ApiClient;
+use Galaktika\Various\Seminars\Good\Controller;
+use Galaktika\Various\Seminars\Good\Product;
+use Galaktika\Various\Seminars\Good\Repository;
+use Galaktika\Various\Seminars\Good\VATCalculator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -14,21 +14,24 @@ use PDO;
 use PDOStatement;
 use PHPUnit\Framework\TestCase;
 
-class BadTest extends TestCase
+class GoodTest extends TestCase
 {
-    public function testBad()
+    public function testGood()
     {
         $guzzleClient = $this->createMock(Client::class);
 
         // make call of controller from the guzzle client
-        $guzzleClient->method('request')->willReturn(
-            new Response(200, [],
-                '[
+        $guzzleClient->method('request')->willReturnCallback(
+            function () {
+                return new Response(200, [],
+                    '[
                 { "sku" : "x1234", "amount": "10" },
                 { "sku" : "x1235", "amount": "20" },
                 { "sku" : "x4567", "amount": "5" }
             ]'
-            )
+
+                );
+            }
         );
 
         $pdo = $this->createMock(PDO::class);
@@ -41,9 +44,11 @@ class BadTest extends TestCase
         $pdo->method('query')->willReturn($pdoResult);
 
         $dbService = new Repository($pdo);
-        $apiService = new ApiService($dbService, $guzzleClient);
-        $calculatorService = new CalculatorService(0.20, $apiService);
-        $controller = new Controller($calculatorService);
+        $apiService = new ApiClient($guzzleClient);
+
+        $vatCalculator = new VATCalculator(20);
+
+        $controller = new Controller($apiService, $dbService, $vatCalculator);
 
         $products = $controller->getProducts(new Request('get', '/api', [], 'cosmetics'));
 

@@ -6,11 +6,11 @@ use GuzzleHttp\Client;
 
 class APIService
 {
-    private DBService $dbService;
+    private Repository $dbService;
 
     private Client $client;
 
-    public function __construct(DBService $dbService, Client $client)
+    public function __construct(Repository $dbService, Client $client)
     {
         $this->dbService = $dbService;
         $this->client = $client;

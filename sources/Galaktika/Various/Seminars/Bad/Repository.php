@@ -4,7 +4,7 @@ namespace Galaktika\Various\Seminars\Bad;
 
 use PDO;
 
-class DBService
+class Repository
 {
     private PDO $pdo;
 
@@ -16,9 +16,13 @@ class DBService
     /**
      * @return Product[]
      */
-    public function getProducts($ids) : array{
-        $idsStr = implode(',', $ids);
-        $sql = "SELECT * FROM products where id in ($idsStr)";
+    public function getProducts($skus) : array{
+        $quotedSkus = [];
+        foreach($skus as $sku){
+            $quotedSkus[] = $this->pdo->quote($sku);
+        }
+        $skusStr = implode(',', $quotedSkus);
+        $sql = "SELECT * FROM products where id in ($skusStr)";
 
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_CLASS, Product::class);
     }

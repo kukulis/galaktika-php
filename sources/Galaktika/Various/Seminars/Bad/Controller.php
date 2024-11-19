@@ -16,7 +16,7 @@ class Controller
     /**
      * @return Product[]
      */
-    public function badGetProducts(RequestInterface $request) : array {
+    public function getProducts(RequestInterface $request) : array {
         $params = $request->getBody();
         return $this->calculator->getProducts($params);
     }
