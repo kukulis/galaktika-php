@@ -186,7 +186,7 @@ class BuildInGameTest extends TestCase
                             (new Ship())
                                 ->setGuns(1)
                                 ->setAttack(10)
-                                ->setDefence(1.8257418583506)
+                                ->setDefence(1.8257418583505538)
                                 ->setSpeed(0.25)
                                 ->setMaxCargo(10)
                                 ->setMass(40)

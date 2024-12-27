@@ -78,7 +78,7 @@ class ShipCalculatorTest extends TestCase
                     ->setMass(80)
                     ->setGuns(20)
                     ->setAttack(1)
-                    ->setDefence(4.4721359549996)
+                    ->setDefence(4.47213595499958)
                     ->setSpeed(0.25)
                     ->setMaxCargo(0),
             ],

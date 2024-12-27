@@ -20,7 +20,8 @@ class FlyTest extends TestCase
         $startY,
         $destX,
         $destY
-    ) {
+    )
+    {
         $fleet = new Fleet();
         $ship = new Ship();
         $ship->setSpeed($speed);
@@ -80,8 +81,9 @@ class FlyTest extends TestCase
         Location $startLocation,
         Location $targetLocation,
         Location $expectedLocation,
-        float $speed
-    ) {
+        float    $speed
+    )
+    {
         $fleet = new Fleet();
         $fleet->addShip((new Ship())->setSpeed($speed));
 
@@ -107,7 +109,7 @@ class FlyTest extends TestCase
             'test diagonal' => [
                 'startLocation' => (new Location())->setX(0)->setY(0),
                 'targetLocation' => (new Location())->setX(1)->setY(1),
-                'expectedLocation' => (new Location())->setX(sqrt(2) / 2)->setY(sqrt(2) / 2),
+                'expectedLocation' => (new Location())->setX(0.70710678118655)->setY(0.70710678118655),
                 'speed' => 1,
             ],
             'test II quarter no limit' => [

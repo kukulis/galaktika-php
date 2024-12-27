@@ -15,7 +15,7 @@ class FlyCalculator
         $fleetResult = clone $fleet;
 
         // may need to check target location
-        if ( $fleet->getTargetLocation() != null ) {
+        if ($fleet->getTargetLocation() != null) {
             $distance = $fleet->getLocation()->distance($fleet->getTargetLocation());
 
             if ($distance < $speed) {
@@ -30,8 +30,8 @@ class FlyCalculator
 
         $location = $fleet->getLocation() ?? new Location(); // XXX dont like this '??'
         $newLocation = new Location();
-        $newLocation->setX($location->getX() + $xSpeed);
-        $newLocation->setY($location->getY() + $ySpeed);
+        $newLocation->setX(round($location->getX() + $xSpeed, 14));
+        $newLocation->setY(round($location->getY() + $ySpeed, 14));
         $fleetResult->setLocation($newLocation);
 
         return $fleetResult;
